@@ -1,0 +1,16 @@
+.cameraWrap {
+    display: grid;
+    gap: 12px;
+}
+.video {
+    width: 460px;
+    height: 680px;
+    background: #000;
+}
+.controls {
+    display: flex;
+    gap: 8px;
+}
+.hiddenCanvas {
+    display: none;
+}
