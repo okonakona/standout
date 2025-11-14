@@ -1,14 +1,16 @@
 // src/lib/faceLandmarks.ts
 import { FaceLandmarker, FilesetResolver, DrawingUtils } from "@mediapipe/tasks-vision";
 
-/** 返却する各パーツの白マスク（透過背景） */
+// 解析して、顔からはみ出さないように常時マスク設定
+// 返り値に faceClipMask を追加しておくと便利
 export type PartMasks = {
     width: number;
     height: number;
     lips: HTMLCanvasElement;
     brows: HTMLCanvasElement;
     eyes: HTMLCanvasElement;
-    skin: HTMLCanvasElement; // 顔全体（フェイスオーバルから目・口をくり抜き）
+    skin: HTMLCanvasElement;
+    faceClipMask: HTMLCanvasElement; // ← 追加：フェイスオーバル - 目口 を軽フェザー
 };
 
 let landmarker: FaceLandmarker | null = null;
@@ -160,5 +162,13 @@ export async function getFacePartMasksByLandmarks(imgEl: HTMLImageElement): Prom
     face = subtractMask(face, lips);
     face = feather(face, 0.8);
 
-    return { width: w, height: h, lips, brows, eyes, skin: face };
+    return {
+        width: w,
+        height: h,
+        lips,
+        brows,
+        eyes,
+        skin: face,
+        faceClipMask: face, // 同じでもOK。必要ならフェザー値を少し強めても◎
+    };
 }
