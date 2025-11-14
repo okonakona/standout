@@ -8,16 +8,21 @@ import type { Step } from "@/types/steps";
 // - brows: 眉マスクの輪郭
 // - shadow: 目窩の代替として目マスクの輪郭
 // - 肌系（下地/ファンデ/コンシーラー/パウダー/シェーディング/ハイライト）は顔外周
-export function guidePathForStep(step: Step, masks: PartMasks): string {
+export function guidePathForStep(step: Step, masks: PartMasks | null): string {
+    // マスクがない場合（顔認識失敗時など）
+    if (!masks) {
+        return "";
+    }
+
     const { lips, brows, eyes, skin } = masks;
 
     switch (step) {
         case "lips":
-            return maskToSvgPath(lips); // ← 1引数のみ
+            return maskToSvgPath(lips);
         case "brows":
-            return maskToSvgPath(brows); // ← 1引数のみ
+            return maskToSvgPath(brows);
         case "shadow":
-            return maskToSvgPath(eyes); // ← 1引数のみ
+            return maskToSvgPath(eyes);
 
         case "primer":
         case "foundation":
@@ -25,7 +30,7 @@ export function guidePathForStep(step: Step, masks: PartMasks): string {
         case "powder":
         case "contour":
         case "highlight":
-            return maskToSvgPath(skin); // ← 1引数のみ
+            return maskToSvgPath(skin);
 
         // 万一未対応のステップが来たら空文字
         default:

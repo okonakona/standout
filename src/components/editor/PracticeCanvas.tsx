@@ -12,7 +12,8 @@ type Props = {
     strengthByStep: Record<Step, number>; // ステップごとの強さ(0..1)
     brushRadius: number;
     mode: "paint" | "erase";
-    faceClipMask: HTMLCanvasElement | null; // 顔クリップ
+    faceClipMask: HTMLCanvasElement | null; // 顔クリップ（フェイス輪郭）
+    eyeHoleMask?: HTMLCanvasElement | null; // 目の穴（ここは塗れない）
     guidePathD?: string;
     guideBandPx?: number;
     partMask?: HTMLCanvasElement | null; // 任意（使わない想定）
@@ -27,6 +28,7 @@ export default function PracticeCanvas({
     brushRadius,
     mode,
     faceClipMask,
+    eyeHoleMask = null,
     guidePathD,
     guideBandPx,
     partMask = null,
@@ -71,7 +73,7 @@ export default function PracticeCanvas({
             if (!next[s]) next[s] = document.createElement("canvas");
             next[s].width = w;
             next[s].height = h;
-            // 既存内容はそのまま（初期化しない）→ 以前の塗りを保持
+            // 内容は保持（上書きしない）
         });
         paintMasksRef.current = next;
 
@@ -79,13 +81,13 @@ export default function PracticeCanvas({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [image, order]);
 
-    // 表示の再合成（色/強さ/顔クリップ/ガイド/ステップ変更時）
+    // 表示の再合成（色/強さ/顔クリップ/ステップ変更時など）
     useEffect(() => {
         redraw();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [colorByStep, strengthByStep, faceClipMask, activeStep]);
+    }, [colorByStep, strengthByStep, faceClipMask, eyeHoleMask, activeStep]);
 
-    // === 合成：全ステップを順番に重ねる ===
+    // === 合成：全ステップを順番に重ねる（最終画） ===
     function redraw() {
         if (!displayRef.current || !baseCvRef.current) return;
         const out = displayRef.current;
@@ -105,9 +107,6 @@ export default function PracticeCanvas({
             const mask = paintMasksRef.current[s];
             if (!mask) continue;
 
-            // 何も塗っていないレイヤをスキップ（透明チェック）
-            // ピクセル走査は重いので、getImageDataは避け、簡易に幅高ゼロならスキップ程度に留める
-            // 実デモではそのまま描画しても問題ないため描画継続
             const col = colorByStep[s];
             const alpha = Math.max(0, Math.min(1, strengthByStep[s]));
             const scfg = STEP_CONFIG[s];
@@ -130,16 +129,21 @@ export default function PracticeCanvas({
             pd.globalCompositeOperation = "destination-in";
             pd.drawImage(mask, 0, 0);
 
-            // 任意のパーツマスクでさらに絞る（基本は使わない）
+            // 任意のパーツマスク（使わない想定）
             if (partMask) {
                 pd.globalCompositeOperation = "destination-in";
                 pd.drawImage(partMask, 0, 0);
             }
 
-            // 顔クリップ（はみ出し防止）
+            // 顔クリップ（仕上げ側でも二重に安全）
             if (faceClipMask) {
                 pd.globalCompositeOperation = "destination-in";
                 pd.drawImage(faceClipMask, 0, 0);
+            }
+            // 目は常に穴扱い（塗布不可）
+            if (eyeHoleMask) {
+                pd.globalCompositeOperation = "destination-out";
+                pd.drawImage(eyeHoleMask, 0, 0);
             }
 
             // 仕上げ：ブレンド＆強さ
@@ -152,14 +156,38 @@ export default function PracticeCanvas({
         }
     }
 
-    // === 手描き：現在ステップのマスクにだけ描く ===
+    // === 手描き：現在ステップのマスクにだけ描く（塗布時にもクリップを効かせる） ===
     function paintDot(x: number, y: number) {
         const mask = paintMasksRef.current[activeStep];
         if (!mask) return;
+
+        // 1) 画面全体サイズの“一時ダブ”を作ってスタンプを配置
+        const w = mask.width,
+            h = mask.height;
+        const dab = document.createElement("canvas");
+        dab.width = w;
+        dab.height = h;
+        const dctx = dab.getContext("2d")!;
+        dctx.globalCompositeOperation = "source-over";
+        dctx.drawImage(stamp, x - brushRadius, y - brushRadius);
+
+        // 2) 顔の輪郭で切り抜き（はみ出し防止）
+        if (faceClipMask) {
+            dctx.globalCompositeOperation = "destination-in";
+            dctx.drawImage(faceClipMask, 0, 0);
+        }
+        // 3) 目は必ず禁止領域：目マスクでくり抜く
+        if (eyeHoleMask) {
+            dctx.globalCompositeOperation = "destination-out";
+            dctx.drawImage(eyeHoleMask, 0, 0);
+        }
+
+        // 4) 現在レイヤのペイントマスクに合成
         const ctx = mask.getContext("2d")!;
         ctx.globalCompositeOperation = mode === "erase" ? "destination-out" : "source-over";
-        ctx.drawImage(stamp, x - brushRadius, y - brushRadius);
-        redraw();
+        ctx.drawImage(dab, 0, 0);
+
+        redraw(); // 反映
     }
 
     function paintLine(x0: number, y0: number, x1: number, y1: number) {

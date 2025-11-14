@@ -1,8 +1,23 @@
 // src/lib/geometry.ts
-export function maskToSvgPath(maskCanvas: HTMLCanvasElement): string {
+export function maskToSvgPath(maskCanvas: HTMLCanvasElement | null): string {
+    // nullチェック
+    if (!maskCanvas) {
+        return "";
+    }
+
     const w = maskCanvas.width,
         h = maskCanvas.height;
-    const ctx = maskCanvas.getContext("2d")!;
+
+    // サイズチェック
+    if (!w || !h) {
+        return "";
+    }
+
+    const ctx = maskCanvas.getContext("2d");
+    if (!ctx) {
+        return "";
+    }
+
     const data = ctx.getImageData(0, 0, w, h).data;
 
     let minX = w,

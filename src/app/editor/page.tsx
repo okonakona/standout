@@ -63,9 +63,15 @@ export default function EditorPage() {
 
     // ランドマーク系マスク（ある場合だけガイド/クリップに使用）
     const { masks, loading, error } = useMasks(img);
+
+    // useMasksは faceClipMask/eyeHoleMask のみ返すため、
+    // guidePathForStepで必要な PartMasks 型とは異なる
+    // MediaPipe失敗時はガイドライン無しで動作
     const lmMasks: LmPartMasks | null = useMemo(() => {
         if (!masks) return null;
-        return "faceClipMask" in (masks as any) ? (masks as unknown as LmPartMasks) : null;
+        // buildClipMasksFromLandmarks の戻り値には lips, brows, eyes, skin がないため
+        // ガイドライン機能は現在無効（フリーペイントモード）
+        return null;
     }, [masks]);
 
     const guidePathD = useMemo(() => {
@@ -102,15 +108,12 @@ export default function EditorPage() {
                     image={img}
                     activeStep={step}
                     order={ORDER}
-                    // ステップごとの状態をまとめて渡す
                     colorByStep={colorByStep}
                     strengthByStep={strengthByStep}
-                    // UI操作での一時的なブラシ・モード
                     brushRadius={brushRadius}
                     mode={mode}
-                    // 顔はみ出し防止
-                    faceClipMask={lmMasks?.faceClipMask ?? null}
-                    // ガイド
+                    faceClipMask={masks?.faceClipMask ?? null} // 顔外は塗れない
+                    eyeHoleMask={masks?.eyeHoleMask ?? null} // 目内は塗れない
                     guidePathD={guidePathD}
                     guideBandPx={3}
                 />
