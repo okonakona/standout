@@ -1,27 +1,55 @@
+// 手順とガイド・クリップの配線を実装
 // src/app/editor/page.tsx
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { loadEditorImage, clearEditorImage } from "@/utils/imageSession";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import PracticeCanvas from "@/components/editor/PracticeCanvas";
 import styles from "@/styles/editor.module.css";
 import { useMasks } from "@/hooks/useMasks";
-import { maskToSvgPath } from "@/lib/geometry";
 import { saveSim } from "@/utils/simStore";
+import { STEP_CONFIG, Step } from "@/types/steps";
+import { guidePathForStep } from "@/lib/guidePaths";
+import type { PartMasks as LmPartMasks } from "@/lib/faceLandmarks";
 
-type Step = "base" | "lips" | "brows" | "eyes";
+const ORDER: Step[] = [
+    "primer",
+    "foundation",
+    "concealer",
+    "powder",
+    "contour",
+    "highlight",
+    "brows",
+    "shadow",
+    "lips",
+];
 
 export default function EditorPage() {
     const router = useRouter();
     const [img, setImg] = useState<HTMLImageElement | null>(null);
-    const [step, setStep] = useState<Step>("base");
+    const [step, setStep] = useState<Step>("primer");
 
     const [brushRadius, setBrushRadius] = useState<number>(18);
-    const [brushStrength, setBrushStrength] = useState<number>(0.35);
     const [mode, setMode] = useState<"paint" | "erase">("paint");
-    const [colorHex, setColorHex] = useState<string>("#d06a6a");
 
+    // --- ステップごとの色と強さを保持 ---
+    const [colorByStep, setColorByStep] = useState<Record<Step, string>>(() => {
+        const init: Record<Step, string> = {} as any;
+        ORDER.forEach((s) => (init[s] = STEP_CONFIG[s].defaultColor));
+        return init;
+    });
+    const [strengthByStep, setStrengthByStep] = useState<Record<Step, number>>(() => {
+        const init: Record<Step, number> = {} as any;
+        ORDER.forEach((s) => (init[s] = STEP_CONFIG[s].defaultStrength));
+        return init;
+    });
+
+    // 表示用の現在値
+    const colorHex = colorByStep[step];
+    const brushStrength = strengthByStep[step];
+
+    // 画像ロード
     useEffect(() => {
         const src = loadEditorImage();
         if (!src) {
@@ -33,36 +61,26 @@ export default function EditorPage() {
         im.src = src;
     }, [router]);
 
+    // ランドマーク系マスク（ある場合だけガイド/クリップに使用）
     const { masks, loading, error } = useMasks(img);
+    const lmMasks: LmPartMasks | null = useMemo(() => {
+        if (!masks) return null;
+        return "faceClipMask" in (masks as any) ? (masks as unknown as LmPartMasks) : null;
+    }, [masks]);
 
-    useEffect(() => {
-        if (step === "base") setColorHex("#ffffff");
-        if (step === "lips") setColorHex("#ce4e5a");
-        if (step === "brows") setColorHex("#4a3b32");
-        if (step === "eyes") setColorHex("#3a3a55");
-    }, [step]);
+    const guidePathD = useMemo(() => {
+        if (!lmMasks) return "";
+        return guidePathForStep(step, lmMasks);
+    }, [lmMasks, step]);
 
-    if (!img) return null;
-
-    const partMask = masks
-        ? step === "lips"
-            ? masks.lips
-            : step === "brows"
-            ? masks.brows
-            : step === "eyes"
-            ? masks.eyes
-            : masks.skin
-        : null;
-
-    const guidePathD = partMask ? maskToSvgPath(partMask) : "";
-    const guideBandPx = 3;
-
-    const nextStep = () =>
-        setStep((s) =>
-            s === "base" ? "lips" : s === "lips" ? "brows" : s === "brows" ? "eyes" : "eyes"
-        );
-    const prevStep = () =>
-        setStep((s) => (s === "eyes" ? "brows" : s === "brows" ? "lips" : "base"));
+    const nextStep = () => {
+        const i = ORDER.indexOf(step);
+        setStep(ORDER[Math.min(ORDER.length - 1, i + 1)]);
+    };
+    const prevStep = () => {
+        const i = ORDER.indexOf(step);
+        setStep(ORDER[Math.max(0, i - 1)]);
+    };
 
     const saveAndGoResult = async () => {
         const cv = document.querySelector<HTMLCanvasElement>("canvas.practiceCanvas");
@@ -72,6 +90,8 @@ export default function EditorPage() {
         router.push("/result");
     };
 
+    if (!img) return null;
+
     return (
         <main className={styles.editorWrap}>
             <section className={styles.canvasArea}>
@@ -80,19 +100,24 @@ export default function EditorPage() {
 
                 <PracticeCanvas
                     image={img}
-                    step={step}
+                    activeStep={step}
+                    order={ORDER}
+                    // ステップごとの状態をまとめて渡す
+                    colorByStep={colorByStep}
+                    strengthByStep={strengthByStep}
+                    // UI操作での一時的なブラシ・モード
                     brushRadius={brushRadius}
-                    brushStrength={brushStrength}
-                    colorHex={colorHex}
                     mode={mode}
-                    partMask={partMask}
+                    // 顔はみ出し防止
+                    faceClipMask={lmMasks?.faceClipMask ?? null}
+                    // ガイド
                     guidePathD={guidePathD}
-                    guideBandPx={guideBandPx}
+                    guideBandPx={3}
                 />
             </section>
 
             <aside className={styles.sidePanel}>
-                <h2>ステップ：{{ base: "下地", lips: "唇", brows: "眉", eyes: "目" }[step]}</h2>
+                <h2>ステップ：{STEP_CONFIG[step].label}</h2>
 
                 <div className={styles.tools}>
                     <div className={styles.toolRow}>
@@ -125,7 +150,9 @@ export default function EditorPage() {
                             max={1}
                             step={0.05}
                             value={brushStrength}
-                            onChange={(e) => setBrushStrength(+e.target.value)}
+                            onChange={(e) =>
+                                setStrengthByStep((prev) => ({ ...prev, [step]: +e.target.value }))
+                            }
                         />
                         <span>{brushStrength.toFixed(2)}</span>
                     </div>
@@ -135,17 +162,21 @@ export default function EditorPage() {
                         <input
                             type="color"
                             value={colorHex}
-                            onChange={(e) => setColorHex(e.target.value)}
+                            onChange={(e) =>
+                                setColorByStep((prev) => ({ ...prev, [step]: e.target.value }))
+                            }
                         />
                         <span>{colorHex}</span>
                     </div>
                 </div>
 
                 <div className={styles.buttons}>
-                    <button onClick={prevStep} disabled={step === "base"}>
+                    <button onClick={prevStep} disabled={ORDER.indexOf(step) === 0}>
                         ← 戻る
                     </button>
-                    <button onClick={nextStep}>次のステップ →</button>
+                    <button onClick={nextStep} disabled={ORDER.indexOf(step) === ORDER.length - 1}>
+                        次のステップ →
+                    </button>
                 </div>
 
                 <div className={styles.nav}>
