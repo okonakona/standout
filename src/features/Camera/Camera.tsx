@@ -14,6 +14,8 @@ export default function Camera() {
 
     // カメラ起動
     useEffect(() => {
+        let videoEventCleanup: (() => void) | null = null;
+
         (async () => {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({
@@ -21,9 +23,38 @@ export default function Camera() {
                     audio: false,
                 });
                 streamRef.current = stream;
+
                 if (videoRef.current) {
-                    videoRef.current.srcObject = stream;
-                    await videoRef.current.play();
+                    const video = videoRef.current;
+                    video.srcObject = stream;
+
+                    // Video要素のイベントハンドラを追加
+                    const handleLoadedMetadata = () => {
+                        video.play().catch((playError) => {
+                            if (playError instanceof Error) {
+                                if (playError.name === "AbortError") {
+                                    console.log(
+                                        "Video play was interrupted - this is normal during component updates"
+                                    );
+                                } else {
+                                    console.error("Video play failed:", playError);
+                                }
+                            }
+                        });
+                    };
+
+                    const handleError = (event: Event) => {
+                        console.error("Video error:", event);
+                    };
+
+                    video.addEventListener("loadedmetadata", handleLoadedMetadata);
+                    video.addEventListener("error", handleError);
+
+                    // イベントリスナーのクリーンアップ関数を設定
+                    videoEventCleanup = () => {
+                        video.removeEventListener("loadedmetadata", handleLoadedMetadata);
+                        video.removeEventListener("error", handleError);
+                    };
                 }
             } catch (err) {
                 console.error("カメラの取得に失敗しました:", err);
@@ -32,6 +63,7 @@ export default function Camera() {
 
         // 後始末（ページ離脱で停止）
         return () => {
+            videoEventCleanup?.();
             streamRef.current?.getTracks().forEach((t) => t.stop());
             streamRef.current = null;
         };
