@@ -129,6 +129,7 @@ const FACE_OVAL = [
     148, 176, 149, 150, 136, 172, 58, 132, 93, 234, 127, 162, 21, 54, 103, 67, 109,
 ];
 
+// --- 追記: 唇だけ塗布許可マスクを作る ---
 type XY = { x: number; y: number };
 
 function makeCanvas(w: number, h: number) {
@@ -137,7 +138,6 @@ function makeCanvas(w: number, h: number) {
     cv.height = h;
     return cv;
 }
-
 function toPixelPoints(landmarks: { x: number; y: number }[], w: number, h: number, ids: number[]) {
     return ids.map((i) => ({ x: landmarks[i].x * w, y: landmarks[i].y * h }));
 }
@@ -154,7 +154,6 @@ function fillPolygon(cv: HTMLCanvasElement, pts: XY[], color = "#fff") {
     ctx.fill();
 }
 
-// 複数ポリゴンを even-odd で塗る（穴あき用）
 function fillPolygonsEvenOdd(cv: HTMLCanvasElement, polys: XY[][], color = "#fff") {
     const ctx = cv.getContext("2d")!;
     ctx.fillStyle = color;
@@ -168,7 +167,7 @@ function fillPolygonsEvenOdd(cv: HTMLCanvasElement, polys: XY[][], color = "#fff
     ctx.fill("evenodd");
 }
 
-// ぼかし→2値化で「膨張/収縮」に相当（マージン調整用）
+// 軽いフェザー＋2値化
 function featherBinary(src: HTMLCanvasElement, blurPx: number): HTMLCanvasElement {
     if (blurPx <= 0) return src;
     const w = src.width,
@@ -176,18 +175,41 @@ function featherBinary(src: HTMLCanvasElement, blurPx: number): HTMLCanvasElemen
     const tmp = makeCanvas(w, h);
     const tctx = tmp.getContext("2d")!;
     tctx.filter = `blur(${blurPx}px)`;
-    tctx.drawImage(src, 0, 0);
+    tctx.drawImage(src, 0, 0); // ぼかす
     tctx.filter = "none";
-    // 2値化（α>1 を白100%）
     const id = tctx.getImageData(0, 0, w, h);
     for (let i = 0; i < id.data.length; i += 4) {
         const a = id.data[i + 3];
-        const v = a > 1 ? 255 : 0;
+        const v = a > 1 ? 255 : 0; // 2値化
         id.data[i] = id.data[i + 1] = id.data[i + 2] = 255;
         id.data[i + 3] = v;
     }
     tctx.putImageData(id, 0, 0);
     return tmp;
+}
+
+/** 唇の外輪−内輪の even-odd 塗りで「唇領域のみ白」マスクを作成 */
+export async function buildLipAllowMaskFromLandmarks(
+    imgEl: HTMLImageElement,
+    featherPx = 0.8
+): Promise<HTMLCanvasElement> {
+    const lm = await ensureFaceLandmarker();
+    const w = imgEl.naturalWidth || imgEl.width;
+    const h = imgEl.naturalHeight || imgEl.height;
+
+    if (!lm) throw new Error("Face landmarker not available");
+    const res = lm.detect(imgEl);
+    if (!res || !res.faceLandmarks?.length) throw new Error("No face detected");
+    const points = res.faceLandmarks[0];
+
+    const lipsOuter = toPixelPoints(points, w, h, LIPS_OUTER);
+    const lipsInner = toPixelPoints(points, w, h, LIPS_INNER);
+
+    const lips = makeCanvas(w, h);
+    // outer と inner を even-odd で塗るとドーナツ＝唇のみ白
+    fillPolygonsEvenOdd(lips, [lipsOuter, lipsInner], "#fff");
+
+    return featherBinary(lips, featherPx);
 }
 
 /**
