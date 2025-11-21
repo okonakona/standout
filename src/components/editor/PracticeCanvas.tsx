@@ -14,6 +14,7 @@ type Props = {
     mode: "paint" | "erase";
     faceClipMask: HTMLCanvasElement | null; // 顔クリップ（フェイス輪郭）
     eyeHoleMask?: HTMLCanvasElement | null; // 目の穴（ここは塗れない）
+    lipAllowMask?: HTMLCanvasElement | null; // 唇のみ可
     guidePathD?: string;
     guideBandPx?: number;
     partMask?: HTMLCanvasElement | null; // 任意（使わない想定）
@@ -29,6 +30,7 @@ export default function PracticeCanvas({
     mode,
     faceClipMask,
     eyeHoleMask = null,
+    lipAllowMask = null,
     guidePathD,
     guideBandPx,
     partMask = null,
@@ -145,6 +147,11 @@ export default function PracticeCanvas({
                 pd.globalCompositeOperation = "destination-out";
                 pd.drawImage(eyeHoleMask, 0, 0);
             }
+            // ★ リップ時のみ：唇内だけ許可
+            if (s === "lips" && lipAllowMask) {
+                pd.globalCompositeOperation = "destination-in";
+                pd.drawImage(lipAllowMask, 0, 0);
+            }
 
             // 仕上げ：ブレンド＆強さ
             octx.globalCompositeOperation =
@@ -180,6 +187,11 @@ export default function PracticeCanvas({
         if (eyeHoleMask) {
             dctx.globalCompositeOperation = "destination-out";
             dctx.drawImage(eyeHoleMask, 0, 0);
+        }
+        // 4) ★ アクティブがリップのときだけ、唇内に限定
+        if (activeStep === "lips" && lipAllowMask) {
+            dctx.globalCompositeOperation = "destination-in";
+            dctx.drawImage(lipAllowMask, 0, 0);
         }
 
         // 4) 現在レイヤのペイントマスクに合成
