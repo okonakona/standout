@@ -112,8 +112,8 @@ export default function EditorPage() {
                     strengthByStep={strengthByStep}
                     brushRadius={brushRadius}
                     mode={mode}
-                    faceClipMask={masks?.faceClipMask ?? null} // 顔外は塗れない
-                    eyeHoleMask={masks?.eyeHoleMask ?? null} // 目内は塗れない
+                    faceClipMask={masks?.faceClipMask ?? null}
+                    lipAllowMask={masks?.lipAllowMask ?? null} // ★ これを追加
                     guidePathD={guidePathD}
                     guideBandPx={3}
                 />
