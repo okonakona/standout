@@ -30,8 +30,18 @@ export default function EditorPage() {
     const [img, setImg] = useState<HTMLImageElement | null>(null);
     const [step, setStep] = useState<Step>("primer");
 
-    const [brushRadius, setBrushRadius] = useState<number>(18);
+    const [brushRadius, setBrushRadius] = useState<number>(STEP_CONFIG.primer.defaultRadius);
+    const [brushStrength, setBrushStrength] = useState<number>(STEP_CONFIG.primer.defaultStrength);
     const [mode, setMode] = useState<"paint" | "erase">("paint");
+    const [colorHex, setColorHex] = useState<string>(STEP_CONFIG.primer.defaultColor);
+
+    // step が変わったら、そのステップのデフォルト値にリセット
+    useEffect(() => {
+        const cfg = STEP_CONFIG[step];
+        setColorHex(cfg.defaultColor);
+        setBrushStrength(cfg.defaultStrength); // ← 強さは常に固定値
+        setBrushRadius(cfg.defaultRadius); // ← 太さもステップのデフォルトから開始
+    }, [step]);
 
     // --- ステップごとの色と強さを保持 ---
     const [colorByStep, setColorByStep] = useState<Record<Step, string>>(() => {
@@ -44,10 +54,6 @@ export default function EditorPage() {
         ORDER.forEach((s) => (init[s] = STEP_CONFIG[s].defaultStrength));
         return init;
     });
-
-    // 表示用の現在値
-    const colorHex = colorByStep[step];
-    const brushStrength = strengthByStep[step];
 
     // 画像ロード
     useEffect(() => {
@@ -97,6 +103,8 @@ export default function EditorPage() {
     };
 
     if (!img) return null;
+    // 追加：現在ステップの設定を取り出す
+    const cfg = STEP_CONFIG[step];
 
     return (
         <main className={styles.editorWrap}>
@@ -133,7 +141,7 @@ export default function EditorPage() {
                         </button>
                     </div>
 
-                    <div className={styles.toolRow}>
+                    {/* <div className={styles.toolRow}>
                         <label>ブラシ半径：</label>
                         <input
                             type="range"
@@ -143,21 +151,55 @@ export default function EditorPage() {
                             onChange={(e) => setBrushRadius(+e.target.value)}
                         />
                         <span>{brushRadius}px</span>
-                    </div>
+                    </div> */}
 
+                    {/* 強さ：ステップごとに固定（スライダなし） */}
                     <div className={styles.toolRow}>
                         <label>強さ：</label>
-                        <input
-                            type="range"
-                            min={0}
-                            max={1}
-                            step={0.05}
-                            value={brushStrength}
-                            onChange={(e) =>
-                                setStrengthByStep((prev) => ({ ...prev, [step]: +e.target.value }))
-                            }
-                        />
-                        <span>{brushStrength.toFixed(2)}</span>
+                        <span>{Math.round(cfg.defaultStrength * 100)}%</span>
+                    </div>
+
+                    {/* ブラシ太さ：固定 or ボタン選択 */}
+                    <div className={styles.toolRow}>
+                        <label>ブラシ太さ：</label>
+
+                        {/* allowedRadii が複数あるステップだけボタン表示 */}
+                        {cfg.allowedRadii && cfg.allowedRadii.length > 1 ? (
+                            <div className={styles.brushSizeButtons}>
+                                {cfg.allowedRadii.map((r) => (
+                                    <button
+                                        key={r}
+                                        type="button"
+                                        onClick={() => setBrushRadius(r)}
+                                        aria-pressed={brushRadius === r}
+                                    >
+                                        {/* 人間向けラベル（大・中・小・極細） */}
+                                        {r === 10
+                                            ? "大"
+                                            : r === 7
+                                            ? "中"
+                                            : r === 4
+                                            ? "小"
+                                            : r <= 1
+                                            ? "極細"
+                                            : `${r}px`}
+                                    </button>
+                                ))}
+                                <span style={{ marginLeft: 8 }}>{brushRadius}px</span>
+                            </div>
+                        ) : (
+                            // ★ デフォルト値しかないステップは「ゲージ固定（変更不可）」として表示
+                            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                                <input
+                                    type="range"
+                                    min={cfg.defaultRadius}
+                                    max={cfg.defaultRadius}
+                                    value={cfg.defaultRadius}
+                                    disabled
+                                />
+                                <span>{cfg.defaultRadius}px（固定）</span>
+                            </div>
+                        )}
                     </div>
 
                     <div className={styles.toolRow}>
