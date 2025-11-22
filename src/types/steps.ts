@@ -7,7 +7,8 @@ export type Step =
     | "concealer" // コンシーラー
     | "powder" // パウダー
     | "contour" // シェーディング
-    | "highlight" // ハイライト（チーク含む）
+    | "highlight" // ハイライト
+    | "cheek" // チーク
     | "brows" // アイブロウ
     | "shadow" // アイシャドウ
     | "lips"; // リップ
@@ -21,10 +22,9 @@ export type StepConfig = {
     defaultStrength: number; // 0..1
     brush: BrushKind;
     defaultColor: string;
-
-    // ★ 追加：太さ関連
     defaultRadius: number; // デフォルトのブラシ半径(px)
     allowedRadii?: number[]; // 選択肢がある場合のみ定義（なければ完全固定）
+    effectId: number;
 };
 
 // ★ あなたの表をもとにした設定
@@ -38,6 +38,7 @@ export const STEP_CONFIG: Record<Step, StepConfig> = {
         defaultColor: "#f5eadf",
         defaultRadius: 45,
         // 下地は太さいじらせない → allowedRadii なし
+        effectId: 0,
     },
     foundation: {
         label: "ファンデ(BB)",
@@ -48,6 +49,7 @@ export const STEP_CONFIG: Record<Step, StepConfig> = {
         defaultRadius: 40,
         // 40px を基準 + 細かい作業用ブラシ
         allowedRadii: [40, 10, 7, 4, 1], // 大 / 中 / 小 / 極細
+        effectId: 1,
     },
     concealer: {
         label: "コンシーラー",
@@ -57,6 +59,7 @@ export const STEP_CONFIG: Record<Step, StepConfig> = {
         defaultColor: "#f2d7b6",
         defaultRadius: 10,
         // コンシーラーも基本は固定太さ
+        effectId: 2,
     },
     powder: {
         label: "パウダー",
@@ -66,15 +69,27 @@ export const STEP_CONFIG: Record<Step, StepConfig> = {
         defaultColor: "#f5e8db",
         defaultRadius: 45,
         // パウダーは全顔にふわっと → 固定
+        effectId: 3,
     },
     highlight: {
-        label: "ハイライト / チーク",
+        label: "ハイライト",
+        blend: "screen",
+        defaultStrength: 0.15,
+        brush: "soft",
+        defaultColor: "#fbfbfbff",
+        defaultRadius: 30,
+        // ハイライトも基本固定（まずはこれで）
+        effectId: 4,
+    },
+    cheek: {
+        label: "チーク",
         blend: "screen",
         defaultStrength: 0.15,
         brush: "soft",
         defaultColor: "#ffd7df",
         defaultRadius: 30,
         // ハイライトも基本固定（まずはこれで）
+        effectId: 4,
     },
     contour: {
         label: "シェーディング",
@@ -85,6 +100,7 @@ export const STEP_CONFIG: Record<Step, StepConfig> = {
         defaultRadius: 30,
         // 30 をベースに、より広く入れたいとき用に 10px だけ選択肢
         allowedRadii: [30, 10],
+        effectId: 5,
     },
     brows: {
         label: "アイブロウ",
@@ -94,6 +110,7 @@ export const STEP_CONFIG: Record<Step, StepConfig> = {
         defaultColor: "#3f352f",
         defaultRadius: 6,
         // アイブロウは固定（6px）
+        effectId: 6,
     },
     shadow: {
         label: "アイシャドウ",
@@ -103,6 +120,7 @@ export const STEP_CONFIG: Record<Step, StepConfig> = {
         defaultColor: "#6a6079",
         defaultRadius: 7, // 中ブラシをデフォに
         allowedRadii: [10, 7, 4, 1], // 大 / 中 / 小 / 極細
+        effectId: 7,
     },
     lips: {
         label: "リップ",
@@ -112,5 +130,6 @@ export const STEP_CONFIG: Record<Step, StepConfig> = {
         defaultColor: "#c84a58",
         defaultRadius: 10,
         // リップは範囲マスク＋10px 固定
+        effectId: 8,
     },
 };
