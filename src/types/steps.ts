@@ -21,8 +21,6 @@ export type StepConfig = {
     defaultStrength: number; // 0..1
     brush: BrushKind;
     defaultColor: string;
-
-    // ★ 追加：太さ関連
     defaultRadius: number; // デフォルトのブラシ半径(px)
     allowedRadii?: number[]; // 選択肢がある場合のみ定義（なければ完全固定）
 };
