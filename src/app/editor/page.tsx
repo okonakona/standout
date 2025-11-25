@@ -10,7 +10,6 @@ import styles from "@/styles/editor.module.css";
 import { useMasks } from "@/hooks/useMasks";
 import { saveSim } from "@/utils/simStore";
 import { STEP_CONFIG, Step } from "@/types/steps";
-// （guidePathForStep は今は使わないなら import しなくてOK）
 
 const ORDER: Step[] = [
     "primer",
