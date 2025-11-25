@@ -5,8 +5,8 @@ import React, { useEffect, useRef } from "react";
 import * as twgl from "twgl.js";
 
 type Props = {
-    image: HTMLImageElement;
-    maskCanvas: HTMLCanvasElement;
+    base: HTMLCanvasElement | HTMLImageElement; // 2D 合成結果
+    mask: HTMLCanvasElement; // activeStep のマスク
     tintColor: string; // #rrggbb
     strength: number; // 0..1
     effectId: number; // STEP_CONFIG の effectId
@@ -171,30 +171,26 @@ function hexToRgb(hex: string): [number, number, number] {
     return [r, g, b];
 }
 
-export default function WebglMakeupCanvas({
-    image,
-    maskCanvas,
-    tintColor,
-    strength,
-    effectId,
-}: Props) {
+export function WebglMakeupCanvas({ base, mask, tintColor, strength, effectId }: Props) {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
     useEffect(() => {
         const canvas = canvasRef.current;
-        if (!canvas || !image || !maskCanvas) return;
+        if (!canvas) return;
+
+        const w = (base as HTMLCanvasElement).width || (base as HTMLImageElement).width;
+        const h = (base as HTMLCanvasElement).height || (base as HTMLImageElement).height;
+        if (!w || !h) return;
+
+        canvas.width = w;
+        canvas.height = h;
 
         const gl = canvas.getContext("webgl");
         if (!gl) {
-            console.warn("[WebGL] WebGL not supported");
+            console.warn("[WebGL] not supported, fallback to hidden");
             return;
         }
 
-        // キャンバスサイズ = 画像サイズ
-        canvas.width = image.width;
-        canvas.height = image.height;
-
-        // twgl 初期化
         twgl.setDefaults({ attribPrefix: "a_" });
 
         const programInfo = twgl.createProgramInfo(gl, [vs, fs]);
@@ -211,16 +207,15 @@ export default function WebglMakeupCanvas({
         };
         const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
 
-        // テクスチャ作成（★ flipY は number にする）
         const baseTex = twgl.createTexture(gl, {
-            src: image,
-            flipY: 1,
+            src: base,
+            flipY: 1, // ★ boolean ではなく number で型エラー回避
             min: gl.LINEAR,
             mag: gl.LINEAR,
         });
 
         const maskTex = twgl.createTexture(gl, {
-            src: maskCanvas,
+            src: mask,
             flipY: 1,
             min: gl.LINEAR,
             mag: gl.LINEAR,
@@ -228,8 +223,8 @@ export default function WebglMakeupCanvas({
 
         const [r, g, b] = hexToRgb(tintColor);
 
-        gl.viewport(0, 0, canvas.width, canvas.height);
-        gl.clearColor(0, 0, 0, 1);
+        gl.viewport(0, 0, w, h);
+        gl.clearColor(0, 0, 0, 0);
         gl.clear(gl.COLOR_BUFFER_BIT);
 
         gl.useProgram(programInfo.program);
@@ -243,18 +238,20 @@ export default function WebglMakeupCanvas({
         });
         twgl.drawBufferInfo(gl, bufferInfo);
 
-        return () => {
-            // 必要に応じてテクスチャ破棄など
-            // gl.deleteTexture(baseTex);
-            // gl.deleteTexture(maskTex);
-        };
-    }, [image, maskCanvas, tintColor, strength, effectId]);
+        // cleanup は必要になったら追加
+    }, [base, mask, tintColor, strength, effectId]);
 
     return (
         <canvas
             ref={canvasRef}
-            className="practiceCanvas"
-            style={{ width: "100%", height: "auto", display: "block" }}
+            className="practiceCanvas-webgl"
+            style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                pointerEvents: "none", // 入力は下の 2D に通す
+            }}
         />
     );
 }
