@@ -1,5 +1,5 @@
 // src/components/editor/PracticeCanvas.tsx
-"use client";
+// "use client";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { makeBrushStamp } from "@/lib/brushTex";
 import { STEP_CONFIG, Step } from "@/types/steps";
