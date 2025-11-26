@@ -1,0 +1,57 @@
+.content{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    background: rgba(42, 42, 42, 0.6);
+}
+
+.modal{
+    background: #EEF5FF;
+    margin: 100px 21px;
+    padding: 42px 21px;
+    border-radius: 10px;
+    text-align: center;
+    h2{
+        font-size: 34px;
+    }
+    .modalCnt{
+        background: #BEC6D2;
+        margin: 12px 0;
+        padding: 28px 18px;
+        border-radius: 10px;
+        p{
+            font-size: 17px;
+        }
+        .imgWrap{
+            margin: 15px;
+        }
+        img{
+            width: 100%;
+            height: auto;
+        }
+        .attention{
+            font-size: 12px;
+        }
+    
+    }
+    .check{
+        display: flex;
+        justify-content: space-between;
+        button{
+            font-size: 20px;
+            width: 150px;
+            height: 50px;
+            border: none;
+            border-radius: 10px;
+            background: #757575;
+            color: white;
+        }
+        .checkYes{
+            background: var(--mainColor);
+        }
+    }
+
+}    
+
