@@ -1,6 +1,8 @@
 :root {
     --background: #fefefe;
-    --foreground: #121212;
+    --blackColor: #121212;
+    --buttonBackground: #fefefe;
+    --buttonSize: clamp(70px, calc(100vw * (80 / 480)), 80px);
 }
 
 html,
@@ -15,7 +17,7 @@ body {
 }
 
 body {
-    color: var(--foreground);
+    color: var(--blackColor);
     background: var(--background);
     font-family: Arial, Helvetica, sans-serif;
 }
