@@ -216,15 +216,27 @@ export default function PracticeCanvas({
             dctx.drawImage(lipAllowMask, 0, 0);
         }
 
-        // 5) 本番マスクに反映
+        // 5) 本番マスクに反映（重ね塗り可能な方式）
         const mctx = mask.getContext("2d")!;
+
         if (mode === "paint") {
-            // 塗る：白を足す
-            mctx.globalCompositeOperation = "source-over";
+            /**
+             * ☑ 重ね塗り実現ポイント
+             * マスクは「白の濃さ = 塗った回数」にするため
+             * dab の白を、既存マスクのαに “加算” していく。
+             *
+             * ⇒ destination-over で dab を重ねることで、
+             *    既に描かれた白の上に、さらに薄い白が積み重なる。
+             */
+            mctx.globalCompositeOperation = "destination-over";
+
+            // ここで dab が白(255) なので、マスクαが徐々に増加する
+            mctx.globalAlpha = 0.2; // ← ☆☆ 重ね塗りの強さ（調整可）
             mctx.drawImage(dab, 0, 0);
         } else {
-            // 消す：その部分をくり抜く
+            // 消しゴム
             mctx.globalCompositeOperation = "destination-out";
+            mctx.globalAlpha = 1;
             mctx.drawImage(dab, 0, 0);
         }
 
