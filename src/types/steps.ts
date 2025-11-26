@@ -32,7 +32,7 @@ export const STEP_CONFIG: Record<Step, StepConfig> = {
     primer: {
         label: "下地",
         blend: "soft-light",
-        defaultStrength: 0.15,
+        defaultStrength: 0.2,
         brush: "cream",
         // 下地はほぼ透明なトーンアップ系を想定して少しベージュ寄りでもOK
         defaultColor: "#f5eadf",
