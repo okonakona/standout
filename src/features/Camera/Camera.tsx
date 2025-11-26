@@ -4,8 +4,8 @@ import { useRouter } from "next/navigation";
 import { saveEditorImage } from "@/utils/imageSession";
 import styles from "@/styles/camera.module.css";
 
-const MAX_WIDTH = 1080; // 短辺の上限
-const MAX_HEIGHT = 1440; // 長辺の上限（縦長想定）
+const MAX_WIDTH = 1920; // 短辺の上限
+const MAX_HEIGHT = 1080; // 長辺の上限（縦長想定）
 
 export default function Camera() {
     const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -21,9 +21,10 @@ export default function Camera() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({
                     video: {
-                        facingMode: "user", // インカメ
-                        width: { ideal: 1080, max: MAX_WIDTH },
-                        height: { ideal: 1440, max: MAX_HEIGHT },
+                        facingMode: { ideal: "user" }, // インカメ
+                        width: { ideal: MAX_WIDTH },
+                        height: { ideal: MAX_HEIGHT },
+                        aspectRatio: { ideal: 0.5625 },
                     },
                     audio: false,
                 });
@@ -76,37 +77,33 @@ export default function Camera() {
         const canvas = canvasRef.current;
         if (!video || !canvas) return;
 
-        // 実際のカメラ解像度を取得
-        const vw = video.videoWidth || 720;
-        const vh = video.videoHeight || 1280;
-
-        // // 比率を維持したまま、MAX_WIDTH / MAX_HEIGHT に収める
-        // let targetW = vw;
-        // let targetH = vh;
-        // const ratio = vw / vh; // 横 / 縦
-
-        // // まず長辺側を MAX_HEIGHT に収める（縦長想定）
-        // if (targetH > MAX_HEIGHT) {
-        //     targetH = MAX_HEIGHT;
-        //     targetW = Math.round(targetH * ratio);
-        // }
-        // // それでも横が大きい場合は横も制限
-        // if (targetW > MAX_WIDTH) {
-        //     targetW = MAX_WIDTH;
-        //     targetH = Math.round(targetW / ratio);
-        // }
-
-        // canvas.width = targetW;
-        // canvas.height = targetH;
-
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
 
-        // ctx.drawImage(video, 0, 0, targetW, targetH);
+        // 実際のカメラ解像度
+        const vw = video.videoWidth;
+        const vh = video.videoHeight;
+        if (!vw || !vh) {
+            console.warn("Video size not ready");
+            return;
+        }
 
-        // JPEG画質は 0.9 に少しアップ（必要なら変えてOK）
+        // 上限付きで縮小スケールを計算
+        const scale = Math.min(MAX_WIDTH / vw, MAX_HEIGHT / vh, 1);
+        const targetW = Math.round(vw * scale);
+        const targetH = Math.round(vh * scale);
+
+        // キャンバスに反映
+        canvas.width = targetW;
+        canvas.height = targetH;
+
+        // ここで実際のフレームを書き込む
+        ctx.drawImage(video, 0, 0, targetW, targetH);
+
+        // JPEG に変換してセッション保存
         const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
         saveEditorImage(dataUrl);
+
         router.push("/editor");
     };
 
@@ -115,7 +112,7 @@ export default function Camera() {
             {/* スマホ幅にフィットさせる */}
             <video ref={videoRef} autoPlay playsInline className={styles.video} />
             <div className={styles.controls}>
-                <button onClick={captureAndGo}>撮影して次へ</button>
+                <button onClick={captureAndGo} className={styles.cameraButton}></button>
             </div>
             <canvas ref={canvasRef} className={styles.hiddenCanvas} />
         </div>
