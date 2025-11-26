@@ -1,6 +1,6 @@
 // src/app/editor/page.tsx
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { loadEditorImage, clearEditorImage } from "@/utils/imageSession";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -61,22 +61,38 @@ export default function EditorPage() {
 
     const { masks, loading, error } = useMasks(img);
 
+    // ステップ移動
     const nextStep = () => {
         const i = ORDER.indexOf(step);
-        setStep(ORDER[Math.min(ORDER.length - 1, i + 1)]);
-    };
-    const prevStep = () => {
-        const i = ORDER.indexOf(step);
-        setStep(ORDER[Math.max(0, i - 1)]);
+        if (i < ORDER.length - 1) {
+            setStep(ORDER[i + 1]);
+            // 次のステップに合わせてブラシ半径を更新
+            const next = ORDER[i + 1];
+            setBrushRadius(STEP_CONFIG[next].defaultRadius);
+        }
     };
 
+    const prevStep = () => {
+        const i = ORDER.indexOf(step);
+        if (i > 0) {
+            setStep(ORDER[i - 1]);
+            const prev = ORDER[i - 1];
+            setBrushRadius(STEP_CONFIG[prev].defaultRadius);
+        }
+    };
+
+    // 最終結果を保存して /result へ
     const saveAndGoResult = async () => {
+        // WebGL があればそれを優先、なければ 2D を保存
         const cv =
             document.querySelector<HTMLCanvasElement>(".practiceCanvas-webgl") ||
             document.querySelector<HTMLCanvasElement>(".practiceCanvas-2d");
+
         if (!cv) return;
         const url = cv.toDataURL("image/jpeg", 0.92);
-        await saveSim(url, `step:${step}`);
+
+        // ラベルは "final" として保存（履歴用途）
+        await saveSim(url, "final");
         router.push("/result");
     };
 
@@ -84,12 +100,14 @@ export default function EditorPage() {
 
     const cfg = STEP_CONFIG[step];
 
-    // 今表示中の色
     const currentColor = colorByStep[step];
     const currentStrength = strengthByStep[step];
 
-    // activeStep のマスク（なければ全体マスク無しで描画）
-    const activeMask = maskByStep[step] || compositeCanvas; // fallback
+    // activeStep のマスク（なければ全体）
+    const activeMask = maskByStep[step] || compositeCanvas;
+
+    const isFirst = ORDER.indexOf(step) === 0;
+    const isLast = step === "lips";
 
     return (
         <main className={styles.editorWrap}>
@@ -97,8 +115,8 @@ export default function EditorPage() {
                 {loading && <p>パーツを解析中…</p>}
                 {error && <p style={{ color: "crimson" }}>解析エラー: {error}</p>}
 
-                <div style={{ position: "relative", inlineSize: "min(100%, 720px)" }}>
-                    {/* 下：入力と 2D 合成 */}
+                <div>
+                    {/* 下：2D 編集＆合成 */}
                     <PracticeCanvas
                         image={img}
                         activeStep={step}
@@ -108,11 +126,13 @@ export default function EditorPage() {
                         brushRadius={brushRadius}
                         mode={mode}
                         faceClipMask={masks?.faceClipMask ?? null}
-                        // eyeHoleMask={masks?.eyeHoleMask ?? null}
                         lipAllowMask={masks?.lipAllowMask ?? null}
                         onCompositeChange={setCompositeCanvas}
                         onStepMaskChange={(s, mask) =>
-                            setMaskByStep((prev) => ({ ...prev, [s]: mask }))
+                            setMaskByStep((prev) => ({
+                                ...prev,
+                                [s]: mask,
+                            }))
                         }
                     />
 
@@ -143,7 +163,7 @@ export default function EditorPage() {
                         </button>
                     </div>
 
-                    {/* 強さは固定表示 */}
+                    {/* 強さ：固定表示 */}
                     <div className={styles.toolRow}>
                         <label>強さ：</label>
                         <span>{Math.round(cfg.defaultStrength * 100)}%</span>
@@ -188,41 +208,48 @@ export default function EditorPage() {
                         )}
                     </div>
 
-                    {/* 色変更：ステップごとの色テーブルを更新 */}
+                    {/* 色：ステップごとの色を更新 */}
                     <div className={styles.toolRow}>
                         <label>色：</label>
                         <input
                             type="color"
                             value={currentColor}
                             onChange={(e) =>
-                                setColorByStep((prev) => ({ ...prev, [step]: e.target.value }))
+                                setColorByStep((prev) => ({
+                                    ...prev,
+                                    [step]: e.target.value,
+                                }))
                             }
                         />
                         <span>{currentColor}</span>
                     </div>
                 </div>
 
+                {/* ステップ移動＆OK フロー */}
                 <div className={styles.buttons}>
-                    <button onClick={prevStep} disabled={ORDER.indexOf(step) === 0}>
-                        ← 戻る
+                    <button onClick={prevStep} disabled={isFirst}>
+                        ← 前のステップに戻る
                     </button>
-                    <button onClick={nextStep} disabled={ORDER.indexOf(step) === ORDER.length - 1}>
-                        次のステップ →
-                    </button>
+
+                    {!isLast ? (
+                        <button onClick={nextStep}>このステップはOK → 次へ</button>
+                    ) : (
+                        <button onClick={saveAndGoResult}>メイク完了（結果を保存して見る）</button>
+                    )}
                 </div>
 
-                <div className={styles.nav}>
-                    <button onClick={saveAndGoResult}>結果を保存して見る</button>
-                    <Link href="/result">結果だけ見る</Link>
+                {/* 共通ナビ：履歴と画像差し替え */}
+                {/* <div className={styles.nav}>
+                    <Link href="/result">履歴（これまでのメイク結果）を見る</Link>
                     <button
                         onClick={() => {
                             clearEditorImage();
                             router.push("/upload");
                         }}
                     >
-                        画像を変える
+                        画像を撮り直す
                     </button>
-                </div>
+                </div> */}
             </aside>
         </main>
     );
