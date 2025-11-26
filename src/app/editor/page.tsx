@@ -83,17 +83,27 @@ export default function EditorPage() {
 
     // 最終結果を保存して /result へ
     const saveAndGoResult = async () => {
-        // WebGL があればそれを優先、なければ 2D を保存
+        // ★ まずは必ず存在する 2D キャンバスを優先
         const cv =
-            document.querySelector<HTMLCanvasElement>(".practiceCanvas-webgl") ||
-            document.querySelector<HTMLCanvasElement>(".practiceCanvas-2d");
+            document.querySelector<HTMLCanvasElement>("canvas.practiceCanvas-2d") ||
+            document.querySelector<HTMLCanvasElement>("canvas.practiceCanvas-webgl");
 
-        if (!cv) return;
-        const url = cv.toDataURL("image/jpeg", 0.92);
+        if (!cv) {
+            alert("メイク結果のキャンバスが見つかりません。");
+            return;
+        }
 
-        // ラベルは "final" として保存（履歴用途）
-        await saveSim(url, "final");
-        router.push("/result");
+        try {
+            const url = cv.toDataURL("image/jpeg", 0.92);
+
+            // 履歴用に "final" というラベルで保存
+            await saveSim(url, "final");
+        } catch (e) {
+            console.error("saveSim でエラーが発生しましたが、結果画面には遷移します:", e);
+        } finally {
+            // ★ 保存に失敗してもとにかく結果画面へ
+            router.push("/result");
+        }
     };
 
     if (!img) return null;
@@ -227,14 +237,18 @@ export default function EditorPage() {
 
                 {/* ステップ移動＆OK フロー */}
                 <div className={styles.buttons}>
-                    <button onClick={prevStep} disabled={isFirst}>
+                    <button type="button" onClick={prevStep} disabled={isFirst}>
                         ← 前のステップに戻る
                     </button>
 
                     {!isLast ? (
-                        <button onClick={nextStep}>このステップはOK → 次へ</button>
+                        <button type="button" onClick={nextStep}>
+                            このステップはOK → 次へ
+                        </button>
                     ) : (
-                        <button onClick={saveAndGoResult}>メイク完了（結果を保存して見る）</button>
+                        <button type="button" onClick={saveAndGoResult}>
+                            メイク完了（結果を保存して見る）
+                        </button>
                     )}
                 </div>
 
