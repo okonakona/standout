@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { makeBrushStamp } from "@/lib/brushTex";
 import { STEP_CONFIG, Step } from "@/types/steps";
+import "@/styles/editor/practiceCanvas.css";
 
 type Props = {
     image: HTMLImageElement;
@@ -263,7 +264,7 @@ export default function PracticeCanvas(props: Props) {
     }
 
     return (
-        <div style={{ position: "relative", inlineSize: "min(100%, 720px)" }}>
+        <div className="canvasWrap">
             <canvas
                 ref={displayRef}
                 className="practiceCanvas-2d"
@@ -271,14 +272,6 @@ export default function PracticeCanvas(props: Props) {
                 onPointerMove={onPointerMove}
                 onPointerUp={onPointerUp}
                 onPointerLeave={onPointerUp}
-                style={{
-                    width: "100%",
-                    height: "auto",
-                    touchAction: "none",
-                    border: "1px solid #ddd",
-                    background: "#000",
-                    display: "block",
-                }}
             />
 
             {guidePathD && (
