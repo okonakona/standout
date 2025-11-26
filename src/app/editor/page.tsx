@@ -97,7 +97,7 @@ export default function EditorPage() {
                 {loading && <p>パーツを解析中…</p>}
                 {error && <p style={{ color: "crimson" }}>解析エラー: {error}</p>}
 
-                <div style={{ position: "relative", inlineSize: "min(100%, 720px)" }}>
+                <div>
                     {/* 下：入力と 2D 合成 */}
                     <PracticeCanvas
                         image={img}
