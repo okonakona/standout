@@ -1,7 +1,5 @@
 // src/components/editor/PracticeCanvas.tsx
-// "use client";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { makeBrushStamp } from "@/lib/brushTex";
+import React, { useEffect, useRef, useState } from "react";
 import { STEP_CONFIG, Step } from "@/types/steps";
 import "@/styles/editor/practiceCanvas.css";
 
@@ -25,43 +23,41 @@ type Props = {
     onStepMaskChange?: (step: Step, mask: HTMLCanvasElement) => void;
 };
 
-export default function PracticeCanvas(props: Props) {
-    const {
-        image,
-        activeStep,
-        order,
-        colorByStep,
-        strengthByStep,
-        brushRadius,
-        mode,
-        faceClipMask,
-        eyeHoleMask = null,
-        lipAllowMask = null,
-        guidePathD,
-        guideBandPx,
-        onCompositeChange,
-        onStepMaskChange,
-    } = props;
+function makeCanvas(w: number, h: number) {
+    const cv = document.createElement("canvas");
+    cv.width = w;
+    cv.height = h;
+    return cv;
+}
 
-    const displayRef = useRef<HTMLCanvasElement | null>(null);
-    const baseCvRef = useRef<HTMLCanvasElement | null>(null);
-    const paintMasksRef = useRef<Record<Step, HTMLCanvasElement>>({} as any);
+export default function PracticeCanvas({
+    image,
+    activeStep,
+    order,
+    colorByStep,
+    strengthByStep,
+    brushRadius,
+    mode,
+    faceClipMask,
+    eyeHoleMask = null,
+    lipAllowMask = null,
+    guidePathD,
+    guideBandPx,
+}: Props) {
+    const displayRef = useRef<HTMLCanvasElement | null>(null); // 画面に見えているキャンバス
+    const baseRef = useRef<HTMLCanvasElement | null>(null); // 元画像キャンバス
+    const paintMasksRef = useRef<Record<Step, HTMLCanvasElement>>({} as any); // ステップごとのマスク
+    const dabRef = useRef<HTMLCanvasElement | null>(null); // 一時キャンバス（毎ストローク再利用）
 
     const [isDown, setIsDown] = useState(false);
     const lastPt = useRef<{ x: number; y: number } | null>(null);
 
-    const cfg = STEP_CONFIG[activeStep];
-
-    const stamp = useMemo(
-        () => makeBrushStamp(cfg.brush, Math.max(1, brushRadius)),
-        [cfg.brush, brushRadius]
-    );
-
-    // 初期化
+    // 画像のロードに合わせてキャンバス準備
     useEffect(() => {
         const w = image.width;
         const h = image.height;
 
+        // 表示キャンバス
         if (displayRef.current) {
             displayRef.current.width = w;
             displayRef.current.height = h;
@@ -69,156 +65,173 @@ export default function PracticeCanvas(props: Props) {
             displayRef.current.style.height = "auto";
         }
 
-        if (!baseCvRef.current) baseCvRef.current = document.createElement("canvas");
-        baseCvRef.current.width = w;
-        baseCvRef.current.height = h;
-        const bctx = baseCvRef.current.getContext("2d")!;
+        // 元画像キャンバス
+        if (!baseRef.current) baseRef.current = makeCanvas(w, h);
+        baseRef.current.width = w;
+        baseRef.current.height = h;
+        const bctx = baseRef.current.getContext("2d")!;
         bctx.clearRect(0, 0, w, h);
         bctx.drawImage(image, 0, 0, w, h);
 
-        const next: Record<Step, HTMLCanvasElement> = { ...paintMasksRef.current };
+        // ステップ別マスク（サイズを画像に合わせる）
+        const nextMasks: Record<Step, HTMLCanvasElement> = { ...paintMasksRef.current };
         order.forEach((s) => {
-            if (!next[s]) next[s] = document.createElement("canvas");
-            next[s].width = w;
-            next[s].height = h;
-            // 既存の描画内容は維持
+            if (!nextMasks[s]) {
+                nextMasks[s] = makeCanvas(w, h);
+            } else {
+                if (nextMasks[s].width !== w || nextMasks[s].height !== h) {
+                    const tmp = makeCanvas(w, h);
+                    const tctx = tmp.getContext("2d")!;
+                    tctx.drawImage(nextMasks[s], 0, 0, w, h);
+                    nextMasks[s] = tmp;
+                }
+            }
         });
-        paintMasksRef.current = next;
+        paintMasksRef.current = nextMasks;
+
+        // 一時キャンバス
+        if (!dabRef.current) dabRef.current = makeCanvas(w, h);
+        dabRef.current.width = w;
+        dabRef.current.height = h;
 
         redraw();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [image, order]);
 
-    // 色・強さ・マスクが変わったら再描画
+    // 色・強さ・マスクが変わったら再合成
     useEffect(() => {
         redraw();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [colorByStep, strengthByStep, faceClipMask, eyeHoleMask, activeStep]);
+    }, [colorByStep, strengthByStep, faceClipMask, eyeHoleMask, lipAllowMask, activeStep]);
 
-    // ===== 2D 合成（既存と同じ考え方） =====
+    // ===== 全ステップを 2D で合成 =====
     function redraw() {
         const out = displayRef.current;
-        const baseCv = baseCvRef.current;
+        const baseCv = baseRef.current;
         if (!out || !baseCv) return;
 
         const octx = out.getContext("2d")!;
         const w = out.width;
         const h = out.height;
 
+        // 0) クリア
         octx.clearRect(0, 0, w, h);
+
+        // 1) 元画像
         octx.globalCompositeOperation = "source-over";
         octx.globalAlpha = 1;
         octx.drawImage(baseCv, 0, 0);
 
-        // 各ステップを順番に重ねていく
-        order.forEach((step) => {
+        // 2) ステップ順にレイヤーを重ねる
+        for (const step of order) {
             const mask = paintMasksRef.current[step];
-            if (!mask) return;
+            if (!mask) continue;
 
-            const strength = strengthByStep[step];
-            if (strength <= 0) return;
-
+            const stepCfg = STEP_CONFIG[step];
             const color = colorByStep[step];
-            const cfg = STEP_CONFIG[step];
+            const strength = strengthByStep[step];
+            if (strength <= 0) continue;
 
-            // 単色塗り
-            const tint = document.createElement("canvas");
-            tint.width = w;
-            tint.height = h;
+            // ベタ塗りレイヤ
+            const tint = makeCanvas(w, h);
             const tctx = tint.getContext("2d")!;
             tctx.fillStyle = color;
             tctx.fillRect(0, 0, w, h);
 
-            const painted = document.createElement("canvas");
-            painted.width = w;
-            painted.height = h;
+            // マスク適用
+            const painted = makeCanvas(w, h);
             const pd = painted.getContext("2d")!;
 
             pd.globalCompositeOperation = "source-over";
-            pd.drawImage(tint, 0, 0); // 色
-            pd.globalCompositeOperation = "destination-in";
-            pd.drawImage(mask, 0, 0); // 手で塗ったところだけ
+            pd.drawImage(tint, 0, 0);
 
-            // 顔外クリップ
+            // ユーザーが塗った部分だけ残す
+            pd.globalCompositeOperation = "destination-in";
+            pd.drawImage(mask, 0, 0);
+
+            // 顔外カット
             if (faceClipMask) {
                 pd.globalCompositeOperation = "destination-in";
                 pd.drawImage(faceClipMask, 0, 0);
             }
-            // 目の中は常に抜く
+            // 目の中カット
             if (eyeHoleMask) {
                 pd.globalCompositeOperation = "destination-out";
                 pd.drawImage(eyeHoleMask, 0, 0);
             }
-            // リップ時のみ唇内に制限
+            // リップ時だけ唇に制限
             if (step === "lips" && lipAllowMask) {
                 pd.globalCompositeOperation = "destination-in";
                 pd.drawImage(lipAllowMask, 0, 0);
             }
 
-            // ベースにブレンド
-            octx.globalCompositeOperation = cfg.blend as GlobalCompositeOperation;
+            // 最終合成
+            octx.globalCompositeOperation = stepCfg.blend as GlobalCompositeOperation;
             octx.globalAlpha = strength;
             octx.drawImage(painted, 0, 0);
-            octx.globalAlpha = 1;
-            octx.globalCompositeOperation = "source-over";
-        });
-
-        // 親に「最新合成結果」を通知（WebGL ベース用）
-        if (onCompositeChange) {
-            onCompositeChange(out);
         }
+
+        octx.globalCompositeOperation = "source-over";
+        octx.globalAlpha = 1;
     }
 
-    // ===== 手描き（activeStep のマスクだけ更新） =====
-    function paintDot(x: number, y: number) {
+    // ===== 手描き（今のステップのマスクにだけ描画） =====
+    function paintStroke(x0: number, y0: number, x1: number, y1: number) {
         const mask = paintMasksRef.current[activeStep];
-        if (!mask) return;
+        const dab = dabRef.current;
+        if (!mask || !dab) return;
 
         const w = mask.width;
         const h = mask.height;
 
-        const dab = document.createElement("canvas");
-        dab.width = w;
-        dab.height = h;
         const dctx = dab.getContext("2d")!;
-        dctx.globalCompositeOperation = "source-over";
-        dctx.drawImage(stamp, x - brushRadius, y - brushRadius);
+        dctx.clearRect(0, 0, w, h);
 
+        // 1) ストローク
+        dctx.save();
+        dctx.globalCompositeOperation = "source-over";
+        dctx.strokeStyle = "rgba(255,255,255,1)";
+        dctx.lineCap = "round";
+        dctx.lineJoin = "round";
+        dctx.lineWidth = brushRadius * 2;
+        dctx.beginPath();
+        dctx.moveTo(x0, y0);
+        dctx.lineTo(x1, y1);
+        dctx.stroke();
+        dctx.restore();
+
+        // 2) 顔外をカット
         if (faceClipMask) {
             dctx.globalCompositeOperation = "destination-in";
             dctx.drawImage(faceClipMask, 0, 0);
         }
+        // 3) 目の中をカット
         if (eyeHoleMask) {
             dctx.globalCompositeOperation = "destination-out";
             dctx.drawImage(eyeHoleMask, 0, 0);
         }
+        // 4) リップなら唇内だけ
         if (activeStep === "lips" && lipAllowMask) {
             dctx.globalCompositeOperation = "destination-in";
             dctx.drawImage(lipAllowMask, 0, 0);
         }
 
-        const ctx = mask.getContext("2d")!;
-        ctx.globalCompositeOperation = mode === "erase" ? "destination-out" : "source-over";
-        ctx.drawImage(dab, 0, 0);
-
-        // ステップマスク変更を親に通知
-        if (onStepMaskChange) {
-            onStepMaskChange(activeStep, mask);
+        // 5) 本番マスクに反映
+        const mctx = mask.getContext("2d")!;
+        if (mode === "paint") {
+            // 塗る：白を足す
+            mctx.globalCompositeOperation = "source-over";
+            mctx.drawImage(dab, 0, 0);
+        } else {
+            // 消す：その部分をくり抜く
+            mctx.globalCompositeOperation = "destination-out";
+            mctx.drawImage(dab, 0, 0);
         }
 
         redraw();
     }
 
-    function paintLine(x0: number, y0: number, x1: number, y1: number) {
-        const steps = Math.max(1, Math.floor(Math.hypot(x1 - x0, y1 - y0) / 4));
-        for (let i = 0; i <= steps; i++) {
-            const t = i / steps;
-            const x = x0 + (x1 - x0) * t;
-            const y = y0 + (y1 - y0) * t;
-            paintDot(x, y);
-        }
-    }
-
+    // ===== ポインタ座標変換 =====
     function toLocal(e: React.PointerEvent<HTMLCanvasElement>) {
         const cv = displayRef.current!;
         const rect = cv.getBoundingClientRect();
@@ -229,13 +242,15 @@ export default function PracticeCanvas(props: Props) {
 
     function onPointerDown(e: React.PointerEvent<HTMLCanvasElement>) {
         e.preventDefault();
+        if (!displayRef.current) return;
         const { x, y } = toLocal(e);
         setIsDown(true);
         lastPt.current = { x, y };
-        paintDot(x, y);
+        paintStroke(x, y, x, y); // ドット
     }
+
     function onPointerMove(e: React.PointerEvent<HTMLCanvasElement>) {
-        if (!isDown) return;
+        if (!isDown || !displayRef.current) return;
         e.preventDefault();
         const { x, y } = toLocal(e);
         const last = lastPt.current;
@@ -243,23 +258,21 @@ export default function PracticeCanvas(props: Props) {
             lastPt.current = { x, y };
             return;
         }
-        paintLine(last.x, last.y, x, y);
+        paintStroke(last.x, last.y, x, y);
         lastPt.current = { x, y };
     }
+
     function onPointerUp() {
         setIsDown(false);
         lastPt.current = null;
     }
 
+    // 今のステップだけクリア
     function clearCurrentStep() {
         const mask = paintMasksRef.current[activeStep];
         if (!mask) return;
         const ctx = mask.getContext("2d")!;
         ctx.clearRect(0, 0, mask.width, mask.height);
-
-        if (onStepMaskChange) {
-            onStepMaskChange(activeStep, mask);
-        }
         redraw();
     }
 
@@ -272,8 +285,17 @@ export default function PracticeCanvas(props: Props) {
                 onPointerMove={onPointerMove}
                 onPointerUp={onPointerUp}
                 onPointerLeave={onPointerUp}
+                style={{
+                    width: "100%",
+                    height: "auto",
+                    touchAction: "none",
+                    border: "1px solid #ddd",
+                    background: "#000",
+                    display: "block",
+                }}
             />
 
+            {/* ガイド線（必要なら） */}
             {guidePathD && (
                 <svg
                     width="100%"
