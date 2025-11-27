@@ -14,8 +14,11 @@ export default function CosmeticsBlock({ title, items }: { title: string; items:
                         gap: 12,
                     }}
                 >
-                    {items.map((item) => (
-                        <figure key={item.id} style={{ border: "1px solid #ddd", padding: 8 }}>
+                    {items.map((item, idx) => (
+                        <figure
+                            key={item.id ?? `${item.productName}-${idx}`}
+                            style={{ border: "1px solid #ddd", padding: 8 }}
+                        >
                             <h3>{item.productName}</h3>
                             <p style={{ fontSize: 12, color: "#666" }}>{item.brand}</p>
                             <p style={{ fontSize: 12 }}>{item.price}</p>
