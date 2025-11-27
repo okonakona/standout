@@ -1,6 +1,7 @@
 // src/components/editor/PracticeCanvas.tsx
 import React, { useEffect, useRef, useState } from "react";
 import { STEP_CONFIG, Step } from "@/types/steps";
+import { getFillStyleP3OrHex } from "@/utils/color";
 import "@/styles/editor/practiceCanvas.css";
 
 type Props = {
@@ -135,7 +136,7 @@ export default function PracticeCanvas({
             // ベタ塗りレイヤ
             const tint = makeCanvas(w, h);
             const tctx = tint.getContext("2d")!;
-            tctx.fillStyle = color;
+            tctx.fillStyle = getFillStyleP3OrHex(color);
             tctx.fillRect(0, 0, w, h);
 
             // マスク適用
