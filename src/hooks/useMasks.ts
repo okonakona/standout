@@ -3,10 +3,29 @@ import { useEffect, useState } from "react";
 import { createSession } from "@/lib/onnxRuntime";
 import * as ort from "onnxruntime-web";
 
+export type FaceBox = {
+    x: number; // 左上X
+    y: number; // 左上Y
+    w: number; // 幅
+    h: number; // 高さ
+};
+
+// 顔の代表パーツ位置
+export type FaceRegions = {
+    face: FaceBox | null; // 顔全体（skin + 目鼻口 などの union）
+    browL: FaceBox | null;
+    browR: FaceBox | null;
+    eyeL: FaceBox | null;
+    eyeR: FaceBox | null;
+    nose: FaceBox | null;
+    mouth: FaceBox | null; // 口〜唇
+};
+
 // 返すマスク
 export type MasksOut = {
     faceClipMask: HTMLCanvasElement | null; // 顔外NG（白=顔、透明=外）
     lipAllowMask: HTMLCanvasElement | null; // リップ時のみOK（白=唇、透明=それ以外）
+    regions: FaceRegions | null; // ★ 各パーツの位置
 };
 
 const MODEL_URL = "/models/face_parsing_256.onnx";
@@ -229,6 +248,66 @@ function maskFromClasses(
     return cv;
 }
 
+// クラスID配列から「指定ID群が出ている最小の矩形」を求める
+function boxFromClasses(
+    cls: Uint8ClampedArray,
+    w: number,
+    h: number,
+    allowIds: number[]
+): FaceBox | null {
+    let minX = w,
+        minY = h;
+    let maxX = -1,
+        maxY = -1;
+
+    for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+            const i = y * w + x;
+            if (!allowIds.includes(cls[i])) continue;
+            if (x < minX) minX = x;
+            if (y < minY) minY = y;
+            if (x > maxX) maxX = x;
+            if (y > maxY) maxY = y;
+        }
+    }
+
+    if (maxX < 0 || maxY < 0) return null;
+
+    return {
+        x: minX,
+        y: minY,
+        w: maxX - minX + 1,
+        h: maxY - minY + 1,
+    };
+}
+
+// 複数の矩形を union する
+function unionBoxes(boxes: (FaceBox | null)[]): FaceBox | null {
+    let minX = Infinity,
+        minY = Infinity,
+        maxX = -Infinity,
+        maxY = -Infinity;
+
+    for (const b of boxes) {
+        if (!b) continue;
+        if (b.x < minX) minX = b.x;
+        if (b.y < minY) minY = b.y;
+        if (b.x + b.w > maxX) maxX = b.x + b.w;
+        if (b.y + b.h > maxY) maxY = b.y + b.h;
+    }
+
+    if (!isFinite(minX) || !isFinite(minY) || !isFinite(maxX) || !isFinite(maxY)) {
+        return null;
+    }
+
+    return {
+        x: minX,
+        y: minY,
+        w: maxX - minX,
+        h: maxY - minY,
+    };
+}
+
 export function useMasks(img: HTMLImageElement | null) {
     const [masks, setMasks] = useState<MasksOut | null>(null);
     const [loading, setLoading] = useState(false);
@@ -271,8 +350,9 @@ export function useMasks(img: HTMLImageElement | null) {
                 const w = img.naturalWidth || img.width;
                 const h = img.naturalHeight || img.height;
 
-                // 2) マスク生成
-                // 顔クリップ：肌/眉/目/鼻/口/唇 を union（髭・髪は含めない）
+                // 2) マスク生成 ------------------------------
+
+                // 顔クリップ：肌/眉/目/鼻/口/唇/首まわり
                 const faceIds = [
                     CLS.skin,
                     CLS.lBrow,
@@ -284,28 +364,49 @@ export function useMasks(img: HTMLImageElement | null) {
                     CLS.mouth,
                     CLS.uLip,
                     CLS.iLip,
-                    CLS.neck, // 追加
-                    CLS.neck2, // 追加
-                    // cloth は必要なら追加（タートルネックまで塗れる感じ）
-                    // CLS.cloth,
+                    CLS.neck,
+                    CLS.neck2,
                 ];
                 const faceClipMaskRaw = maskFromClasses(clsMap, w, h, faceIds);
                 const faceClipMask = featherBinary(faceClipMaskRaw, 1.2);
 
-                // 目の穴：目カテゴリの union（白=禁止領域）
-                const eyeHoleMaskRaw = maskFromClasses(clsMap, w, h, [
-                    CLS.lEye,
-                    CLS.rEye,
-                    CLS.eyeG,
-                ]);
-                const eyeHoleMask = featherBinary(eyeHoleMaskRaw, 0.8);
-
                 // 唇のみOK（リップ時に destination-in）
-                const lipAllowMaskRaw = maskFromClasses(clsMap, w, h, [CLS.uLip, CLS.iLip]);
+                const lipAllowMaskRaw = maskFromClasses(clsMap, w, h, [
+                    CLS.uLip,
+                    CLS.iLip,
+                    CLS.mouth,
+                ]);
                 const lipAllowMask = featherBinary(lipAllowMaskRaw, 0.8);
 
+                // ★ 3) パーツ位置（矩形） --------------------
+
+                const browLBox = boxFromClasses(clsMap, w, h, [CLS.lBrow]);
+                const browRBox = boxFromClasses(clsMap, w, h, [CLS.rBrow]);
+                const eyeLBox = boxFromClasses(clsMap, w, h, [CLS.lEye]);
+                const eyeRBox = boxFromClasses(clsMap, w, h, [CLS.rEye]);
+                const noseBox = boxFromClasses(clsMap, w, h, [CLS.nose]);
+                const mouthBox = boxFromClasses(clsMap, w, h, [CLS.mouth, CLS.uLip, CLS.iLip]);
+
+                // 顔全体 = 上で使った faceIds の union
+                const faceBox = boxFromClasses(clsMap, w, h, faceIds);
+
+                const regions: FaceRegions = {
+                    face: faceBox,
+                    browL: browLBox,
+                    browR: browRBox,
+                    eyeL: eyeLBox,
+                    eyeR: eyeRBox,
+                    nose: noseBox,
+                    mouth: mouthBox,
+                };
+
+                // 4) state へ反映
                 if (!cancelled) {
-                    setMasks({ faceClipMask, lipAllowMask });
+                    setMasks({
+                        faceClipMask,
+                        lipAllowMask,
+                        regions,
+                    });
                 }
             } catch (e: any) {
                 console.warn("[useMasks] Face parsing failed; fallback free-paint:", e);
@@ -323,9 +424,10 @@ export function useMasks(img: HTMLImageElement | null) {
                         setMasks({
                             faceClipMask: faceCanvas,
                             lipAllowMask: null,
+                            regions: null,
                         });
                     } catch {
-                        setMasks({ faceClipMask: null, lipAllowMask: null });
+                        setMasks({ faceClipMask: null, lipAllowMask: null, regions: null });
                     }
                 }
             } finally {
