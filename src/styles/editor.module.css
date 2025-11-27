@@ -4,37 +4,52 @@
     gap: 16px;
     padding: 24px;
 }
+
 .canvasArea {
     position: relative;
     max-width: 720px;
 }
+
 .sidePanel {
     display: grid;
     gap: 12px;
     align-content: start;
 }
+
 .tools {
     display: grid;
     gap: 10px;
     border-top: 1px solid #ddd;
     padding-top: 12px;
 }
+
 .toolRow {
     display: flex;
     gap: 8px;
     align-items: center;
     flex-wrap: wrap;
 }
+
 .buttons {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
 }
+
 .nav {
     display: flex;
     gap: 12px;
     align-items: center;
 }
+
+.colorChip {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
 .note {
     font-size: 12px;
     color: #666;
