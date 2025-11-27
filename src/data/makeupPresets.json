@@ -1,0 +1,151 @@
+{
+    "primer": [
+        { "id": "primer-01", "label": "ソフトベージュ", "hex": "#F7F5F2" },
+        { "id": "primer-02", "label": "ミルキーベージュ", "hex": "#F3EFEA" },
+        { "id": "primer-03", "label": "ヌードベージュ", "hex": "#EDE8E1" },
+        { "id": "primer-04", "label": "ピンクベージュ", "hex": "#FFEDE8" },
+        { "id": "primer-05", "label": "血色ピンク", "hex": "#FFE3E3" },
+        { "id": "primer-06", "label": "コーラルピンク", "hex": "#FFF3E8" },
+        { "id": "primer-07", "label": "ブルーベース補正", "hex": "#F0F6FF" },
+        { "id": "primer-08", "label": "くすみカバー", "hex": "#E8F3FF" },
+        { "id": "primer-09", "label": "透明感ラベンダー", "hex": "#F2F7FF" },
+        { "id": "primer-10", "label": "血色アップ", "hex": "#FFEFFF" },
+        { "id": "primer-11", "label": "黄ぐすみ補正", "hex": "#FDF7FA" },
+        { "id": "primer-12", "label": "ニュートラル", "hex": "#E7E0D8" }
+    ],
+
+    "foundation": [
+        { "id": "foundation-01", "label": "明るいオークル", "hex": "#F6EDE3" },
+        { "id": "foundation-02", "label": "標準オークル", "hex": "#F3E7D8" },
+        { "id": "foundation-03", "label": "ヘルシーオークル", "hex": "#EFDCC7" },
+        { "id": "foundation-04", "label": "ライトベージュ", "hex": "#E4CBB2" },
+        { "id": "foundation-05", "label": "ミディアムベージュ", "hex": "#D8B89E" },
+        { "id": "foundation-06", "label": "ディープベージュ", "hex": "#CFAF90" },
+        { "id": "foundation-07", "label": "ソフトブラウン", "hex": "#C49C7E" },
+        { "id": "foundation-08", "label": "ヘルシーブラウン", "hex": "#B78668" },
+        { "id": "foundation-09", "label": "ディープブラウン", "hex": "#AA7558" },
+        { "id": "foundation-10", "label": "赤み寄りブラウン", "hex": "#9A6247" },
+        { "id": "foundation-11", "label": "黄み寄りブラウン", "hex": "#8C533C" },
+        { "id": "foundation-12", "label": "コントラスト用ダーク", "hex": "#7A4633" }
+    ],
+
+    "concealer": [
+        { "id": "concealer-01", "label": "ハイライト用ライト", "hex": "#FCEEE4" },
+        { "id": "concealer-02", "label": "標準カバー", "hex": "#FAE6D3" },
+        { "id": "concealer-03", "label": "クマ用ピーチ", "hex": "#F8DFC4" },
+        { "id": "concealer-04", "label": "赤みカバー", "hex": "#EFD4B5" },
+        { "id": "concealer-05", "label": "ニキビ跡カバー", "hex": "#F4E0D0" },
+        { "id": "concealer-06", "label": "色ムラ補正", "hex": "#D8C1A0" },
+        { "id": "concealer-07", "label": "濃いシミ用", "hex": "#C7A98A" },
+        { "id": "concealer-08", "label": "青ヒゲ用オレンジ", "hex": "#B89478" },
+        { "id": "concealer-09", "label": "赤み消しグリーン", "hex": "#E6FFCC" },
+        { "id": "concealer-10", "label": "くすみ飛ばしピンク", "hex": "#FFD9D9" },
+        { "id": "concealer-11", "label": "黄ぐすみ補正イエロー", "hex": "#FFE7CC" },
+        { "id": "concealer-12", "label": "クマ用ブルーグレー", "hex": "#CCF0FF" }
+    ],
+
+    "powder": [
+        { "id": "powder-01", "label": "トランスルーセント", "hex": "#FFFFFF" },
+        { "id": "powder-02", "label": "セミマット", "hex": "#FAF7F2" },
+        { "id": "powder-03", "label": "ソフトマット", "hex": "#F3EEE8" },
+        { "id": "powder-04", "label": "ルーセントベージュ", "hex": "#EAE3DA" },
+        { "id": "powder-05", "label": "ヘルシーベージュ", "hex": "#E1D8CF" },
+        { "id": "powder-06", "label": "シェーディング馴染ませ", "hex": "#D8CDC4" },
+        { "id": "powder-07", "label": "血色アップピンク", "hex": "#FCEDE2" },
+        { "id": "powder-08", "label": "透明感ラベンダー", "hex": "#F6E8F9" },
+        { "id": "powder-09", "label": "トーンアップブルー", "hex": "#E3F1FF" },
+        { "id": "powder-10", "label": "色ムラ補正ミント", "hex": "#F2FFED" },
+        { "id": "powder-11", "label": "オイルコントロール", "hex": "#FFF7E6" },
+        { "id": "powder-12", "label": "ハイライトフィニッシュ", "hex": "#FFF0F7" }
+    ],
+
+    "highlight": [
+        { "id": "highlight-01", "label": "シャンパンベージュ", "hex": "#FFF8E8" },
+        { "id": "highlight-02", "label": "ゴールドパール", "hex": "#FFF3D7" },
+        { "id": "highlight-03", "label": "ウォームベージュ", "hex": "#FFEFD0" },
+        { "id": "highlight-04", "label": "コーラルゴールド", "hex": "#FFE8C0" },
+        { "id": "highlight-05", "label": "ピンクベージュ", "hex": "#FFF2F8" },
+        { "id": "highlight-06", "label": "ローズパール", "hex": "#FFEFEF" },
+        { "id": "highlight-07", "label": "ラベンダーパール", "hex": "#FDF0FF" },
+        { "id": "highlight-08", "label": "オーロラホワイト", "hex": "#EFFFFF" },
+        { "id": "highlight-09", "label": "ブルーパール", "hex": "#E5F6FF" },
+        { "id": "highlight-10", "label": "ヌードグロウ", "hex": "#F8FFF0" },
+        { "id": "highlight-11", "label": "シアーグロウ", "hex": "#F0FFF8" },
+        { "id": "highlight-12", "label": "ソフトフォーカス", "hex": "#F3F0EB" }
+    ],
+
+    "cheek": [
+        { "id": "cheek-01", "label": "ニュートラルピンク", "hex": "#FFD6D6" },
+        { "id": "cheek-02", "label": "ソフトピンク", "hex": "#FFC4C4" },
+        { "id": "cheek-03", "label": "ローズピンク", "hex": "#FFB3B3" },
+        { "id": "cheek-04", "label": "ディープローズ", "hex": "#FFA0A0" },
+        { "id": "cheek-05", "label": "コーラルピンク", "hex": "#FFB8C8" },
+        { "id": "cheek-06", "label": "アプリコット", "hex": "#FFAD87" },
+        { "id": "cheek-07", "label": "コーラルオレンジ", "hex": "#FF9B72" },
+        { "id": "cheek-08", "label": "ヘルシーオレンジ", "hex": "#FF8860" },
+        { "id": "cheek-09", "label": "モーブピンク", "hex": "#FF8DAA" },
+        { "id": "cheek-10", "label": "プラムローズ", "hex": "#FF7A95" },
+        { "id": "cheek-11", "label": "ヌードベージュ", "hex": "#FFCEB3" },
+        { "id": "cheek-12", "label": "くすみローズ", "hex": "#EFA4A4" }
+    ],
+
+    "contour": [
+        { "id": "contour-01", "label": "ソフトシェード", "hex": "#E0D6C7" },
+        { "id": "contour-02", "label": "ニュートラルシェード", "hex": "#D1C4B2" },
+        { "id": "contour-03", "label": "ウォームシェード", "hex": "#C1B29E" },
+        { "id": "contour-04", "label": "クールシェード", "hex": "#B29E87" },
+        { "id": "contour-05", "label": "フェイスライン用", "hex": "#A48D77" },
+        { "id": "contour-06", "label": "鼻筋用", "hex": "#937B65" },
+        { "id": "contour-07", "label": "ディープコントゥア", "hex": "#826A54" },
+        { "id": "contour-08", "label": "ヘルシーブロンズ", "hex": "#715A46" },
+        { "id": "contour-09", "label": "ブロンズ", "hex": "#604B39" },
+        { "id": "contour-10", "label": "ディープブロンズ", "hex": "#50402F" },
+        { "id": "contour-11", "label": "影色オリーブ", "hex": "#443628" },
+        { "id": "contour-12", "label": "赤み抑えシェード", "hex": "#382E22" }
+    ],
+
+    "brows": [
+        { "id": "brows-01", "label": "ブラックブラウン", "hex": "#3B3028" },
+        { "id": "brows-02", "label": "ディープブラウン", "hex": "#4A3A30" },
+        { "id": "brows-03", "label": "ニュートラルブラウン", "hex": "#594439" },
+        { "id": "brows-04", "label": "ウォームブラウン", "hex": "#685044" },
+        { "id": "brows-05", "label": "アッシュブラウン", "hex": "#786152" },
+        { "id": "brows-06", "label": "モカブラウン", "hex": "#8B735F" },
+        { "id": "brows-07", "label": "ライトブラウン", "hex": "#9C846C" },
+        { "id": "brows-08", "label": "イエローブラウン", "hex": "#AA9378" },
+        { "id": "brows-09", "label": "オリーブブラウン", "hex": "#C1AC8F" },
+        { "id": "brows-10", "label": "グレージュ", "hex": "#D2BEA3" },
+        { "id": "brows-11", "label": "ソフトグレージュ", "hex": "#E3D2BB" },
+        { "id": "brows-12", "label": "ブロンド寄り", "hex": "#F0E2CE" }
+    ],
+
+    "shadow": [
+        { "id": "shadow-01", "label": "ベージュ", "hex": "#CFC2B8" },
+        { "id": "shadow-02", "label": "ピンクベージュ", "hex": "#B8A89E" },
+        { "id": "shadow-03", "label": "モーヴベージュ", "hex": "#A89889" },
+        { "id": "shadow-04", "label": "ウォームブラウン", "hex": "#907F6F" },
+        { "id": "shadow-05", "label": "ミディアムブラウン", "hex": "#806F60" },
+        { "id": "shadow-06", "label": "ディープブラウン", "hex": "#6F6052" },
+        { "id": "shadow-07", "label": "ローズモーヴ", "hex": "#D9C8D9" },
+        { "id": "shadow-08", "label": "プラムモーヴ", "hex": "#C2B0C2" },
+        { "id": "shadow-09", "label": "スモーキーモーヴ", "hex": "#A18FA1" },
+        { "id": "shadow-10", "label": "グレイッシュモーヴ", "hex": "#8F7D8F" },
+        { "id": "shadow-11", "label": "コーラルブラウン", "hex": "#F7D7C7" },
+        { "id": "shadow-12", "label": "テラコッタブラウン", "hex": "#E8C4B2" }
+    ],
+
+    "lips": [
+        { "id": "lips-01", "label": "ナチュラルピンク", "hex": "#F8D2D2" },
+        { "id": "lips-02", "label": "ミルキーローズ", "hex": "#F5BDBD" },
+        { "id": "lips-03", "label": "ローズピンク", "hex": "#F2A6A6" },
+        { "id": "lips-04", "label": "ディープローズ", "hex": "#EF8F8F" },
+        { "id": "lips-05", "label": "コーラルピンク", "hex": "#EC7777" },
+        { "id": "lips-06", "label": "コーラルレッド", "hex": "#E95E5E" },
+        { "id": "lips-07", "label": "トマトレッド", "hex": "#D94C4C" },
+        { "id": "lips-08", "label": "クラシックレッド", "hex": "#C63F3F" },
+        { "id": "lips-09", "label": "ディープレッド", "hex": "#B33636" },
+        { "id": "lips-10", "label": "ブラウンレッド", "hex": "#9E2F2F" },
+        { "id": "lips-11", "label": "ベリーレッド", "hex": "#8A2929" },
+        { "id": "lips-12", "label": "プラムレッド", "hex": "#762424" }
+    ]
+}

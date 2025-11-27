@@ -1,0 +1,1198 @@
+[
+  {
+    "brand": "ニベア(NIVEA)",
+    "category": "lip",
+    "colorList": [
+      "シアーレッド",
+      "フレンチピンク",
+      "スモーキーローズ",
+      "ボルドー",
+      "ラズベリーピンク",
+      "コーラルレッド",
+      "ルビーレッド",
+      "チェリーブラウン",
+      "カメリアピンク",
+      "グロッシーベージュ"
+    ],
+    "genre": "affordable",
+    "price": "770円",
+    "productName": "ニベア リッチケア＆カラーリップ",
+    "size": "2g"
+  },
+  {
+    "brand": "Dior(ディオール)",
+    "category": "lip",
+    "colorList": [
+      "100 フォーエヴァー ヌード",
+      "200 フォーエヴァー ドリーム",
+      "458 フォーエヴァー パリ",
+      "558 フォーエヴァー グレース",
+      "626 フォーエヴァー フェイマス",
+      "741 フォーエヴァー スター",
+      "760 フォーエヴァー グラム",
+      "820 フォーエヴァー ユニーク",
+      "959 フォーエヴァー ボールド",
+      "999 フォーエヴァー ディオール",
+      "943 フォーエヴァー ショック",
+      "300 フォーエヴァー ヌード スタイル",
+      "637 フォーエヴァー サブライム",
+      "720 フォーエヴァー アイコン",
+      "840 フォーエヴァー ラディアント",
+      "861 フォーエヴァー チャーム",
+      "400 フォーエヴァー ヌード ライン"
+    ],
+    "genre": "brand",
+    "price": "5,940円",
+    "productName": "ルージュ ディオール フォーエヴァー リキッド",
+    "size": ""
+  },
+  {
+    "brand": "KATE(ケイト)",
+    "category": "lip",
+    "colorList": [
+      "02 ナチュラル血色感",
+      "04 にじみ血色感",
+      "06 ヘルシー血色感",
+      "07 シアー血色感",
+      "08 じんわり血色感",
+      "09 クリア血色感",
+      "05 クリア血色感"
+    ],
+    "genre": "affordable",
+    "price": "550円",
+    "productName": "パーソナルリップクリーム",
+    "size": ""
+  },
+  {
+    "brand": "THE FUTURE(ザフューチャー)",
+    "category": "lip",
+    "colorList": [
+      "パーソナルリップカラー",
+      "ニュアンスレッド",
+      "カラーレス"
+    ],
+    "genre": "cool",
+    "price": "1,980円",
+    "productName": "リップケアクリーム\nリップケアクリーム",
+    "size": "1.5g"
+  },
+  {
+    "brand": "KATE(ケイト)",
+    "category": "lip",
+    "colorList": [
+      "01 欲望の塊",
+      "02 ピンクバナナ",
+      "03 陽炎",
+      "04 パンプキンワイン",
+      "05 ダークフィグ",
+      "06 2:00AM",
+      "07 ラスボス",
+      "08 モーブシャワー (web限定色)",
+      "09 水晶玉のマダム (web限定色)",
+      "10 地底探索 (web限定色)",
+      "11 5:00AM (web限定色)",
+      "12 誓いのルビー",
+      "13 3:00AMの微酔",
+      "14 憧れの日光浴",
+      "15 綿雲33000ft",
+      "16 100億haの砂海",
+      "17 神秘のローズ園",
+      "112 真夜中の褒美(限定色)",
+      "EX-1 真夜中の収穫祭（ミニ）＜数量限定発売＞",
+      "EX-2 ホーンテッドミラールーム（ミニ）＜数量限定発売＞",
+      "EX-3 舞踏会の主役（ミニ）＜数量限定発売＞",
+      "EX-4 マジカルミッドナイトショー（ミニ）＜数量限定発売＞",
+      "EX-11 紅煙宿る贈り物(限定色)",
+      "EX-12 盗まれた1224mの星光(限定色)",
+      "EX-9 戦慄の喜笑(限定色)",
+      "EX-10 狂気の怒号(限定色)",
+      "03 陽炎(ミニ) ＜数量限定発売＞",
+      "05 ダークフィグ(ミニ)＜数量限定発売＞",
+      "103 秘めた炎(限定色)",
+      "104 桜色のひと時(限定色)",
+      "101 1/365の日の出(限定色)",
+      "102 甘い主役(限定色)",
+      "105 日没後の情熱(限定色)",
+      "106 夜雲の涙(限定色)",
+      "107 紅折り紙の願い(限定色)",
+      "108 レッドバケーション(限定色)",
+      "109 6:59PM(限定色)",
+      "EX-1 焦がした茶葉の余韻(限定色)",
+      "EX-2 501年熟成ワイン煮(限定色)",
+      "EX-3 生焼けパンケーキ(限定色)",
+      "EX-4 ピンクバナナホイップ(限定色)",
+      "EX-5 ヴァンパイアフラッペ(限定色)",
+      "110 闇夜のファンファーレ(限定色)",
+      "111 茜の静寂(限定色)",
+      "EX-6 ロケット花火流星群(限定色)",
+      "EX-7 100万発の線香花火(限定色)",
+      "EX-8 打ち上げ花火ブランコ(限定色)"
+    ],
+    "genre": "cool",
+    "price": "1,540円",
+    "productName": "ケイト リップモンスター",
+    "size": "3g"
+  },
+  {
+    "brand": "AMUSE",
+    "category": "lip",
+    "colorList": [
+      "01 モモジェリー",
+      "02 ヘルシーサーモン",
+      "03 ヌーディーピンク",
+      "04 ローズミルク",
+      "05 ベージュフィグ",
+      "06 ソウルガール",
+      "07 キャラメル",
+      "08 ゴージャスモーヴ",
+      "09 ナルシシズム",
+      "10 フィグジャム",
+      "11 バニバニ",
+      "12 クールダイブ",
+      "桜ジェリー",
+      "パンプキンジェリー",
+      "東京チェリー",
+      "東京プラム",
+      "05 ベージュフィグ（限定）",
+      "06 ソウルガール（限定）",
+      "09 ピーチココ（限定）",
+      "10 ローズクォーツ（限定）",
+      "桜ジェリー（ミニ）",
+      "パンプキンジェリー（ミニ）",
+      "東京チェリー（ミニ）",
+      "03 ヌーディーピンク（ミニ）",
+      "東京ガール",
+      "ピンクモモ（ミニ）",
+      "ピンクもも",
+      "モモジェリー（ミニ）",
+      "06 ソウルガール（ミニ）",
+      "05 ベージュフィグ（ミニ）",
+      "11 ローズクォーツ"
+    ],
+    "genre": "simple",
+    "price": "1,650円",
+    "productName": "ジェルフィットティント",
+    "size": "3.8g"
+  },
+  {
+    "brand": "Laka(ラカ)",
+    "category": "lip",
+    "colorList": [
+      "201 ミロ",
+      "202 ボーイ",
+      "203 マーク",
+      "204 ハヴ",
+      "205 マルド",
+      "206 リリー",
+      "207 デプス",
+      "208 ポッシュ",
+      "209 ニアー",
+      "210 ハリー",
+      "211  イヴ",
+      "212 パパイア",
+      "213 ジェフ",
+      "214 ミンゴ",
+      "215 レナ",
+      "216 ウィンター",
+      "＃217　Babe ベイブ",
+      "＃218　Raw ロウ",
+      "＃219　Fairy フェアリー",
+      "＃220　Cave ケイヴ"
+    ],
+    "genre": "simple",
+    "price": "2,090円",
+    "productName": "ボンディンググロウリップスティック",
+    "size": "3.7g"
+  },
+  {
+    "brand": "YVES SAINT LAURENT BEAUTE(イヴサンローランボーテ)",
+    "category": "eyeshadow",
+    "colorList": [
+      "#100 ストラ ドールズ",
+      "#200 ギリーズ ドリーム",
+      "#300 カスバ スパイシーズ",
+      "#400 バビロン ローズ",
+      "#500 メディナ グロウ",
+      "#600 スポンティーニ リリー",
+      "#700​  オーバー ブラン",
+      "#710​ オーバー ブラン​",
+      "#800 オーバー ドゥレ​",
+      "#810 オーバー オランジュ​",
+      "No.720 キャプティベイティング デューンズ",
+      "No.730 サンライズ サファリ",
+      "No.820 マジェスティック リヤド",
+      "No.830 アンエクスプロード ガーデン",
+      "No.825 バーニング デザイア＜コレクター＞",
+      "No.025 ゴールデン ラスト＜コレクター＞",
+      "No.024 ゴールデンレース＜コレクター＞",
+      "No.100 ストラ ドールズ＜コレクター＞",
+      "NO.125 ブルーミング ラスト＜コレクター＞"
+    ],
+    "genre": "brand",
+    "price": "10,890円",
+    "productName": "クチュール ミニ クラッチ",
+    "size": ""
+  },
+  {
+    "brand": "キャンメイク(CANMAKE)",
+    "category": "eyeshadow",
+    "colorList": [
+      "03 アンティークテラコッタ",
+      "05 アーモンドモカ",
+      "08 スリーズショコラ",
+      "09 ロゼパンナコッタ",
+      "02 アーバンキャメル",
+      "04 クラシックピンク",
+      "07 ウィークエンドオランジュ",
+      "01 ローズブラウン",
+      "06 ロマンスベージュ"
+    ],
+    "genre": "affordable",
+    "price": "858円",
+    "productName": "パーフェクトマルチアイズ",
+    "size": ""
+  },
+  {
+    "brand": "KATE(ケイト)",
+    "category": "eyeshadow",
+    "colorList": [
+      "BE-1 シナモンポップ",
+      "BR-1 グレージュポップ",
+      "EX-4 コットンブルーポップ(限定)",
+      "EX-5 コットンピンクポップ(限定)",
+      "MV-1 モーヴポップ",
+      "OR-1 アプリコットポップ",
+      "OR-2 コーラルロゼポップ",
+      "PK-1 ラズベリーロゼポップ",
+      "RD-1 ロージーポップ",
+      "EX-1 ブラッドオレンジポップ(限定)",
+      "EX-2 ホットレッドポップ(限定)",
+      "EX-3 ウォームベリーポップ(限定)"
+    ],
+    "genre": "cool",
+    "price": "1,540円",
+    "productName": "ケイト ポッピングシルエットシャドウ",
+    "size": "3.6g"
+  },
+  {
+    "brand": "&nd by rom&nd(アンドバイロムアンド)",
+    "category": "eyeshadow",
+    "colorList": [
+      "BR01 ソフトブラウン",
+      "BR02 アップルシナモン",
+      "INAP01 インアピンク",
+      "INAP02 ブラウンスクエア",
+      "PK01 ローズフォグ"
+    ],
+    "genre": "simple",
+    "price": "1,350円",
+    "productName": "アンドバイロムアンド　メロウアイパレット",
+    "size": ""
+  },
+  {
+    "brand": "CLIO(クリオ)",
+    "category": "eyeshadow",
+    "colorList": [
+      "01 ポータブルベージュ(PORTABLE BEIGE)",
+      "02 ローズクローザー(ROSE CLOSER)",
+      "03 モーブオーセンティック(MAUVE AUTHENTIC)",
+      "04 ヌードフライ(NUDE FLY)",
+      "05 ピオニーセント(PEONY SCENT)",
+      "100 ピーチブリス(PEACH BLISS)"
+    ],
+    "genre": "cool",
+    "price": "1,980円",
+    "productName": "エッセンシャル シャドウ タップ",
+    "size": "1.5g"
+  },
+  {
+    "brand": "CLIO(クリオ)",
+    "category": "eyeshadow",
+    "colorList": [
+      "01 コーラルスタジオ(CORAL STUDIO)",
+      "02 ローズコネクト(ROSE CONNECT)",
+      "03 ミュートライブラリー(MUTE LIBRARY)",
+      "04 ピンクペアリング(PINK PAIRING)",
+      "05 オーキッドクラウド(ORCHID CLOUD)",
+      "06 ニュートラルスパークル(NEUTRAL SPARKLE)",
+      "07 ラベンダースタッフ(LAVENDER STAFF)",
+      "08 ラテシニア(LATTE SENIOR)",
+      "09 ピーチメイトアップル(PEACH MATE APPLE)",
+      "10 シーズンプラム(SEASON PLUM)",
+      "11 ショッピング チーズ(SHOPPING CHEESE)",
+      "12 クリスタル ポー(CRYSTAL PAW)",
+      "13 ダンシング スモーキー(DANCING SMOKEY)",
+      "14 フォーエバー モーブ(FOREVER MAUVE)",
+      "15 タンニング ブラウン(TANNING BROWN)",
+      "19 インディペンデント ボー・ピープ(INDEPENDENT BO PEEP)",
+      "100 グリッターシャワー(GLITTER SHOWER)",
+      "101 ローズダイアリー(ROSE DIARY)",
+      "102 ミュートアーカイブ(MUTE ARCHIVE)",
+      "103 バニラヘイズ(VANILLA HAZE)",
+      "104 GHR ピンク(GYEONGHOERU FLOWER FESTIVAL)",
+      "105 DSG バイオレット(DEOKSUGUNG STONE WALL ROAD)",
+      "106 DBG コーラル(GYEONGBOKGUNG STROLL)",
+      "107 エナジェティック ジェシー(ENERGETIC JESSIE)",
+      "108 キャラメル ハグ",
+      "109 ピーチ ビハインド",
+      "110 ピオニー ドリーム"
+    ],
+    "genre": "simple",
+    "price": "3,960円",
+    "productName": "プロ アイ パレット エアー",
+    "size": "0.6g×12"
+  },
+  {
+    "brand": "CHANEL(シャネル)",
+    "category": "eyebrow",
+    "colorList": [
+      "204 グレイ",
+      "206 ディープ ブラウン",
+      "208 ブラック"
+    ],
+    "genre": "brand",
+    "price": "5,500円",
+    "productName": "ボーイ ドゥ シャネル アイブロウ ペンシル",
+    "size": "0.27g"
+  },
+  {
+    "brand": "ETUDE(エチュード)",
+    "category": "eyebrow",
+    "colorList": [
+      "グレー",
+      "ダークグレー",
+      "ブラウン",
+      "グレーブラウン",
+      "ダークブラウン",
+      "ブラック",
+      "ライトブラウン",
+      "アッシュブラウン"
+    ],
+    "genre": "affordable",
+    "price": "352円",
+    "productName": "ドローイング アイブロウ ペンシル",
+    "size": "0.25g"
+  },
+  {
+    "brand": "CEZANNE(セザンヌ)",
+    "category": "eyebrow",
+    "colorList": [
+      "01 ライトブラウン",
+      "02 オリーブブラウン",
+      "03 ナチュラルブラウン",
+      "04 ディープブラウン",
+      "05 ナチュラルグレー",
+      "06 ベリーブラウン",
+      "07 モーヴブラウン",
+      "08 ビターグレージュ"
+    ],
+    "genre": "affordable",
+    "price": "550円",
+    "productName": "超細芯アイブロウ",
+    "size": "0.02g"
+  },
+  {
+    "brand": "UNO(ウーノ)",
+    "category": "eyebrow",
+    "colorList": [],
+    "genre": "cool",
+    "price": "880円",
+    "productName": "バランスクリエイター",
+    "size": ""
+  },
+  {
+    "brand": "iLLO(アイロ)",
+    "category": "eyebrow",
+    "colorList": [
+      "DRAWING PENCIL EYEBROW",
+      "ピーナッツブラウン",
+      "コーヒーブラウン"
+    ],
+    "genre": "cool",
+    "price": "1,430円",
+    "productName": "DRAWING PENCIL EYEBROW（ドローイングペンシルアイブロウ）",
+    "size": ""
+  },
+  {
+    "brand": "excel(エクセル)",
+    "category": "eyebrow",
+    "colorList": [
+      "SE04 モーヴブラウン",
+      "SE05 オリーブブラウン",
+      "SE01 ナチュラルブラウン",
+      "SE02 ライトブラウン",
+      "SE03 ピンクブラウン"
+    ],
+    "genre": "cool",
+    "price": "1,430円",
+    "productName": "スタイリング パウダーアイブロウ",
+    "size": ""
+  },
+  {
+    "brand": "KATE(ケイト)",
+    "category": "eyebrow",
+    "colorList": [
+      "ケース",
+      "マルチケース",
+      "ブラシⅠ",
+      "ブラシⅡ",
+      "EX-4 ライトブラウン系(本体)",
+      "EX-5 ブラウン系(本体)",
+      "EX-6 レッドブラウン(本体)",
+      "EX-7 オリーブグレー(本体)",
+      "EX-8 ブラウンピンク系(本体)",
+      "EX-9 パープルブラウン(本体)",
+      "EX-4 ライトブラウン系(レフィル)",
+      "EX-5 ブラウン系(レフィル)",
+      "EX-6 レッドブラウン(レフィル)",
+      "EX-7 オリーブグレー(レフィル)",
+      "EX-8 ブラウンピンク系(レフィル)",
+      "EX-9 パープルブラウン(レフィル)",
+      "EX-10 オレンジブラウン(レフィル)",
+      "EX-11 ピンクアプリコット(レフィル)",
+      "GL-1 ブラウングリッター系(グリッター)(レフィル)",
+      "GL-2 ピンクグリッター系(グリッター)(レフィル)",
+      "EX-4 ライトブラウン系(本体)(『呪術廻戦』限定デザイン)",
+      "EX-5 ブラウン系(本体)(『呪術廻戦』限定デザイン)",
+      "EX-10 オレンジブラウン(本体)",
+      "EX-11 ピンクアプリコット(本体)",
+      "EX-12 ベージュブラウン系(本体)(限定)",
+      "EX-13 グレージュブラウン系(本体)(限定)"
+    ],
+    "genre": "simple",
+    "price": "1,210円",
+    "productName": "ケイト デザイニングアイブロウ3D",
+    "size": "本体 2.2g"
+  },
+  {
+    "brand": "NARS(ナーズ)",
+    "category": "shading",
+    "colorList": [
+      "01",
+      "02"
+    ],
+    "genre": "brand",
+    "price": "4,840円",
+    "productName": "ラグナ ブロンジングクリーム",
+    "size": "19g"
+  },
+  {
+    "brand": "CEZANNE(セザンヌ)",
+    "category": "shading",
+    "colorList": [
+      "01 ウォームトーン",
+      "02 クールトーン"
+    ],
+    "genre": "affordable",
+    "price": "693円",
+    "productName": "ナチュラルマットシェーディング",
+    "size": ""
+  },
+  {
+    "brand": "too cool for school(トゥークールフォースクール)",
+    "category": "shading",
+    "colorList": [
+      "1 クラシック",
+      "1.5 ニュートラル",
+      "2 モダン",
+      "3 クールトープ",
+      "1 クラシック マスター(ブラシ付き)",
+      "1.5 ニュートラル マスター(ブラシ付き)",
+      "2 モダン マスター(ブラシ付き)",
+      "バイロダンシェーディングブティックエディション 01 クラシック",
+      "バイロダンシェーディングブティックエディション 02 モダン"
+    ],
+    "genre": "cool",
+    "price": "2,090円",
+    "productName": "アートクラスバイロダン シェーディング",
+    "size": "9.5g"
+  },
+  {
+    "brand": "rom&nd(ロムアンド)",
+    "category": "shading",
+    "colorList": [
+      "01 ニュートラルウォーム(NEUTRAL WARM)",
+      "02 グレークール(GRAY COOL)"
+    ],
+    "genre": "simple",
+    "price": "2,980円",
+    "productName": "ベターザンコントゥア\nBETTER THAN CONTOUR",
+    "size": "20.5g"
+  },
+  {
+    "brand": "shu uemura(シュウウエムラ)",
+    "category": "cheek",
+    "colorList": [
+      "モモ パフェ",
+      "ラベンダー ソルベ",
+      "アンズ ゼリー",
+      "キャラメル ラテ"
+    ],
+    "genre": "brand",
+    "price": "8,580円",
+    "productName": "3D チークメイト",
+    "size": ""
+  },
+  {
+    "brand": "CEZANNE(セザンヌ)",
+    "category": "cheek",
+    "colorList": [
+      "01 フォギーローズ",
+      "02 シナモンブラウン",
+      "03 ミルクモーヴ",
+      "04 ピュアピンク",
+      "05 メープルアプリコット"
+    ],
+    "genre": "affordable",
+    "price": "550円",
+    "productName": "チークブラッシュ",
+    "size": "2.2g"
+  },
+  {
+    "brand": "ちふれ(Chifure)",
+    "category": "cheek",
+    "colorList": [
+      "111 ピンク系",
+      "142 ピンク系パール",
+      "270 ローズ系",
+      "443 オレンジ系",
+      "470 オレンジ系",
+      "542 レッド系",
+      "571 レッド系パール(数量限定色)",
+      "770 ブラウン系",
+      "271 ローズ系",
+      "612 ベージュ系"
+    ],
+    "genre": "affordable",
+    "price": "396円",
+    "productName": "パウダー チーク",
+    "size": "2.5ｇ"
+  },
+  {
+    "brand": "Laka(ラカ)",
+    "category": "cheek",
+    "colorList": [
+      "701 ハリコ",
+      "702 ファンタジー",
+      "703 アイコン",
+      "704 ヌンヌ",
+      "705 エンジェル",
+      "706 ラバー",
+      "707 スウィート",
+      "708 ポエム",
+      "709 ドルチェ"
+    ],
+    "genre": "cool",
+    "price": "1,980円",
+    "productName": "ラブシルクブラッシュ",
+    "size": "5.2g"
+  },
+  {
+    "brand": "CLIO(クリオ)",
+    "category": "cheek",
+    "colorList": [
+      "01 ピーチフラッシュ(PEACH FLUSH)",
+      "02 バニーブラッシュ(BUNNY BLUSH)",
+      "03 ロージーブロー(ROSY BLOW)",
+      "04 フロムベリー(FROW BERRY)",
+      "05 チェリーシャワー(CHERRY SHOWER)",
+      "06 アップルガーデン(APPLE GARDEN)",
+      "07 アプリコットブリーズ(APRICOT BREEZE)",
+      "08 バブリープラム(BUBBLY PLUM)",
+      "100 シュガーリボン(SUGAR RIBBON)(日本限定色)"
+    ],
+    "genre": "cool",
+    "price": "1,980円",
+    "productName": "エッセンシャル リップチーク タップ",
+    "size": "4.5g"
+  },
+  {
+    "brand": "rom&nd(ロムアンド)",
+    "category": "cheek",
+    "colorList": [
+      "B01 ジンジャーナイト（rom&nd×INAPSQUARE）",
+      "B02 ベリーダウン（rom&nd×INAPSQUARE）",
+      "B03 ブラックバーム（rom&nd×INAPSQUARE）",
+      "C01 ピーチチップ(PEACH CHIP)",
+      "C02 ブルーベリーチップ(BLUEBERRY CHIP)",
+      "C03 フィグチップ(FIG CHIP)",
+      "C04 ペアーチップ(PEAR CHIP)",
+      "N01 ナッティヌード(NUTTY NUDE)",
+      "N02 バインヌード(VINE NUDE)",
+      "S01 マンゴーチップ(MANGO CHIP)",
+      "S02 ライチチップ(LYCHEE CHIP)",
+      "W01 オディミルク(ODI MILK)",
+      "W02 ストロベリーミルク(STRAWBERRY MILK)",
+      "W03 アプリコットミルク(APRICOT MILK)"
+    ],
+    "genre": "simple",
+    "price": "1,430円",
+    "productName": "ベターザンチーク\nBETTER THAN CHEEK",
+    "size": "4g"
+  },
+  {
+    "brand": "＆be(アンドビー)",
+    "category": "cheek",
+    "colorList": [
+      "シームレスピンク",
+      "シームレスベージュ"
+    ],
+    "genre": "simple",
+    "price": "2,420円",
+    "productName": "プレストチーク",
+    "size": ""
+  },
+  {
+    "brand": "M・A・C(マック)",
+    "category": "highlight",
+    "colorList": [
+      "ライトスカペード",
+      "ゴールド ディポジット",
+      "ソフト & ジェントル",
+      "チーキー ブロンズ",
+      "グローバル グロー",
+      "ニュアンスド",
+      "パーフェクトリー リット",
+      "アザーアースリー",
+      "ウォーム ローズ",
+      "パーフェクトトッピング",
+      "ベアリー ドレスト",
+      "ウォーム オーラ",
+      "ハウス オブ ペチュニア(限定)",
+      "ライトスカペード（限定パッケージ）",
+      "ライトスカペード (太陽)限定パッケージ"
+    ],
+    "genre": "brand",
+    "price": "5,940円",
+    "productName": "M·A·C ミネラライズ スキンフィニッシュ",
+    "size": "10 g"
+  },
+  {
+    "brand": "CEZANNE(セザンヌ)",
+    "category": "highlight",
+    "colorList": [
+      "01　フィルターベージュ"
+    ],
+    "genre": "affordable",
+    "price": "693円",
+    "productName": "トーンフィルターハイライト",
+    "size": ""
+  },
+  {
+    "brand": "TIRTIR(ティルティル)",
+    "category": "highlight",
+    "colorList": [
+      "ロージービーム",
+      "リリーフル",
+      "アンプル",
+      "シマー"
+    ],
+    "genre": "cool",
+    "price": "2,420円",
+    "productName": "マイグロウハイライター\nMY GLOW HIGHLIGHTER",
+    "size": "10g"
+  },
+  {
+    "brand": "rom&nd(ロムアンド)",
+    "category": "highlight",
+    "colorList": [
+      "01 サンキスドベール(sun kissed veil)",
+      "02 ムーンキスドベール(moon kissed veil)"
+    ],
+    "genre": "simple",
+    "price": "1,430円",
+    "productName": "ヴェールライター",
+    "size": "5.5g"
+  },
+  {
+    "brand": "NARS(ナーズ)",
+    "category": "powder",
+    "colorList": [
+      "ミニ 02415",
+      "5894",
+      "限定パッケージ 5052",
+      "00359(限定パッケージ)",
+      "03005(限定パッケージ)",
+      "04013",
+      "04025 CRYSTAL",
+      "04056 CRYSTAL(THE BEAUTY TRANSFORMED COLLECTION)"
+    ],
+    "genre": "brand",
+    "price": "6,160円",
+    "productName": "ライトリフレクティングセッティングパウダー　プレスト　N",
+    "size": "10g"
+  },
+  {
+    "brand": "GIVENCHY(ジバンシイ)",
+    "category": "powder",
+    "colorList": [
+      "No.00 オパルセント・チュール",
+      "No.01 パステル・シフォン",
+      "No.02 ホワイト・サテン",
+      "No.03 ローズ・ヴェイル",
+      "No.04 アシッド・シフォン",
+      "クチュール コレクション 2025 限定パッケージ",
+      "15\tイリデセント・ヴェイル（ホリデーコレクション2025）"
+    ],
+    "genre": "brand",
+    "price": "8,250円",
+    "productName": "プリズム・リーブル",
+    "size": "2.5g×4"
+  },
+  {
+    "brand": "ジョンソンベビー(JOHNSONS BABY)",
+    "category": "powder",
+    "colorList": [],
+    "genre": "affordable",
+    "price": "292円",
+    "productName": "ジョンソン ベビーパウダー",
+    "size": "140g"
+  },
+  {
+    "brand": "ちふれ(Chifure)",
+    "category": "powder",
+    "colorList": [
+      "1 ルーセント",
+      "2 パーリールーセント",
+      "3 ラベンダー ルーセント"
+    ],
+    "genre": "affordable",
+    "price": "880円",
+    "productName": "ルース パウダー",
+    "size": "20g"
+  },
+  {
+    "brand": "MenzBasic(メンズベーシック)",
+    "category": "powder",
+    "colorList": [],
+    "genre": "cool",
+    "price": "2,980円",
+    "productName": "メンズベーシック テカリ防止パウダー フェイスパウダー クリア",
+    "size": ""
+  },
+  {
+    "brand": "TFIT(ティーフィット)",
+    "category": "powder",
+    "colorList": [
+      "01ホワイト",
+      "02スキンベージュ"
+    ],
+    "genre": "cool",
+    "price": "1,760円",
+    "productName": "トランスルーセントセットエッセンシャルパウダー",
+    "size": "5g"
+  },
+  {
+    "brand": "チャコット・コスメティクス(Chacott COSMETICS)",
+    "category": "powder",
+    "colorList": [
+      "761 ナチュラル",
+      "763 クリア",
+      "764 ライトオークル",
+      "790 クリア(ミニサイズ)",
+      "766 オークル",
+      "767 ブロンズ"
+    ],
+    "genre": "simple",
+    "price": "1,320円",
+    "productName": "フィニッシングパウダー マット",
+    "size": "30g"
+  },
+  {
+    "brand": "innisfree(イニスフリー)",
+    "category": "powder",
+    "colorList": [
+      "5g",
+      "10g",
+      "01 / ピグレット（5g）",
+      "02 / プー（5g）",
+      "03 / ティガー（5g）",
+      "YELLOW / 001 ハッピー（5g）",
+      "PINK / 002 ラブリー（5g）",
+      "BLUE / 003 ジョイフル（5g）",
+      "YELLOW / 1 スイートトゥイーティー（5g）",
+      "GREEN / 2 ラブリートゥイーティー（5g）",
+      "BLUE / 3 シックトゥイーティー（5g）",
+      "クロミ BLACK（5g）",
+      "クロミ PURPLE（5g）",
+      "クロミ PINK（5g）",
+      "5g【旧】",
+      "2022年限定パッケージ"
+    ],
+    "genre": "simple",
+    "price": "899円",
+    "productName": "ノーセバム　ミネラルパウダー　N",
+    "size": "5g"
+  },
+  {
+    "brand": "GIVENCHY(ジバンシイ)",
+    "category": "concealer",
+    "colorList": [
+      "N80",
+      "N95",
+      "W100",
+      "C105",
+      "N120",
+      "C240",
+      "W245",
+      "N270",
+      "C180",
+      "N250"
+    ],
+    "genre": "brand",
+    "price": "5,060円",
+    "productName": "プリズム・リーブル・スキンケアリング・コンシーラー",
+    "size": "11mL"
+  },
+  {
+    "brand": "Dior(ディオール)",
+    "category": "concealer",
+    "colorList": [
+      "0.5Nニュートラル",
+      "1Nニュートラル",
+      "1Wウォーム",
+      "1CRクール ロージー",
+      "1.5Nニュートラル",
+      "2Nニュートラル",
+      "2Wウォーム",
+      "3Nニュートラル",
+      "0Nニュートラル",
+      "00ニュートラル",
+      "00.5N"
+    ],
+    "genre": "brand",
+    "price": "5,720円",
+    "productName": "ディオールスキン フォーエヴァー スキン コレクト コンシーラー",
+    "size": "11mL"
+  },
+  {
+    "brand": "KATE(ケイト)",
+    "category": "concealer",
+    "colorList": [
+      "ライトベージュ",
+      "ナチュラルベージュ"
+    ],
+    "genre": "affordable",
+    "price": "880円",
+    "productName": "スティックコンシーラーA",
+    "size": "3g"
+  },
+  {
+    "brand": "the SAEM(ザセム)",
+    "category": "concealer",
+    "colorList": [
+      "0.5 アイスベージュ",
+      "01 クリアベージュ",
+      "1.25 ライトベージュ",
+      "1.5 ナチュラルベージュ",
+      "1.75 ミドルベージュ",
+      "02 リッチベージュ",
+      "2.25 サンド",
+      "2.5 ミディアムディープ",
+      "2.75 ディープ",
+      "03 タン",
+      "グリーンベージュ",
+      "コントゥアーベージュ",
+      "ピーチベージュ",
+      "ブライトナー"
+    ],
+    "genre": "affordable",
+    "price": "869円",
+    "productName": "カバーパーフェクション チップコンシーラー",
+    "size": "6.5g"
+  },
+  {
+    "brand": "TFIT(ティーフィット)",
+    "category": "concealer",
+    "colorList": [
+      "クール",
+      "コレクター",
+      "ダーク",
+      "ニュートラル",
+      "ライト",
+      "ワーム",
+      "ニュートラル スペシャルセット(コンシーラー15g+ブラシ)",
+      "クール スペシャルセット(コンシーラー15g+ブラシ)"
+    ],
+    "genre": "cool",
+    "price": "1,650円",
+    "productName": "カバーアッププロコンシーラー",
+    "size": "15g(5g×3)"
+  },
+  {
+    "brand": "VT(ブイティー)",
+    "category": "concealer",
+    "colorList": [],
+    "genre": "cool",
+    "price": "755円",
+    "productName": "CICAレッドネススポットコンシーラー",
+    "size": "5.5g"
+  },
+  {
+    "brand": "＆be(アンドビー)",
+    "category": "concealer",
+    "colorList": [
+      "ライトベージュ(詰め替え用リフィル)",
+      "ベージュ(詰め替え用リフィル)",
+      "ライトベージュ＆オレンジ",
+      "ベージュ＆オレンジ",
+      "オレンジ（詰め替え用リフィル）",
+      "ライトピンク&オレンジ",
+      "ベージュ&オレンジ〈ポケモン〉",
+      "ライトベージュ&オレンジ〈ポケモン〉",
+      "ライトピンク&オレンジ〈ポケモン〉",
+      "ベージュ&オレンジ〈限定イラストパッケージ〉",
+      "ライトベージュ&オレンジ〈限定イラストパッケージ〉",
+      "リフィル　ライトピンク"
+    ],
+    "genre": "simple",
+    "price": "3,850円",
+    "productName": "&be ファンシーラー",
+    "size": "2g x 2色"
+  },
+  {
+    "brand": "IPSA(イプサ)",
+    "category": "concealer",
+    "colorList": [],
+    "genre": "simple",
+    "price": "4,180円",
+    "productName": "クリエイティブコンシーラーe",
+    "size": "4.5g"
+  },
+  {
+    "brand": "クレ・ド・ポー ボーテ(Cle de Peau Beaute)",
+    "category": "foundation",
+    "colorList": [
+      "ケース",
+      "パフn",
+      "オークル 00",
+      "ピンクオークル 00",
+      "オークル 10",
+      "ピンクオークル 10",
+      "オークル 20",
+      "オークル 30",
+      "ケース（UNLOCK THE HEART限定デザイン）"
+    ],
+    "genre": "brand",
+    "price": "8,030円",
+    "productName": "クレ・ド・ポー ボーテ タンクッションエクラ ナチュレル",
+    "size": "14g(レフィル)"
+  },
+  {
+    "brand": "HERA(ヘラ)",
+    "category": "foundation",
+    "colorList": [
+      "13N",
+      "17C",
+      "17N",
+      "19N",
+      "21C",
+      "21N",
+      "21W",
+      "23C",
+      "23N",
+      "23W",
+      "25N",
+      "27N"
+    ],
+    "genre": "brand",
+    "price": "7,480円",
+    "productName": "シルキーステイファンデーション",
+    "size": "30g"
+  },
+  {
+    "brand": "CEZANNE(セザンヌ)",
+    "category": "foundation",
+    "colorList": [
+      "00 明るいベージュ系",
+      "10 明るいオークル系",
+      "20 自然なオークル系"
+    ],
+    "genre": "affordable",
+    "price": "748円",
+    "productName": "ラスティングカバーファンデーション",
+    "size": ""
+  },
+  {
+    "brand": "MAYBELLINE NEW YORK(メイベリン　ニューヨーク)",
+    "category": "foundation",
+    "colorList": [
+      "103",
+      "108",
+      "109",
+      "110",
+      "112",
+      "115",
+      "118",
+      "120",
+      "122",
+      "125",
+      "128",
+      "215",
+      "220",
+      "230",
+      "330",
+      "MM110",
+      "MM112",
+      "130",
+      "340"
+    ],
+    "genre": "cool",
+    "price": "1,991円",
+    "productName": "フィットミー リキッドファンデーション R",
+    "size": "30ml"
+  },
+  {
+    "brand": "CLIO(クリオ)",
+    "category": "foundation",
+    "colorList": [
+      "1.5 FAIR",
+      "02 LINGERIE",
+      "2.5 IVORY",
+      "03 LINEN",
+      "3.5 VANILLA",
+      "04 GINGER",
+      "03 LINEN(KOSHORT IN SEOUL)",
+      "04 GINGER(KOSHORT IN SEOUL)",
+      "02 LINGERIE(MINI)",
+      "03 LINEN(MINI)",
+      "04 GINGER(MINI)",
+      "02 LINGERIE（フルーツマーケット）",
+      "03 LINEN（フルーツマーケット）",
+      "04 GINGER（フルーツマーケット）"
+    ],
+    "genre": "cool",
+    "price": "3,960円",
+    "productName": "キル カバー ザ ニュー ファンウェア クッション\nKILLCOVER THE NEW FOUNWEAR CUSHION",
+    "size": "15g×2"
+  },
+  {
+    "brand": "TIRTIR(ティルティル)",
+    "category": "foundation",
+    "colorList": [
+      "13C フェア",
+      "13N フェア アイボリー",
+      "15C フェア ポーセリン",
+      "17C ポーセリン",
+      "17N バニラ",
+      "17W フレンチ バニラ",
+      "21C クール アイボリー",
+      "21N アイボリー",
+      "21W ナチュラル アイボリー",
+      "23N サンド",
+      "24N ラテ",
+      "24W ソフト ベージュ",
+      "25N モカ",
+      "27C クール ベージュ",
+      "27N キャメル",
+      "29N ナチュラル ベージュ",
+      "30N リッチ ハニー",
+      "31N フレンチ ベージュ",
+      "33C ヘイゼル",
+      "33N マキアート",
+      "33W ジンジャー",
+      "34C アンバー",
+      "34N ピーカン",
+      "34W タフィー",
+      "35N ウォールナット",
+      "37C アーモンド",
+      "40N シナモン",
+      "43N ディープココア",
+      "51N ファッジ",
+      "55N エスプレッソ",
+      "17C ポーセリン ミニ",
+      "21N アイボリー ミニ",
+      "23N サンド ミニ",
+      "17C（『たまごっち』デザイン）",
+      "21C（『たまごっち』デザイン）",
+      "21N（『たまごっち』デザイン）",
+      "17C PORCELAIN（Whity Edition）",
+      "21N IVORY（Whity Edition）",
+      "23N SAND（Whity Edition）"
+    ],
+    "genre": "simple",
+    "price": "2,970円",
+    "productName": "マスク フィット レッド クッション\nMASK FIT RED CUSHION",
+    "size": "18g"
+  },
+  {
+    "brand": "クレ・ド・ポー ボーテ(Cle de Peau Beaute)",
+    "category": "ground",
+    "colorList": [],
+    "genre": "brand",
+    "price": "8,250円",
+    "productName": "クレ・ド・ポー ボーテ ヴォワールマティフィアンリサン",
+    "size": "40g"
+  },
+  {
+    "brand": "なめらか本舗(NAMERAKAHONPO)",
+    "category": "ground",
+    "colorList": [],
+    "genre": "affordable",
+    "price": "1,100円",
+    "productName": "スキンケアUV下地",
+    "size": "50g"
+  },
+  {
+    "brand": "マキアージュ(MAQuillage)",
+    "category": "ground",
+    "colorList": [
+      "（ミニサイズ）　トーンアップ",
+      "（ミニサイズ）　ナチュラル",
+      "トーンアップ",
+      "ナチュラル"
+    ],
+    "genre": "cool",
+    "price": "2,860円",
+    "productName": "ドラマティックスキンセンサーベース EX UV+",
+    "size": "25ml"
+  },
+  {
+    "brand": "プリマヴィスタ(Primavista)",
+    "category": "ground",
+    "colorList": [
+      "本体25ml",
+      "本品 25ml+マットパウダー オイリー肌用ミニ1.5g セット(限定)",
+      "25ml ミニー限定デザイン",
+      "25ml ミッキー限定デザイン",
+      "トライアル 8.5ml【旧】",
+      "トライアル(限定) 8.5ml"
+    ],
+    "genre": "cool",
+    "price": "3,080円",
+    "productName": "スキンプロテクトベース＜皮脂くずれ防止＞ 超オイリー肌用",
+    "size": "本体25ml"
+  },
+  {
+    "brand": "PAUL & JOE BEAUTE(ポールアンドジョーボーテ)",
+    "category": "ground",
+    "colorList": [
+      "00",
+      "01",
+      "02",
+      "03",
+      "00(限定ハーフサイズ)",
+      "01(限定ハーフサイズ)"
+    ],
+    "genre": "simple",
+    "price": "4,070円",
+    "productName": "モイスチュアライジング プライマー",
+    "size": "30ml"
+  },
+  {
+    "brand": "FASIO(ファシオ)",
+    "category": "ground",
+    "colorList": [
+      "01 ピンクベージュ",
+      "02 ライトベージュ",
+      "03 ミディアムベージュ",
+      "01 ピンクベージュ(ゲゲゲの⻤太郎限定デザイン)",
+      "02 ライトベージュ(ゲゲゲの⻤太郎限定デザイン)",
+      "03 ミディアムベージュ(ゲゲゲの⻤太郎限定デザイン)"
+    ],
+    "genre": "simple",
+    "price": "1,320円",
+    "productName": "エアリーステイ BB ティント UV",
+    "size": "30g"
+  }
+]

@@ -1,0 +1,37 @@
+/* src/styles/camera.module.css */
+.cameraWrap {
+    width: 100%;
+    max-width: 480px;
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.video {
+    width: 100%;
+    height: 100%;
+    background: var(--blackColor);
+    aspect-ratio: 9/16;
+    object-fit: cover;
+}
+
+.controls {
+    .cameraButton {
+        position: absolute;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: var(--buttonSize);
+        height: var(--buttonSize);
+        border-radius: 100%;
+        border: none;
+        background-color: var(--buttonBackground);
+        box-shadow: 0 0 6px rgba(12, 12, 12, 0.5);
+    }
+}
+
+.hiddenCanvas {
+    display: none;
+}
