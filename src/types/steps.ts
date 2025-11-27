@@ -28,24 +28,50 @@ export type MakeupPreset = {
     id: string;
     label: string;
     hex: string; // sRGB hex (#rrggbb)
+    p3: P3Color;
 };
 
-export type MakeupPresetMap = {
-    primer: MakeupPreset[];
-    foundation: MakeupPreset[];
-    concealer: MakeupPreset[];
-    powder: MakeupPreset[];
-    highlight: MakeupPreset[];
-    cheek: MakeupPreset[];
-    contour: MakeupPreset[];
-    brows: MakeupPreset[];
-    shadow: MakeupPreset[];
-    lips: MakeupPreset[];
-};
+export type MakeupPresetMap = Record<Step, MakeupPreset[]>;
 
 // JSON 読み込み（tsconfig の resolveJsonModule: true 前提）
 import presetsJson from "@/data/makeupPresets.json";
-export const MAKEUP_PRESETS = presetsJson as MakeupPresetMap;
+
+// JSON 1件分の型（hex ベース）
+type RawPreset = {
+    id: string;
+    label: string;
+    hex: `#${string}`;
+};
+
+// hex → Display-P3(0..1) 変換
+function hexToP3(hex: string): P3Color {
+    const h = hex.replace("#", "");
+    const r8 = parseInt(h.slice(0, 2), 16);
+    const g8 = parseInt(h.slice(2, 4), 16);
+    const b8 = parseInt(h.slice(4, 6), 16);
+
+    return {
+        space: "display-p3",
+        r: r8 / 255,
+        g: g8 / 255,
+        b: b8 / 255,
+    };
+}
+
+// JSON 全部に p3 を付与したマップ
+export const MAKEUP_PRESETS: MakeupPresetMap = (() => {
+    const map: Partial<MakeupPresetMap> = {};
+
+    (Object.keys(presetsJson) as Step[]).forEach((step) => {
+        const arr = (presetsJson as Record<string, RawPreset[]>)[step];
+        map[step] = arr.map((p) => ({
+            ...p,
+            p3: hexToP3(p.hex),
+        }));
+    });
+
+    return map as MakeupPresetMap;
+})();
 
 // === 各ステップの設定 ===
 export type StepConfig = {
