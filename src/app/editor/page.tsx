@@ -227,9 +227,8 @@ export default function EditorPage() {
         }
         try {
             const url = cv.toDataURL("image/jpeg", 0.92);
-            const label = STEP_CONFIG[targetStep]?.label ?? targetStep;
-            // 失敗しても画面遷移が止まらないように await しない
-            void saveSim(url, `STEP: ${label}`);
+            // ★ ここを label ではなく ID（step）で保存する
+            void saveSim(url, targetStep);
         } catch (e) {
             console.error("saveSim(step) でエラー:", e);
         }
@@ -247,6 +246,7 @@ export default function EditorPage() {
 
         try {
             const url = cv.toDataURL("image/jpeg", 0.92);
+            // ここは "FINAL" のままで OK
             void saveSim(url, "FINAL");
         } catch (e) {
             console.error("saveSim(FINAL) でエラーが発生しましたが、結果画面には遷移します:", e);
