@@ -96,7 +96,8 @@ export const STEP_CONFIG: Record<Step, StepConfig> = {
         brush: "cream",
         defaultColor: "#F7F5F2",
         defaultRadius: 45,
-        // 下地は太さ固定（ゲージ固定）
+        // 下地は太さ固定（ゲージ固定）→ 大・中サイズのみ
+        allowedRadii: [10, 7],
         effectId: 0, // Soft veil
         presets: MAKEUP_PRESETS.primer,
     },
@@ -119,6 +120,8 @@ export const STEP_CONFIG: Record<Step, StepConfig> = {
         brush: "cream",
         defaultColor: "#FAE6D3",
         defaultRadius: 10,
+        // コンシーラーは細かい作業用なので小・極小のみ
+        allowedRadii: [4, 1],
         effectId: 2, // Concealer / matte
         presets: MAKEUP_PRESETS.concealer,
     },
@@ -129,6 +132,8 @@ export const STEP_CONFIG: Record<Step, StepConfig> = {
         brush: "powder",
         defaultColor: "#FAF7F2",
         defaultRadius: 45,
+        // パウダーは広範囲塗布なので大・中のみ
+        allowedRadii: [10, 7],
         effectId: 3, // Powder / grain
         presets: MAKEUP_PRESETS.powder,
     },
@@ -139,6 +144,8 @@ export const STEP_CONFIG: Record<Step, StepConfig> = {
         brush: "soft",
         defaultColor: "#FFF8E8",
         defaultRadius: 30,
+        // ハイライトは部分的なので中・小のみ
+        allowedRadii: [7, 4],
         effectId: 4, // Highlight glow
         presets: MAKEUP_PRESETS.highlight,
     },
@@ -149,6 +156,8 @@ export const STEP_CONFIG: Record<Step, StepConfig> = {
         brush: "soft",
         defaultColor: "#FFD6D6",
         defaultRadius: 30,
+        // チークは頬の範囲なので中・小のみ
+        allowedRadii: [7, 4],
         // ハイライトと同じ質感（あとで別 effectId に分けたくなったら変更）
         effectId: 4,
         presets: MAKEUP_PRESETS.cheek,
@@ -172,6 +181,8 @@ export const STEP_CONFIG: Record<Step, StepConfig> = {
         brush: "powder",
         defaultColor: "#4A3A30",
         defaultRadius: 6,
+        // アイブロウは細かい描写なので小・極小のみ
+        allowedRadii: [4, 1],
         effectId: 6, // Brows / hair-like
         presets: MAKEUP_PRESETS.brows,
     },
@@ -194,6 +205,8 @@ export const STEP_CONFIG: Record<Step, StepConfig> = {
         brush: "gloss",
         defaultColor: "#F8D2D2",
         defaultRadius: 10,
+        // リップは中・小サイズのみ（唇の範囲に応じて）
+        allowedRadii: [7, 4],
         effectId: 8, // Lip gloss / shine
         presets: MAKEUP_PRESETS.lips,
     },
