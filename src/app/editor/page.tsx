@@ -92,7 +92,20 @@ export default function EditorPage() {
                     <NavigationLayout
                         activeId={selectedTool}
                         onItemClickAction={(id) => setSelectedTool(id)}
-                        onBackClick={() => router.back()}
+                        onBackClick={() => {
+                            if (selectedTool) {
+                                // ツール選択時は選択を解除
+                                setSelectedTool(null);
+                            } else {
+                                // 未選択時はステップを戻る
+                                if (!isFirst) {
+                                    goPrevStep();
+                                } else {
+                                    // 最初のステップの場合は前のページに戻る
+                                    router.back();
+                                }
+                            }
+                        }}
                         onOkClick={() => {
                             if (selectedTool) {
                                 // ツール選択時の確認処理
