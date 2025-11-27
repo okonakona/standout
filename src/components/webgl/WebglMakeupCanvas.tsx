@@ -1,8 +1,8 @@
 // src/components/webgl/WebglMakeupCanvas.tsx
 "use client";
-
 import React, { useEffect, useRef } from "react";
 import * as twgl from "twgl.js";
+import { hexToSRGB01 } from "@/utils/color";
 
 type Props = {
     base: HTMLCanvasElement | HTMLImageElement; // 2D 合成結果
@@ -280,7 +280,7 @@ export function WebglMakeupCanvas({ base, mask, tintColor, strength, effectId }:
             mag: gl.LINEAR,
         });
 
-        const [r, g, b] = hexToRgb(tintColor);
+        const [r, g, b] = hexToSRGB01(tintColor);
 
         gl.viewport(0, 0, w, h);
         gl.clearColor(0, 0, 0, 0);
@@ -291,7 +291,7 @@ export function WebglMakeupCanvas({ base, mask, tintColor, strength, effectId }:
         twgl.setUniforms(programInfo, {
             uBaseTex: baseTex,
             uMaskTex: maskTex,
-            uTintColor: [r / 255, g / 255, b / 255],
+            uTintColor: [r, g, b],
             uStrength: strength,
             uEffectId: effectId,
         });
