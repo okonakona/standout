@@ -1,3 +1,353 @@
+/* 新しい統合レイアウト用 */
+.fullScreenContainer {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #f8f9fa;
+}
+
+.imageSection {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.navigationOverlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+}
+
+.loadingText {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #666;
+    font-size: 14px;
+}
+
+.canvasContainer {
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+}
+
+/* ステップ表示エリア */
+.stepsContainer {
+    padding: 16px;
+    background: #ffffff;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.stepsRow {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 8px 0;
+}
+
+.stepInfo {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
+
+.stepInfo h3 {
+    margin: 0 0 8px 0;
+    color: #333;
+    font-size: 18px;
+}
+
+.stepInfo p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.stepItem {
+    min-width: 60px;
+    height: 80px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    background: #fff;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    transition: all 0.2s ease;
+}
+
+.stepItem:hover {
+    border-color: #007bff;
+    transform: translateY(-2px);
+}
+
+.stepPreview {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+/* ツール固有のUIスタイル */
+.toolContent {
+    padding: 16px;
+    background: #ffffff;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.colorTool,
+.brushTool,
+.eraserTool,
+.partsTool {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 100%;
+}
+
+.colorTool h3,
+.brushTool h3,
+.eraserTool h3,
+.partsTool h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+/* ブラシツール専用スタイル */
+.brushOptions {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    gap: 20px;
+    padding: 0 16px 8px 16px;
+    margin-top: auto;
+}
+
+.brushOption {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 4px;
+}
+
+.brushSvg {
+    object-fit: contain;
+    transition: all 0.3s ease;
+}
+
+/* ブラシタイプごとのサイズ - データ属性ベース */
+.brushOption .brushSvg {
+    width: 60px;
+    height: 60px;
+}
+
+/* ブラシタイプ1（極小）*/
+.brushOption[data-brush-type="1"] .brushSvg {
+    width: 30px;
+    height: 45px;
+}
+
+/* ブラシタイプ2（小）*/
+.brushOption[data-brush-type="2"] .brushSvg {
+    width: 50px;
+    height: 75px;
+}
+
+/* ブラシタイプ3（中）*/
+.brushOption[data-brush-type="3"] .brushSvg {
+    width: 60px;
+    height: 90px;
+}
+
+/* ブラシタイプ4（大）*/
+.brushOption[data-brush-type="4"] .brushSvg {
+    width: 70px;
+    height: 105px;
+}
+
+.brushSvg {
+    object-fit: contain;
+    filter: none;
+    transition: all 0.3s ease;
+}
+
+.brushOption:hover .brushSvg {
+    filter: brightness(0.8);
+    transform: scale(1.05);
+}
+
+.brushOption.active .brushSvg {
+    filter: brightness(0) saturate(0);
+    transform: scale(1.1);
+}
+
+.brushIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.brushIcon img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: grayscale(1);
+    transition: filter 0.2s ease;
+}
+
+.brushOption:hover .brushIcon img,
+.brushOption.active .brushIcon img {
+    filter: grayscale(0);
+}
+
+.colorPresets {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 8px 0;
+}
+
+.colorOption {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    position: relative;
+}
+
+.colorOption:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.colorOption.active {
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.colorPreview {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: none;
+}
+
+.customColorSection {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px 0;
+    border-top: 1px solid #eee;
+}
+
+.customColorPicker {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.customColorSection input[type="color"] {
+    width: 48px;
+    height: 48px;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    cursor: pointer;
+    padding: 0;
+    background: none;
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.customColorSection input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.customColorSection input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 10px;
+}
+
+.customColorSection input[type="color"]:hover {
+    border-color: #007bff;
+    transform: scale(1.05);
+}
+
+.customColorLabel {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.customColorHex {
+    font-family: "Monaco", "Menlo", monospace;
+    font-size: 12px;
+    color: #666;
+    background: #f8f9fa;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid #e9ecef;
+    min-width: 80px;
+    text-align: center;
+}
+
+.brushSizes {
+    display: flex;
+    gap: 8px;
+}
+
+.brushSize {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.brushSize.active,
+.modeButton.active {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.modeButton {
+    padding: 12px 24px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* 既存スタイル（後方互換性のため保持） */
 .editorWrap {
     display: grid;
     grid-template-columns: 1fr 320px;
@@ -28,6 +378,17 @@
     gap: 8px;
     align-items: center;
     flex-wrap: wrap;
+}
+
+.brushSizeButtons {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.colorPresetRow {
+    display: flex;
+    gap: 4px;
 }
 
 .buttons {
