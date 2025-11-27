@@ -51,3 +51,21 @@ export async function listSim(): Promise<SimItem[]> {
         req.onerror = () => reject(req.error);
     });
 }
+
+export async function clearSimStore() {
+    await new Promise<void>((resolve, reject) => {
+        const req = indexedDB.open(DB, 1);
+
+        req.onsuccess = () => {
+            const db = req.result;
+            const tx = db.transaction(STORE, "readwrite");
+            const store = tx.objectStore(STORE);
+            const clearReq = store.clear();
+
+            clearReq.onsuccess = () => resolve();
+            clearReq.onerror = () => reject(clearReq.error);
+        };
+
+        req.onerror = () => reject(req.error);
+    });
+}
