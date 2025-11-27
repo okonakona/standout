@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { loadEditorImage, clearEditorImage } from "@/utils/imageSession";
+import { loadEditorImage } from "@/utils/imageSession";
 import { useRouter } from "next/navigation";
 import PracticeCanvas from "@/components/editor/PracticeCanvas";
 import { WebglMakeupCanvas } from "@/components/webgl/WebglMakeupCanvas";
@@ -28,9 +28,7 @@ const ORDER: Step[] = [
 // ==========================
 type FaceRect = { x: number; y: number; w: number; h: number };
 
-/**
- * faceClipMask(白=顔, 透明=顔外) から顔の矩形を推定
- */
+/** faceClipMask(白=顔, 透明=顔外) から顔の矩形を推定 */
 function computeFaceRect(
     faceClipMask: HTMLCanvasElement | null,
     img: HTMLImageElement | null
@@ -49,7 +47,6 @@ function computeFaceRect(
     let maxX = -1;
     let maxY = -1;
 
-    // 2px 間隔くらいでスキャンして負荷を抑える
     const step = 2;
     for (let y = 0; y < h; y += step) {
         for (let x = 0; x < w; x += step) {
@@ -66,7 +63,6 @@ function computeFaceRect(
 
     if (maxX < 0 || maxY < 0) return null;
 
-    // ちょっとだけマージンを足して、顔全体が入るようにする
     const rawW = maxX - minX;
     const rawH = maxY - minY;
     const marginX = rawW * 0.08;
@@ -95,10 +91,8 @@ function getGuideForStep(
 
     const { x: fx, y: fy, w: fw, h: fh } = faceRect;
 
-    // 顔矩形の中での基準位置
     const cx = fx + fw / 2;
-
-    const cyEyes = fy + fh * 0.3; // 顔矩形の上から 30% あたり
+    const cyEyes = fy + fh * 0.3;
     const cyNose = fy + fh * 0.48;
     const cyMouth = fy + fh * 0.68;
     const cyChin = fy + fh * 0.9;
@@ -116,82 +110,59 @@ function getGuideForStep(
         return `M ${cx},${topY} L ${rightX},${bottomY} L ${leftX},${bottomY} Z`;
     };
 
-    // ===== ステップ別 =====
-
     // 顔全体：下地 / ファンデ / パウダー
     if (step === "primer" || step === "foundation" || step === "powder") {
         const faceOval = ellipse(cx, fy + fh * 0.52, fw * 0.55, fh * 0.6);
-        return {
-            d: faceOval,
-            bandPx: 6,
-        };
+        return { d: faceOval, bandPx: 6 };
     }
 
-    // コンシーラー：クマ・小鼻・青ひげ・あご
+    // コンシーラー
     if (step === "concealer") {
         const underEyeL = ellipse(cx - fw * 0.22, cyEyes + fh * 0.06, fw * 0.15, fh * 0.07);
         const underEyeR = ellipse(cx + fw * 0.22, cyEyes + fh * 0.06, fw * 0.15, fh * 0.07);
         const noseDot = ellipse(cx, cyNose, fw * 0.05, fh * 0.05);
         const beard = ellipse(cx, fy + fh * 0.78, fw * 0.45, fh * 0.18);
         const chin = ellipse(cx, cyChin, fw * 0.28, fh * 0.1);
-        return {
-            d: [underEyeL, underEyeR, noseDot, beard, chin].join(" "),
-            bandPx: 4,
-        };
+        return { d: [underEyeL, underEyeR, noseDot, beard, chin].join(" "), bandPx: 4 };
     }
 
-    // ハイライト：Tゾーン＋頬の高い位置
+    // ハイライト
     if (step === "highlight") {
         const foreheadCenter = ellipse(cx, fy + fh * 0.3, fw * 0.26, fh * 0.12);
         const nose = noseTriangle();
         const cheekL = ellipse(cx - fw * 0.23, fy + fh * 0.5, fw * 0.18, fh * 0.09);
         const cheekR = ellipse(cx + fw * 0.23, fy + fh * 0.5, fw * 0.18, fh * 0.09);
-        return {
-            d: [foreheadCenter, nose, cheekL, cheekR].join(" "),
-            bandPx: 5,
-        };
+        return { d: [foreheadCenter, nose, cheekL, cheekR].join(" "), bandPx: 5 };
     }
 
-    // シェーディング：こめかみ～おでこ・フェイスライン・あご下
+    // シェーディング
     if (step === "contour") {
         const templeL = ellipse(cx - fw * 0.3, fy + fh * 0.32, fw * 0.18, fh * 0.12);
         const templeR = ellipse(cx + fw * 0.3, fy + fh * 0.32, fw * 0.18, fh * 0.12);
         const jawL = ellipse(cx - fw * 0.27, fy + fh * 0.72, fw * 0.17, fh * 0.12);
         const jawR = ellipse(cx + fw * 0.27, fy + fh * 0.72, fw * 0.17, fh * 0.12);
         const chin = ellipse(cx, cyChin + fh * 0.03, fw * 0.3, fh * 0.11);
-        return {
-            d: [templeL, templeR, jawL, jawR, chin].join(" "),
-            bandPx: 6,
-        };
+        return { d: [templeL, templeR, jawL, jawR, chin].join(" "), bandPx: 6 };
     }
 
-    // アイブロウ：左右の眉
+    // アイブロウ
     if (step === "brows") {
         const browL = ellipse(cx - fw * 0.2, cyEyes - fh * 0.08, fw * 0.14, fh * 0.05);
         const browR = ellipse(cx + fw * 0.2, cyEyes - fh * 0.08, fw * 0.14, fh * 0.05);
-        return {
-            d: [browL, browR].join(" "),
-            bandPx: 3,
-        };
+        return { d: [browL, browR].join(" "), bandPx: 3 };
     }
 
-    // アイシャドウ：まぶたまわり
+    // アイシャドウ
     if (step === "shadow") {
         const upperL = ellipse(cx - fw * 0.2, cyEyes, fw * 0.14, fh * 0.07);
         const upperR = ellipse(cx + fw * 0.2, cyEyes, fw * 0.14, fh * 0.07);
-        return {
-            d: [upperL, upperR].join(" "),
-            bandPx: 4,
-        };
+        return { d: [upperL, upperR].join(" "), bandPx: 4 };
     }
 
-    // リップ：口全体
+    // リップ
     if (step === "lips") {
         const lips = ellipse(cx, cyMouth, fw * 0.22, fh * 0.08);
-        return {
-            d: lips,
-            bandPx: 5,
-        };
+        return { d: lips, bandPx: 5 };
     }
 
     return { d: "", bandPx: 0 };
@@ -235,13 +206,62 @@ export default function EditorPage() {
 
     const { masks, loading, error } = useMasks(img);
 
-    // ★ 顔矩形 → ガイド計算
+    // 顔矩形 → ガイド
     const faceRect = computeFaceRect(masks?.faceClipMask ?? null, img);
     const guide = getGuideForStep(step, img, faceRect);
 
-    // ステップ移動
-    const nextStep = () => {
+    // ===== キャンバス取得 =====
+    const getCurrentCanvas = () => {
+        return (
+            document.querySelector<HTMLCanvasElement>("canvas.practiceCanvas-2d") ||
+            document.querySelector<HTMLCanvasElement>("canvas.practiceCanvas-webgl")
+        );
+    };
+
+    // ===== ステップごとのスナップショット保存 =====
+    const saveStepSnapshot = (targetStep: Step) => {
+        const cv = getCurrentCanvas();
+        if (!cv) {
+            console.warn("スナップショット用キャンバスが見つかりません");
+            return;
+        }
+        try {
+            const url = cv.toDataURL("image/jpeg", 0.92);
+            const label = STEP_CONFIG[targetStep]?.label ?? targetStep;
+            // 失敗しても画面遷移が止まらないように await しない
+            void saveSim(url, `STEP: ${label}`);
+        } catch (e) {
+            console.error("saveSim(step) でエラー:", e);
+        }
+    };
+
+    // ===== 最終結果を保存して /result へ =====
+    const saveAndGoResult = () => {
+        const cv = getCurrentCanvas();
+
+        if (!cv) {
+            alert("メイク結果のキャンバスが見つかりません。");
+            router.push("/result");
+            return;
+        }
+
+        try {
+            const url = cv.toDataURL("image/jpeg", 0.92);
+            void saveSim(url, "FINAL");
+        } catch (e) {
+            console.error("saveSim(FINAL) でエラーが発生しましたが、結果画面には遷移します:", e);
+        } finally {
+            router.push("/result");
+        }
+    };
+
+    // ===== ステップ移動 =====
+    const goNextStep = () => {
         const i = ORDER.indexOf(step);
+
+        // 今のステップをスナップショット保存（非同期・エラーは無視）
+        saveStepSnapshot(step);
+
         if (i < ORDER.length - 1) {
             const next = ORDER[i + 1];
             setStep(next);
@@ -249,7 +269,7 @@ export default function EditorPage() {
         }
     };
 
-    const prevStep = () => {
+    const goPrevStep = () => {
         const i = ORDER.indexOf(step);
         if (i > 0) {
             const prev = ORDER[i - 1];
@@ -258,25 +278,11 @@ export default function EditorPage() {
         }
     };
 
-    // 最終結果を保存して /result へ
-    const saveAndGoResult = async () => {
-        const cv =
-            document.querySelector<HTMLCanvasElement>("canvas.practiceCanvas-2d") ||
-            document.querySelector<HTMLCanvasElement>("canvas.practiceCanvas-webgl");
-
-        if (!cv) {
-            alert("メイク結果のキャンバスが見つかりません。");
-            return;
-        }
-
-        try {
-            const url = cv.toDataURL("image/jpeg", 0.92);
-            await saveSim(url, "final");
-        } catch (e) {
-            console.error("saveSim でエラーが発生しましたが、結果画面には遷移します:", e);
-        } finally {
-            router.push("/result");
-        }
+    // ===== 最後の「メイク完了」 =====
+    const handleFinish = () => {
+        // 最終ステップの状態も 1 枚保存してから、FINAL 保存＋遷移
+        saveStepSnapshot(step);
+        saveAndGoResult();
     };
 
     if (!img) return null;
@@ -390,6 +396,7 @@ export default function EditorPage() {
                         )}
                     </div>
 
+                    {/* プリセットカラー */}
                     <div className={styles.toolRow}>
                         <label>プリセット：</label>
                         <div className={styles.colorPresetRow}>
@@ -409,6 +416,7 @@ export default function EditorPage() {
                         </div>
                     </div>
 
+                    {/* 手動カラー */}
                     <div className={styles.toolRow}>
                         <label>色：</label>
                         <input
@@ -426,16 +434,16 @@ export default function EditorPage() {
                 </div>
 
                 <div className={styles.buttons}>
-                    <button type="button" onClick={prevStep} disabled={isFirst}>
+                    <button type="button" onClick={goPrevStep} disabled={isFirst}>
                         ← 前のステップに戻る
                     </button>
 
                     {!isLast ? (
-                        <button type="button" onClick={nextStep}>
+                        <button type="button" onClick={goNextStep}>
                             このステップはOK → 次へ
                         </button>
                     ) : (
-                        <button type="button" onClick={saveAndGoResult}>
+                        <button type="button" onClick={handleFinish}>
                             メイク完了（結果を保存して見る）
                         </button>
                     )}
