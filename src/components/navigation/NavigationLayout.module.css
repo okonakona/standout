@@ -62,8 +62,7 @@
 .content {
     flex: 1;
     overflow-y: auto;
-    max-height: 200px; /* スクロールエリアの最大高さ */
-    min-height: 100px; /* 最小高さ */
+    height: 200px;
 }
 
 /* 選択時の下部ボタンバー */
