@@ -50,7 +50,7 @@ export default function EditorPage() {
             {/* メイン画像エリア */}
             <section className={styles.imageSection}>
                 {loading && <p className={styles.loadingText}>シミュレーション中</p>}
-                {error && <p style={{ color: "crimson" }}>解析エラー: {error}</p>}
+                {/* {error && <p style={{ color: "crimson" }}>解析エラー: {error}</p>} */}
 
                 <div className={styles.canvasContainer}>
                     {/* 下：2D 編集＆合成 */}
@@ -138,7 +138,7 @@ export default function EditorPage() {
                             <div className={styles.toolContent}>
                                 {selectedTool === "color" && (
                                     <div className={styles.colorTool}>
-                                        <h3>カラー選択</h3>
+                                        {/* <h3>カラー選択</h3> */}
                                         <div className={styles.colorPresets}>
                                             {cfg.presets.map((preset) => (
                                                 <button
@@ -210,6 +210,8 @@ export default function EditorPage() {
                                                 radius: radius,
                                             })
                                         );
+                                        // ブラシタイプ順でソート（1、2、3、4の順番を保証）
+                                        availableBrushTypes.sort((a, b) => a.type - b.type);
 
                                         return (
                                             <div className={styles.brushTool}>
