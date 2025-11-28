@@ -309,7 +309,7 @@ export default function PracticeCanvas({
             />
 
             {/* ガイド線（必要なら） */}
-            {guidePathD && (
+            {/* {guidePathD && (
                 <svg
                     width="100%"
                     height="100%"
@@ -333,7 +333,7 @@ export default function PracticeCanvas({
                         strokeWidth={2}
                     />
                 </svg>
-            )}
+            )} */}
 
             <div style={{ marginTop: 8, display: "flex", gap: 8 }}>
                 <button onClick={clearCurrentStep}>このステップの塗りをクリア</button>
