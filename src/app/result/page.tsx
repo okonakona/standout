@@ -1,70 +1,125 @@
 // src/app/result/page.tsx
 "use client";
-import { useEffect, useState } from "react";
-import { listSim } from "@/utils/simStore";
+
 import Link from "next/link";
 import CosmeticsBlock from "@/components/CosmeticsBlock";
 import cosmetics from "@/data/cosmetics.json";
-
-    const categories = [
-        { key: "ground", label: "下地" },
-        { key: "foundation", label: "ファンデーション" },
-        { key: "concealer", label: "コンシーラー" },
-        { key: "powder", label: "パウダー" },
-        { key: "highlight", label: "ハイライト" },
-        { key: "cheek", label: "チーク" },
-        { key: "shading", label: "シェーディング" },
-        { key: "eyebrow", label: "アイブロウ" },
-        { key: "eyeshadow", label: "アイシャドウ" },
-        { key: "lip", label: "リップ" }
-    ];
-    
-    const genres = [
-        { key: "brand", label: "ブランドもの" },
-        { key: "affordable", label: "コスパ最強" },
-        { key: "cool", label: "デザイン重視" },
-        { key: "simple", label: "シンプル" },
-    ];
+import styles from "@/styles/editor.module.css";
+import { useResultPage } from "@/components/result/useResultPage";
 
 export default function ResultPage() {
-    const [selectedCategory, setSelectedCategory] = useState("ground");
+    const {
+        latestSteps,
+        selectedCategory,
+        setSelectedCategory,
+        categories,
+        genres,
+        getLabelForNote,
+    } = useResultPage();
+
     return (
         <main style={{ padding: 24 }}>
-            <h1>保存した結果</h1>
-            <div style={{ display: "flex", gap: 12, marginBottom: 24, overflow: "scroll", width: 400 }}>
-                {categories.map((t) => (
-                <button
-                    key={t.key}
-                    onClick={() => setSelectedCategory(t.key)}
+            <h1>今回のメイク結果</h1>
+            {/* ★ 各ステップごとの画像（今回分のみ & 並び順固定） */}
+            {latestSteps.length === 0 ? (
+                <p>まだメイク結果が保存されていません。</p>
+            ) : (
+                <div
                     style={{
-                    padding: "8px 16px",
-                    borderRadius: 6,
-                    border: "1px solid #444",
-                    background: selectedCategory === t.key ? "#000" : "#fff",
-                    color: selectedCategory === t.key ? "#fff" : "#000",
+                        maxWidth: 400,
+                        display: "flex",
+                        gap: 16,
+                        marginBottom: 32,
+                        overflowX: "scroll",
+                        paddingBottom: 8,
+                        scrollbarWidth: "none", // Firefox
+                        msOverflowStyle: "none", // IE/Edge
+                        WebkitOverflowScrolling: "touch", // スマホでのスムーズスクロール
                     }}
                 >
-                    {t.label}
-                </button>
+                    {latestSteps.map((item) => {
+                        const note = item.note ?? "";
+                        const label = getLabelForNote(note);
+
+                        return (
+                            <figure
+                                key={item.id}
+                                style={{
+                                    minWidth: "100px",
+                                    width: "150px",
+                                    flexShrink: 0,
+                                    margin: 0,
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: 4,
+                                }}
+                            >
+                                <img
+                                    src={item.dataUrl}
+                                    alt={label}
+                                    style={{
+                                        width: "100%",
+                                        borderRadius: 8,
+                                        objectFit: "cover",
+                                    }}
+                                />
+                                <figcaption
+                                    style={{
+                                        fontSize: 10,
+                                        color: "#555",
+                                        textAlign: "center",
+                                        whiteSpace: "nowrap",
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                    }}
+                                >
+                                    {label}
+                                </figcaption>
+                            </figure>
+                        );
+                    })}
+                </div>
+            )}
+
+            {/* ===== ここから下は既存のコスメおすすめエリア ===== */}
+            <h2 style={{ marginBottom: 12 }}>おすすめコスメ</h2>
+
+            <div
+                style={{
+                    display: "flex",
+                    gap: 12,
+                    marginBottom: 24,
+                    overflowX: "auto",
+                    maxWidth: 400,
+                }}
+            >
+                {categories.map((t) => (
+                    <button
+                        key={t.key}
+                        onClick={() => setSelectedCategory(t.key)}
+                        style={{
+                            padding: "8px 16px",
+                            borderRadius: 6,
+                            border: "1px solid #444",
+                            background: selectedCategory === t.key ? "#000" : "#fff",
+                            color: selectedCategory === t.key ? "#fff" : "#000",
+                            whiteSpace: "nowrap",
+                        }}
+                    >
+                        {t.label}
+                    </button>
                 ))}
             </div>
 
-            {/* 選択されたタイプだけ表示する */}
             <section>
                 {genres.map((g) => {
-                const items = cosmetics.filter(
-                    (v) => v.category === selectedCategory && v.genre === g.key
-                );
-
-                return (
-                    <CosmeticsBlock
-                    key={g.key}
-                    title={g.label}
-                    items={items}
-                    />
-                );
+                    const items = cosmetics.filter(
+                        (v) => v.category === selectedCategory && v.genre === g.key
+                    );
+                    return <CosmeticsBlock key={g.key} title={g.label} items={items} />;
                 })}
             </section>
+
             <div style={{ marginTop: 16 }}>
                 <Link href="/editor">編集に戻る</Link>
             </div>
