@@ -8,6 +8,7 @@ import NavigationLayout from "@/components/navigation/NavigationLayout";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { STEP_CONFIG } from "@/types/steps";
+import { ColorPointSvg, LipPointSvg } from "@/components/svg";
 
 export default function EditorPage() {
     const [selectedTool, setSelectedTool] = useState<string | null>(null);
@@ -138,6 +139,44 @@ export default function EditorPage() {
                             <div className={styles.toolContent}>
                                 {selectedTool === "color" && (
                                     <div className={styles.colorTool}>
+                                        {/* ステップに応じたSVGアイコンを表示 */}
+                                        <div className={styles.colorToolHeader}>
+                                            <div className={styles.stepIconDisplay}>
+                                                {step === "lips" ? (
+                                                    <LipPointSvg
+                                                        fillColor={currentColor}
+                                                        strokeColor="#454A53"
+                                                        width={32}
+                                                        height={48}
+                                                        style={{ display: "block" }}
+                                                    />
+                                                ) : (
+                                                    <ColorPointSvg
+                                                        fillColor={currentColor}
+                                                        strokeColor="#454A53"
+                                                        width={36}
+                                                        height={40}
+                                                        style={{ display: "block" }}
+                                                    />
+                                                )}
+                                                {/* <div
+                                                    style={{
+                                                        fontSize: "10px",
+                                                        color: "#666",
+                                                        marginTop: "2px",
+                                                    }}
+                                                >
+                                                    {step}
+                                                </div> */}
+                                            </div>
+                                            <div className={styles.stepColorInfo}>
+                                                <span className={styles.stepName}>{cfg.label}</span>
+                                                <span className={styles.currentColorCode}>
+                                                    {currentColor.toUpperCase()}
+                                                </span>
+                                            </div>
+                                        </div>
+
                                         {/* <h3>カラー選択</h3> */}
                                         <div className={styles.colorPresets}>
                                             {cfg.presets.map((preset) => (
@@ -148,18 +187,31 @@ export default function EditorPage() {
                                                             ? styles.active
                                                             : ""
                                                     }`}
-                                                    style={{ backgroundColor: preset.hex }}
                                                     onClick={() =>
                                                         setColorByStep((prev) => ({
                                                             ...prev,
                                                             [step]: preset.hex,
                                                         }))
                                                     }
+                                                    title={preset.label}
                                                 >
-                                                    <div
-                                                        className={styles.colorPreview}
-                                                        style={{ backgroundColor: preset.hex }}
-                                                    />
+                                                    {step === "lips" ? (
+                                                        <LipPointSvg
+                                                            fillColor={preset.hex}
+                                                            strokeColor="#454A53"
+                                                            width={24}
+                                                            height={36}
+                                                            className={`${styles.presetSvg} ${styles.svgIcon}`}
+                                                        />
+                                                    ) : (
+                                                        <ColorPointSvg
+                                                            fillColor={preset.hex}
+                                                            strokeColor="#454A53"
+                                                            width={28}
+                                                            height={30}
+                                                            className={`${styles.presetSvg} ${styles.svgIcon}`}
+                                                        />
+                                                    )}
                                                 </button>
                                             ))}
                                         </div>
@@ -168,6 +220,34 @@ export default function EditorPage() {
                                                 カスタムカラー
                                             </div>
                                             <div className={styles.customColorPicker}>
+                                                <div className={styles.customColorPreview}>
+                                                    {step === "lips" ? (
+                                                        <LipPointSvg
+                                                            fillColor={currentColor}
+                                                            strokeColor="#454A53"
+                                                            width={30}
+                                                            height={36}
+                                                            className={styles.svgIcon}
+                                                        />
+                                                    ) : step === "cheek" ||
+                                                      step === "shadow" ||
+                                                      step === "brows" ? (
+                                                        <ColorPointSvg
+                                                            fillColor={currentColor}
+                                                            strokeColor="#454A53"
+                                                            width={30}
+                                                            height={32}
+                                                            className={styles.svgIcon}
+                                                        />
+                                                    ) : (
+                                                        <div
+                                                            className={styles.customColorCircle}
+                                                            style={{
+                                                                backgroundColor: currentColor,
+                                                            }}
+                                                        />
+                                                    )}
+                                                </div>
                                                 <input
                                                     type="color"
                                                     value={currentColor}
