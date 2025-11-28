@@ -19,6 +19,7 @@ const STEP_ORDER: { id: string; label: string }[] = [
 
 // note → 表示ラベル（FINAL 含む）
 const NOTE_LABEL: Record<string, string> = {
+    FINAL: "完成",
     primer: "下地",
     foundation: "ファンデーション",
     concealer: "コンシーラー",
@@ -29,7 +30,6 @@ const NOTE_LABEL: Record<string, string> = {
     brows: "アイブロウ",
     shadow: "アイシャドウ",
     lips: "リップ",
-    FINAL: "完成",
 };
 
 export const categories = [
@@ -88,17 +88,19 @@ function buildLatestSteps(all: SimItem[]): SimItem[] {
         }
     }
 
-    // 3. 表示順に並べる：下地 → ... → リップ → FINAL
+    // 3. 表示順に並べる：FINAL → 下地 → ... → リップ
     const ordered: SimItem[] = [];
 
-    for (const step of STEP_ORDER) {
-        const it = latestByNote.get(step.id);
-        if (it) ordered.push(it);
-    }
-
+    // 最初に完成画像（FINAL）を配置
     const finalItem = latestByNote.get("FINAL");
     if (finalItem) {
         ordered.push(finalItem);
+    }
+
+    // 続いてメイクステップの順序で配置
+    for (const step of STEP_ORDER) {
+        const it = latestByNote.get(step.id);
+        if (it) ordered.push(it);
     }
 
     return ordered;
