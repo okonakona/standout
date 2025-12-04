@@ -290,30 +290,46 @@
 }
 
 .colorOption {
+    background: none;
+    border: none;
+}
+
+/* .colorOption:active,
+.colorOption.active {
     width: 60px;
     height: 60px;
-    border-radius: 50%;
-    border: 3px solid #fff;
+    border: 3px solid var(--mainColor);
+    border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     cursor: pointer;
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #fff;
+    background: var(--background);
     position: relative;
     padding: 4px;
-}
+} */
 
-.colorOption:hover {
+/* .colorOption:hover {
     transform: scale(1.1);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-}
+} */
 
-.colorOption.active {
+/* .colorOption.active {
     border-color: #007bff;
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
     transform: scale(1.05);
+} */
+
+.colorOption.selected,
+.colorOption.active {
+    width: 60px;
+    height: 60px;
+    border-radius: 4px;
+    background-color: var(--background);
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
 
 .presetSvg {

@@ -1,0 +1,29 @@
+.svg {
+    width: 40px;
+    height: 48px;
+    background-color: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    position: relative;
+}
+
+.svg:hover,
+.svg:focus,
+.svg:active {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+}
+
+/* .colorOption.selected > .svg,
+.colorOption.active > .svg {
+    transform: scale(1.1);
+}
+
+.colorOption.selected > .svg:hover,
+.colorOption.active > .svg:hover {
+    transform: scale(1);
+} */
