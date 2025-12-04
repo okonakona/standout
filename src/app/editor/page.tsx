@@ -140,7 +140,7 @@ export default function EditorPage() {
                                 {selectedTool === "color" && (
                                     <div className={styles.colorTool}>
                                         {/* ステップに応じたSVGアイコンを表示 */}
-                                        <div className={styles.colorToolHeader}>
+                                        {/* <div className={styles.colorToolHeader}>
                                             <div className={styles.stepIconDisplay}>
                                                 {step === "lips" ? (
                                                     <LipPointSvg
@@ -159,15 +159,6 @@ export default function EditorPage() {
                                                         style={{ display: "block" }}
                                                     />
                                                 )}
-                                                {/* <div
-                                                    style={{
-                                                        fontSize: "10px",
-                                                        color: "#666",
-                                                        marginTop: "2px",
-                                                    }}
-                                                >
-                                                    {step}
-                                                </div> */}
                                             </div>
                                             <div className={styles.stepColorInfo}>
                                                 <span className={styles.stepName}>{cfg.label}</span>
@@ -175,7 +166,7 @@ export default function EditorPage() {
                                                     {currentColor.toUpperCase()}
                                                 </span>
                                             </div>
-                                        </div>
+                                        </div> */}
 
                                         {/* <h3>カラー選択</h3> */}
                                         <div className={styles.colorPresets}>
@@ -207,8 +198,8 @@ export default function EditorPage() {
                                                         <ColorPointSvg
                                                             fillColor={preset.hex}
                                                             strokeColor="#454A53"
-                                                            width={28}
-                                                            height={30}
+                                                            width={40}
+                                                            height={48}
                                                             className={`${styles.presetSvg} ${styles.svgIcon}`}
                                                         />
                                                     )}
@@ -229,22 +220,13 @@ export default function EditorPage() {
                                                             height={36}
                                                             className={styles.svgIcon}
                                                         />
-                                                    ) : step === "cheek" ||
-                                                      step === "shadow" ||
-                                                      step === "brows" ? (
+                                                    ) : (
                                                         <ColorPointSvg
                                                             fillColor={currentColor}
                                                             strokeColor="#454A53"
-                                                            width={30}
-                                                            height={32}
+                                                            width={40}
+                                                            height={48}
                                                             className={styles.svgIcon}
-                                                        />
-                                                    ) : (
-                                                        <div
-                                                            className={styles.customColorCircle}
-                                                            style={{
-                                                                backgroundColor: currentColor,
-                                                            }}
                                                         />
                                                     )}
                                                 </div>
@@ -258,9 +240,9 @@ export default function EditorPage() {
                                                         }))
                                                     }
                                                 />
-                                                <span className={styles.customColorHex}>
+                                                {/* <span className={styles.customColorHex}>
                                                     {currentColor.toUpperCase()}
-                                                </span>
+                                                </span> */}
                                             </div>
                                         </div>
                                     </div>
