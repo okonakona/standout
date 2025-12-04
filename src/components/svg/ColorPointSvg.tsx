@@ -1,4 +1,5 @@
 import React from "react";
+import styles from "@/styles/colorSvg.module.css";
 
 type ColorPointSvgProps = {
     className?: string;
@@ -24,7 +25,7 @@ export default function ColorPointSvg({
             viewBox="0 0 50 54"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className={className}
+            className={styles.svg}
         >
             <path
                 d="M44.0296 28.2634C38.1468 39.0415 20.651 39.5822 9.81242 38.7785C7.67558 38.62 7.22478 35.0522 9.05392 33.9362C13.8865 30.9877 19.9197 25.9377 24.4755 17.5907C27.4227 12.191 34.1892 10.2029 39.5889 13.1501C44.9886 16.0973 46.9767 22.8637 44.0296 28.2634Z"
