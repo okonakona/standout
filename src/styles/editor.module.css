@@ -21,6 +21,7 @@
     left: 0;
     right: 0;
     z-index: 10;
+    height: 300px;
 }
 
 .loadingText {
@@ -105,7 +106,8 @@
 
 /* ツール固有のUIスタイル */
 .toolContent {
-    padding: 16px;
+    width: 100%;
+    padding: 0 12px;
     background: #ffffff;
     max-height: 200px;
     overflow-y: auto;
@@ -160,7 +162,6 @@
 }
 
 .currentColorCode {
-    font-family: "Monaco", "Menlo", monospace;
     font-size: 12px;
     color: #666;
     background: #ffffff;
@@ -284,6 +285,8 @@
 
 .colorPresets {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
     gap: 12px;
     flex-wrap: wrap;
     padding: 8px 0;
@@ -294,42 +297,18 @@
     border: none;
 }
 
-/* .colorOption:active,
-.colorOption.active {
-    width: 60px;
-    height: 60px;
-    border: 3px solid var(--mainColor);
-    border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--background);
-    position: relative;
-    padding: 4px;
-} */
-
-/* .colorOption:hover {
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-} */
-
-/* .colorOption.active {
-    border-color: #007bff;
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-    transform: scale(1.05);
-} */
-
 .colorOption.selected,
 .colorOption.active {
-    width: 60px;
-    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 4px;
+    padding-top: 8px;
+    padding-right: 4px;
     background-color: var(--background);
-    border-color: #007bff;
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    border-color: var(--mainColor);
+    box-shadow: 0 0 0 2px rgba(16, 58, 113, 1);
+    transition: all 0.2s ease-in-out;
 }
 
 .presetSvg {
@@ -366,6 +345,43 @@
     gap: 8px;
     padding: 16px 0;
     border-top: 1px solid #eee;
+}
+
+.customColorButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background: none;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.customColorButton:hover {
+    background-color: #f8f9fa;
+}
+
+.customColorIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex-shrink: 0;
+    padding: 6px 8px;
+    border-radius: 4px;
+    border: 2px solid var(--mainColor);
+    background: #fff;
+    transition: all 0.2s ease-in-out;
+}
+
+.customColorLabel {
+    font-size: 12px;
+    color: #666;
+    text-align: center;
+    margin: 0;
 }
 
 .customColorPicker {
@@ -416,7 +432,7 @@
 }
 
 .customColorSection input[type="color"]:hover {
-    border-color: #007bff;
+    border-color: var(--mainColor);
     transform: scale(1.05);
 }
 
@@ -428,7 +444,7 @@
 }
 
 .customColorHex {
-    font-family: "Monaco", "Menlo", monospace;
+    /* font-family: "Monaco", "Menlo", monospace; */
     font-size: 12px;
     color: #666;
     background: #f8f9fa;
@@ -455,9 +471,9 @@
 
 .brushSize.active,
 .modeButton.active {
-    background: #007bff;
+    background: var(--mainColor);
     color: white;
-    border-color: #007bff;
+    border-color: var(--mainColor);
 }
 
 .modeButton {
