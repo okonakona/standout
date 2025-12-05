@@ -9,6 +9,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { STEP_CONFIG } from "@/types/steps";
 import { ColorPointSvg, LipPointSvg } from "@/components/svg";
+import Image from "next/image";
 
 export default function EditorPage() {
     const [selectedTool, setSelectedTool] = useState<string | null>(null);
@@ -139,37 +140,42 @@ export default function EditorPage() {
                             <div className={styles.toolContent}>
                                 {selectedTool === "color" && (
                                     <div className={styles.colorTool}>
-                                        {/* ステップに応じたSVGアイコンを表示 */}
-                                        {/* <div className={styles.colorToolHeader}>
-                                            <div className={styles.stepIconDisplay}>
-                                                {step === "lips" ? (
-                                                    <LipPointSvg
-                                                        fillColor={currentColor}
-                                                        strokeColor="#454A53"
-                                                        width={32}
-                                                        height={48}
-                                                        style={{ display: "block" }}
-                                                    />
-                                                ) : (
-                                                    <ColorPointSvg
-                                                        fillColor={currentColor}
-                                                        strokeColor="#454A53"
-                                                        width={36}
-                                                        height={40}
-                                                        style={{ display: "block" }}
-                                                    />
-                                                )}
-                                            </div>
-                                            <div className={styles.stepColorInfo}>
-                                                <span className={styles.stepName}>{cfg.label}</span>
-                                                <span className={styles.currentColorCode}>
-                                                    {currentColor.toUpperCase()}
-                                                </span>
-                                            </div>
-                                        </div> */}
-
                                         {/* <h3>カラー選択</h3> */}
                                         <div className={styles.colorPresets}>
+                                            <div className={styles.customColorSection}>
+                                                <button
+                                                    className={styles.customColorButton}
+                                                    onClick={() =>
+                                                        document
+                                                            .getElementById("colorInput")
+                                                            ?.click()
+                                                    }
+                                                >
+                                                    <div className={styles.customColorIcon}>
+                                                        <Image
+                                                            src={"/assets/icon/color.svg"}
+                                                            alt=""
+                                                            width={40}
+                                                            height={40}
+                                                        />
+                                                        <span className={styles.customColorLabel}>
+                                                            カスタム
+                                                        </span>
+                                                    </div>
+                                                    <input
+                                                        id="colorInput"
+                                                        type="color"
+                                                        value={currentColor}
+                                                        onChange={(e) =>
+                                                            setColorByStep((prev) => ({
+                                                                ...prev,
+                                                                [step]: e.target.value,
+                                                            }))
+                                                        }
+                                                        style={{ display: "none" }}
+                                                    />
+                                                </button>
+                                            </div>
                                             {cfg.presets.map((preset) => (
                                                 <button
                                                     key={preset.id}
@@ -205,45 +211,6 @@ export default function EditorPage() {
                                                     )}
                                                 </button>
                                             ))}
-                                        </div>
-                                        <div className={styles.customColorSection}>
-                                            <div className={styles.customColorLabel}>
-                                                カスタムカラー
-                                            </div>
-                                            <div className={styles.customColorPicker}>
-                                                <div className={styles.customColorPreview}>
-                                                    {step === "lips" ? (
-                                                        <LipPointSvg
-                                                            fillColor={currentColor}
-                                                            strokeColor="#454A53"
-                                                            width={30}
-                                                            height={36}
-                                                            className={styles.svgIcon}
-                                                        />
-                                                    ) : (
-                                                        <ColorPointSvg
-                                                            fillColor={currentColor}
-                                                            strokeColor="#454A53"
-                                                            width={40}
-                                                            height={48}
-                                                            className={styles.svgIcon}
-                                                        />
-                                                    )}
-                                                </div>
-                                                <input
-                                                    type="color"
-                                                    value={currentColor}
-                                                    onChange={(e) =>
-                                                        setColorByStep((prev) => ({
-                                                            ...prev,
-                                                            [step]: e.target.value,
-                                                        }))
-                                                    }
-                                                />
-                                                {/* <span className={styles.customColorHex}>
-                                                    {currentColor.toUpperCase()}
-                                                </span> */}
-                                            </div>
                                         </div>
                                     </div>
                                 )}
