@@ -21,14 +21,14 @@ const tools: { id: string; label: string; icon: string }[] = [
         icon: "/assets/icon/brush.svg",
     },
     {
-        id: "eraser",
-        label: "消しゴム",
-        icon: "/assets/icon/eraser.svg",
+        id: "blur",
+        label: "ぼかし",
+        icon: "/assets/icon/blur.svg",
     },
     {
-        id: "eraser2",
-        label: "消しゴム",
-        icon: "/assets/icon/eraser.svg",
+        id: "reset",
+        label: "修正",
+        icon: "/assets/icon/reset.svg",
     },
 ];
 
