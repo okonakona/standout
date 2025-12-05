@@ -11,8 +11,6 @@ type ColorPointSvgProps = {
 };
 
 export default function ColorPointSvg({
-    className,
-    style,
     fillColor = "#91786D",
     strokeColor = "#454A53",
     width = 50,
