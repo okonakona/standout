@@ -61,7 +61,7 @@
 .content {
     flex: 1;
     overflow-y: auto;
-    height: 200px;
+    height: 300px;
 }
 
 /* 選択時の下部ボタンバー */
