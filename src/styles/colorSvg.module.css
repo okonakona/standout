@@ -1,0 +1,18 @@
+.svg {
+    width: 60px;
+    height: 68px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    position: relative;
+    transition: all 0.2s ease-in-out;
+}
+
+.svg:hover,
+.svg:focus,
+.svg:active {
+    transform: scale(1.2);
+}

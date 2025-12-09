@@ -300,9 +300,7 @@ export default function PracticeCanvas({
                 onPointerLeave={onPointerUp}
                 style={{
                     width: "100%",
-                    height: "auto",
                     touchAction: "none",
-                    border: "1px solid #ddd",
                     background: "#000",
                     display: "block",
                 }}
@@ -335,9 +333,9 @@ export default function PracticeCanvas({
                 </svg>
             )} */}
 
-            <div style={{ marginTop: 8, display: "flex", gap: 8 }}>
+            {/* <div style={{ marginTop: 8, display: "flex", gap: 8 }}>
                 <button onClick={clearCurrentStep}>このステップの塗りをクリア</button>
-            </div>
+            </div> */}
         </div>
     );
 }
