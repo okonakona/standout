@@ -301,7 +301,6 @@ export default function PracticeCanvas({
                 style={{
                     width: "100%",
                     touchAction: "none",
-                    border: "1px solid #ddd",
                     background: "#000",
                     display: "block",
                 }}
