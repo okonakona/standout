@@ -8,29 +8,54 @@
 
 .header {
     width: 100%;
-    height: 40px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 16px;
     box-sizing: border-box;
-    flex-shrink: 0; /* ヘッダーサイズ固定 */
 }
 
 .okButton,
 .backButton {
+    width: 100px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
-    background: none;
+    color: var(--accentColor);
+    font-size: 22px;
     border: none;
+    background: var(--background);
     cursor: pointer;
-    font-size: 18px;
-    color: #333;
-    border-radius: 4px;
-    transition: background-color 0.2s ease;
+    padding-top: 5px;
+}
+
+.backButton {
+    padding-right: 15px;
+    border-radius: 0 100px 0 0;
+
+    svg {
+        width: 20px;
+    }
+}
+
+.okButton {
+    padding-left: 10px;
+    border-radius: 100px 0 0 0;
+    font-weight: bold;
+    color: var(--pointColor);
+}
+
+.okButton.active,
+.backButton.active {
+    background: var(--pointColor);
+}
+
+.okButton.active {
+    color: white;
+}
+
+.backButton.active svg path {
+    fill: white;
 }
 
 /* .okButton:hover {
