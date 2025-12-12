@@ -1,34 +1,34 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import styles from "./navigation.module.css";
+import { LayerIcon, ColorIcon, BrushIcon, BlurIcon, ResetIcon } from "@/components/svg/Icons";
 
-const tools: { id: string; label: string; icon: string }[] = [
+const tools: { id: string; label: string; Icon: React.FC<{ className?: string }> }[] = [
     {
         id: "parts",
         label: "レイヤー",
-        icon: "/assets/icon/layer.svg",
+        Icon: LayerIcon,
     },
     {
         id: "color",
         label: "カラー",
-        icon: "/assets/icon/color.svg",
+        Icon: ColorIcon,
     },
     {
         id: "brush",
         label: "ブラシ",
-        icon: "/assets/icon/brush.svg",
+        Icon: BrushIcon,
     },
     {
         id: "blur",
         label: "ぼかし",
-        icon: "/assets/icon/blur.svg",
+        Icon: BlurIcon,
     },
     {
         id: "reset",
         label: "修正",
-        icon: "/assets/icon/reset.svg",
+        Icon: ResetIcon,
     },
 ];
 
@@ -59,6 +59,7 @@ export default function Navigation({
         <nav className={styles.navBar}>
             {tools.map((tool) => {
                 const isActive = activeId === tool.id;
+                const Icon = tool.Icon;
                 return (
                     <button
                         key={tool.id}
@@ -67,14 +68,7 @@ export default function Navigation({
                         onClick={() => handleItemClick(tool.id)}
                     >
                         <div className={styles.navIconWrapper}>
-                            <Image
-                                src={tool.icon}
-                                alt={tool.label}
-                                width={20}
-                                height={20}
-                                className={styles.navIcon}
-                                priority
-                            />
+                            <Icon className={styles.navIcon} />
                         </div>
                         <span className={styles.navLabel}>{tool.label}</span>
                     </button>
