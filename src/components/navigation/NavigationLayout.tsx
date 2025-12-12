@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import Navigation from "./navigation";
 import styles from "./NavigationLayout.module.css";
+import { PrevIcon } from "@/components/svg/Icons";
 
 type NavigationLayoutProps = {
     children?: ReactNode;
@@ -25,10 +26,16 @@ export default function NavigationLayout({
         <div className={styles.container}>
             {showHeader && (
                 <header className={styles.header}>
-                    <button className={styles.backButton} onClick={onBackClick}>
-                        ◀
+                    <button
+                        className={`${styles.backButton} ${isSelected ? styles.active : ""}`}
+                        onClick={onBackClick}
+                    >
+                        <PrevIcon />
                     </button>
-                    <button className={styles.okButton} onClick={onOkClick}>
+                    <button
+                        className={`${styles.okButton} ${isSelected ? styles.active : ""}`}
+                        onClick={onOkClick}
+                    >
                         ok
                     </button>
                 </header>
