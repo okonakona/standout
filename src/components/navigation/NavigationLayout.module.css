@@ -4,22 +4,20 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    background: #ffffff;
 }
 
 .header {
-    height: 44px;
     width: 100%;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 16px;
-    background: #ffffff;
     box-sizing: border-box;
-    border-bottom: 1px solid #e0e0e0;
     flex-shrink: 0; /* ヘッダーサイズ固定 */
 }
 
+.okButton,
 .backButton {
     display: flex;
     align-items: center;
@@ -35,89 +33,17 @@
     transition: background-color 0.2s ease;
 }
 
-.backButton:hover {
-    background: #f5f5f5;
-}
-
-.okButton {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 6px 12px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 500;
-    color: #007bff;
-    border-radius: 4px;
-    transition: background-color 0.2s ease;
-}
-
-.okButton:hover {
+/* .okButton:hover {
     background: #f0f8ff;
 }
+
+.backButton:hover {
+    background: #f5f5f5;
+} */
 
 .content {
     flex: 1;
     overflow-y: auto;
     height: 300px;
-}
-
-/* 選択時の下部ボタンバー */
-.bottomBar {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 60px;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 24px;
-    flex-shrink: 0;
-}
-
-.cancelButton {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    background: #6c757d;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 20px;
-    font-weight: bold;
-    color: #ffffff;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(15, 15, 15, 0.15);
-}
-
-.cancelButton:hover {
-    background: #5a6268;
-    transform: translateY(-1px);
-}
-
-.confirmButton {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    background: #6c757d;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    color: #ffffff;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
-
-.confirmButton:hover {
-    background: #5a6268;
-    transform: translateY(-1px);
+    background: var(--background);
 }
