@@ -1,58 +1,50 @@
 /* シンプルなナビゲーションバー（高さ 50px） */
 .navBar {
-    height: 50px;
     width: 100%;
+    height: 60px;
+    background: var(--background);
+    border-bottom: solid 1px var(--grayColor);
+    color: var(--accentColor);
     display: flex;
     align-items: center;
     justify-content: space-around;
-    background: #fefefe;
-    border-bottom: 1px solid #ddd;
-    box-sizing: border-box;
-    padding: 4px 0;
 }
 
 .navItem {
+    width: 46px;
+    height: 50px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-    gap: 2px;
-    color: #666;
-    font-size: 10px;
-    line-height: 1;
-    font-weight: 400;
-    background: none;
     border: none;
-    cursor: pointer;
-    padding: 0;
-    min-width: 0;
-    flex: 1;
-    transition: all 0.2s ease;
+    border-radius: 4px;
+    background: none;
+    transition: all 0.2s ease-in-out;
 }
 
 .navItem.active {
-    color: #333;
+    background-color: var(--navColor);
+    color: var(--background);
+
+    svg {
+        path,
+        rect {
+            stroke: var(--background);
+        }
+        /* fill: var(--background); */
+        /* filter: invert(1); */
+    }
 }
 
 .navIconWrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    transition: all 0.2s ease;
-}
-
-.navItem.active .navIconWrapper {
-    background: #ffffff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), inset 0 0 0 4px rgba(0, 0, 0, 0.05),
-        inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 24px;
+    height: 24px;
 }
 
 .navIcon {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
 }
 
 .navLabel {
