@@ -8,8 +8,7 @@ import NavigationLayout from "@/components/navigation/NavigationLayout";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { STEP_CONFIG } from "@/types/steps";
-import { ColorPointSvg, LipPointSvg } from "@/components/svg";
-import Image from "next/image";
+import { ColorPointSvg, LipPointSvg, BrushSvg, ColorIcon } from "@/components/svg/Icons";
 
 export default function EditorPage() {
     const [selectedTool, setSelectedTool] = useState<string | null>(null);
@@ -152,12 +151,7 @@ export default function EditorPage() {
                                                     }
                                                 >
                                                     <div className={styles.customColorIcon}>
-                                                        <Image
-                                                            src={"/assets/icon/color.svg"}
-                                                            alt=""
-                                                            width={40}
-                                                            height={40}
-                                                        />
+                                                        <ColorIcon />
                                                         <span className={styles.customColorLabel}>
                                                             カスタム
                                                         </span>
@@ -266,9 +260,8 @@ export default function EditorPage() {
                                                                     setBrushRadius(radius);
                                                                 }}
                                                             >
-                                                                <img
-                                                                    src={`/assets/brush/brush${type}.svg`}
-                                                                    alt={`ブラシ ${type}`}
+                                                                <BrushSvg
+                                                                    type={type}
                                                                     className={styles.brushSvg}
                                                                 />
                                                             </div>
