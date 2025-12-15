@@ -110,7 +110,7 @@
     height: 100%;
     max-height: 300px;
     padding: 0 12px;
-    overflow-y: auto;
+    overflow-y: hidden;
     background: var(--background);
 }
 
@@ -195,18 +195,12 @@
 
 /* ブラシツール専用スタイル */
 .brushOptions {
+    position: relative;
     width: 100%;
     height: 100%;
-    gap: 20px;
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-end;
 }
 
 .brushOption {
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -218,32 +212,39 @@
 
 /* ブラシタイプごとのサイズ - データ属性ベース */
 .brushOption .brushSvg {
-    width: 60px;
-    height: 60px;
+    position: absolute;
+    top: 15%;
 }
 
 /* ブラシタイプ1（極小）*/
 .brushOption[data-brush-type="1"] .brushSvg {
-    width: 30px;
-    height: 45px;
+    top: 50%;
+    width: 100px;
+    height: 100px;
 }
 
 /* ブラシタイプ2（小）*/
 .brushOption[data-brush-type="2"] .brushSvg {
-    width: 50px;
-    height: 75px;
+    top: 30%;
+    left: 13%;
+    width: 160px;
+    height: 160px;
 }
 
 /* ブラシタイプ3（中）*/
 .brushOption[data-brush-type="3"] .brushSvg {
-    width: 60px;
-    height: 90px;
+    top: 20%;
+    left: 40%;
+    /* transform: translateX(-50%); */
+    width: 140px;
+    height: 160px;
 }
 
 /* ブラシタイプ4（大）*/
 .brushOption[data-brush-type="4"] .brushSvg {
-    width: 70px;
-    height: 105px;
+    right: 0%;
+    width: 155px;
+    height: 175px;
 }
 
 .brushSvg {
@@ -252,14 +253,13 @@
     transition: all 0.3s ease;
 }
 
-.brushOption:hover .brushSvg {
-    filter: brightness(0.8);
-    transform: scale(1.05);
+.brushOption.active .brushSvg {
+    fill: var(--subColor);
+    stroke: var(--blackColor);
 }
 
-.brushOption.active .brushSvg {
-    filter: brightness(0) saturate(0);
-    transform: scale(1.1);
+.brushOption.active .brushSvg :global(.brushFill) {
+    fill: var(--accentColor) !important;
 }
 
 .brushIcon {
