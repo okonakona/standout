@@ -47,24 +47,16 @@
 
 .okButton.active,
 .backButton.active {
-    background: var(--pointColor);
+    background: var(--mainColor);
 }
 
 .okButton.active {
-    color: white;
+    color: var(--background);
 }
 
 .backButton.active svg path {
-    fill: white;
+    fill: var(--background);
 }
-
-/* .okButton:hover {
-    background: #f0f8ff;
-}
-
-.backButton:hover {
-    background: #f5f5f5;
-} */
 
 .content {
     flex: 1;
