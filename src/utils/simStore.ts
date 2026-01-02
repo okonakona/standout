@@ -1,10 +1,10 @@
 // src/utils/simStore.ts
 import { Step } from "@/types/steps";
 
-type SimItem = { 
-    id: string; 
-    createdAt: number; 
-    dataUrl: string; 
+type SimItem = {
+    id: string;
+    createdAt: number;
+    dataUrl: string;
     note?: string;
     colorByStep?: Record<Step, string>;
     strengthByStep?: Record<Step, number>;
