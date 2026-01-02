@@ -23,11 +23,15 @@ type Props = {
 function getMethodText(step: Step, config: any): string {
     const methods: Record<Step, string> = {
         primer: "顔全体に均一に伸ばし、メイクのベースを整えます。Tゾーンは薄めに、乾燥しやすい部分は重ね付けします。",
-        foundation: "中心から外側に向かって、スポンジやブラシで均一に伸ばします。首との境目をぼかして自然に仕上げます。",
-        concealer: "気になる部分に薄く重ね、指で軽くたたいてなじませます。厚塗りを避けて自然な仕上がりに。",
+        foundation:
+            "中心から外側に向かって、スポンジやブラシで均一に伸ばします。首との境目をぼかして自然に仕上げます。",
+        concealer:
+            "気になる部分に薄く重ね、指で軽くたたいてなじませます。厚塗りを避けて自然な仕上がりに。",
         powder: "Tゾーンを中心に、余分な油分を抑えます。ブラシで薄く重ねて、マットな質感に仕上げます。",
-        contour: "フェイスラインや鼻筋に影を入れて、立体感を出します。ぼかしを丁寧に行い自然な陰影を作ります。",
-        highlight: "頬骨の高い位置や鼻筋に光を集めて、ツヤ感を出します。指で軽くたたいてなじませます。",
+        contour:
+            "フェイスラインや鼻筋に影を入れて、立体感を出します。ぼかしを丁寧に行い自然な陰影を作ります。",
+        highlight:
+            "頬骨の高い位置や鼻筋に光を集めて、ツヤ感を出します。指で軽くたたいてなじませます。",
         cheek: "頬の高い位置に、円を描くようにブラシで入れます。笑ったときに高くなる部分に入れると自然な血色感が出ます。",
         brows: "眉頭から眉尻に向かって、毛流れに沿って描きます。眉頭は薄め、眉尻に向かって濃くします。",
         shadow: "アイホール全体にベースカラーを塗り、グラデーションを作ります。目のキワに締め色を入れて目元を強調します。",
@@ -38,7 +42,9 @@ function getMethodText(step: Step, config: any): string {
 
 export default function MakeupSpecSheet({ steps, finalImageUrl, userName, date, message }: Props) {
     const printRef = useRef<HTMLDivElement>(null);
-    const [editableMessage, setEditableMessage] = React.useState(message || "このメイクで理想の自分を表現しましょう！");
+    const [editableMessage, setEditableMessage] = React.useState(
+        message || "このメイクで理想の自分を表現しましょう！"
+    );
     const [isExpanded, setIsExpanded] = React.useState(false);
 
     const handlePrint = () => {
@@ -106,12 +112,8 @@ export default function MakeupSpecSheet({ steps, finalImageUrl, userName, date, 
                 <div className={styles.header}>
                     <h1 className={styles.title}>メイク仕様書</h1>
                     <div className={styles.info}>
-                        <div>
-                            {userName && <span>お名前: {userName}</span>}
-                        </div>
-                        <div>
-                            作成日: {date || new Date().toLocaleDateString("ja-JP")}
-                        </div>
+                        <div>{userName && <span>お名前: {userName}</span>}</div>
+                        <div>作成日: {date || new Date().toLocaleDateString("ja-JP")}</div>
                     </div>
                 </div>
 
@@ -137,8 +139,8 @@ export default function MakeupSpecSheet({ steps, finalImageUrl, userName, date, 
                 </div>
 
                 <div className={styles.toggleContainer}>
-                    <button 
-                        onClick={() => setIsExpanded(!isExpanded)} 
+                    <button
+                        onClick={() => setIsExpanded(!isExpanded)}
                         className={styles.toggleButton}
                     >
                         {isExpanded ? "詳細を閉じる ▲" : "詳細を見る ▼"}
@@ -165,11 +167,17 @@ export default function MakeupSpecSheet({ steps, finalImageUrl, userName, date, 
                                             <div className={styles.stepDetails}>
                                                 <div className={styles.detailRow}>
                                                     <strong>カラー:</strong>
-                                                    <span className={styles.colorSwatch} style={{ backgroundColor: stepData.color }}></span>
-                                                    <span style={{ marginLeft: 8 }}>{stepData.color}</span>
+                                                    <span
+                                                        className={styles.colorSwatch}
+                                                        style={{ backgroundColor: stepData.color }}
+                                                    ></span>
+                                                    <span style={{ marginLeft: 8 }}>
+                                                        {stepData.color}
+                                                    </span>
                                                 </div>
                                                 <div className={styles.detailRow}>
-                                                    <strong>濃度:</strong> {Math.round(stepData.strength * 100)}%
+                                                    <strong>濃度:</strong>{" "}
+                                                    {Math.round(stepData.strength * 100)}%
                                                 </div>
                                                 <div className={styles.detailRow}>
                                                     <strong>ブレンド:</strong> {config.blend}
@@ -191,8 +199,12 @@ export default function MakeupSpecSheet({ steps, finalImageUrl, userName, date, 
                         <div className={styles.notes}>
                             <h2 className={styles.sectionTitle}>備考</h2>
                             <div className={styles.notesContent}>
-                                <p>この仕様書は、メイクシミュレーションの結果を記録したものです。</p>
-                                <p>実際のメイクアップの際は、肌の状態や照明環境により色味が異なる場合があります。</p>
+                                <p>
+                                    この仕様書は、メイクシミュレーションの結果を記録したものです。
+                                </p>
+                                <p>
+                                    実際のメイクアップの際は、肌の状態や照明環境により色味が異なる場合があります。
+                                </p>
                             </div>
                         </div>
                     </>
