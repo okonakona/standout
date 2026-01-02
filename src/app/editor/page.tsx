@@ -30,6 +30,7 @@ export default function EditorPage() {
         masks,
         compositeCanvas,
         activeMask,
+        maskByStep,
         isFirst,
         isLast,
         currentColor,
@@ -124,12 +125,58 @@ export default function EditorPage() {
                     >
                         {/* 未選択時：メイクステップ表示 */}
                         {!selectedTool && (
-                            <div className={styles.stepsContainer}>
-                                <div className={styles.stepsRow}>
-                                    <div className={styles.stepInfo}>
-                                        <h3>{cfg.label}</h3>
-                                        <p>ツールを選択してメイクを開始してください</p>
-                                    </div>
+                            <div className={styles.partsTool}>
+                                <div className={styles.stepsList}>
+                                    {order.map((s, index) => {
+                                        const stepConfig = STEP_CONFIG[s];
+                                        const isCurrent = s === step;
+                                        const isPast = order.indexOf(s) < order.indexOf(step);
+                                        const hasMask = !!maskByStep[s];
+
+                                        return (
+                                            <div
+                                                key={s}
+                                                className={`${styles.stepItem} ${
+                                                    isCurrent ? styles.current : ""
+                                                } ${isPast ? styles.past : ""} ${
+                                                    hasMask ? styles.completed : ""
+                                                }`}
+                                            >
+                                                <div className={styles.stepImageFrame}>
+                                                    {/* 画像表示エリア */}
+                                                </div>
+                                                <div className={styles.stepInfo}>
+                                                    <div className={styles.stepNumber}>
+                                                        {index + 1}
+                                                    </div>
+                                                    <div className={styles.stepLabel}>
+                                                        {stepConfig.label}
+                                                    </div>
+                                                    <div className={styles.stepStatus}>
+                                                        {isCurrent && (
+                                                            <span className={styles.statusBadge}>
+                                                                編集中
+                                                            </span>
+                                                        )}
+                                                        {!isCurrent && isPast && hasMask && (
+                                                            <span
+                                                                className={`${styles.statusBadge} ${styles.completed}`}
+                                                            >
+                                                                完了
+                                                            </span>
+                                                        )}
+                                                        {!isCurrent && !isPast && (
+                                                            <span
+                                                                className={`${styles.statusBadge} ${styles.upcoming}`}
+                                                            >
+                                                                未開始
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
                                 </div>
                             </div>
                         )}
@@ -208,7 +255,27 @@ export default function EditorPage() {
                                         </div>
                                     </div>
                                 )}
-
+                                {selectedTool === "blur" && (
+                                    <div className={styles.brushTool}>
+                                        <h3>ぼかし強度</h3>
+                                        <div className={styles.brushSizes}>
+                                            {[10, 20, 30, 40].map((size) => (
+                                                <button
+                                                    key={size}
+                                                    className={`${styles.brushSize} ${
+                                                        brushRadius === size ? styles.active : ""
+                                                    }`}
+                                                    onClick={() => {
+                                                        setBrushRadius(size);
+                                                        setMode("blur");
+                                                    }}
+                                                >
+                                                    {size}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                                 {selectedTool === "brush" &&
                                     (() => {
                                         // 現在のステップで利用可能なブラシサイズを取得
@@ -286,12 +353,7 @@ export default function EditorPage() {
                                     </div>
                                 )}
 
-                                {selectedTool === "parts" && (
-                                    <div className={styles.partsTool}>
-                                        <h3>レイヤー表示</h3>
-                                        <p>レイヤー管理機能</p>
-                                    </div>
-                                )}
+
                             </div>
                         )}
                     </NavigationLayout>
