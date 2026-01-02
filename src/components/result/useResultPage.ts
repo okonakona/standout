@@ -118,9 +118,9 @@ export function useResultPage() {
             const all = await listSim();
             const steps = buildLatestSteps(all);
             setLatestSteps(steps);
-            
+
             // FINAL画像を取得
-            const final = steps.find(item => item.note === "FINAL");
+            const final = steps.find((item) => item.note === "FINAL");
             if (final) {
                 setFinalImage(final.dataUrl);
             }
