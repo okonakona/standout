@@ -352,8 +352,6 @@ export default function EditorPage() {
                                         </button>
                                     </div>
                                 )}
-
-
                             </div>
                         )}
                     </NavigationLayout>
