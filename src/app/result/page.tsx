@@ -6,6 +6,8 @@ import CosmeticsBlock from "@/components/CosmeticsBlock";
 import cosmetics from "@/data/cosmetics.json";
 import styles from "@/styles/editor.module.css";
 import { useResultPage } from "@/components/result/useResultPage";
+import MakeupSpecSheet from "@/components/result/MakeupSpecSheet";
+import { Step } from "@/types/steps";
 
 export default function ResultPage() {
     const {
@@ -15,6 +17,8 @@ export default function ResultPage() {
         categories,
         genres,
         getLabelForNote,
+        makeupSettings,
+        finalImage,
     } = useResultPage();
 
     return (
@@ -79,6 +83,23 @@ export default function ResultPage() {
                         );
                     })}
                 </div>
+            )}
+
+            {/* メイク仕様書 */}
+            {makeupSettings && finalImage && (
+                <MakeupSpecSheet
+                    steps={Object.keys(makeupSettings.colorByStep).map((s) => {
+                        const stepImage = latestSteps.find(item => item.note === s);
+                        return {
+                            step: s as Step,
+                            label: getLabelForNote(s),
+                            color: makeupSettings.colorByStep[s as Step],
+                            strength: makeupSettings.strengthByStep[s as Step],
+                            imageUrl: stepImage?.dataUrl,
+                        };
+                    })}
+                    finalImageUrl={finalImage}
+                />
             )}
 
             {/* ===== ここから下は既存のコスメおすすめエリア ===== */}
