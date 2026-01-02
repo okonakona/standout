@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { loadEditorImage } from "@/utils/imageSession";
 import { useMasks } from "@/hooks/useMasks";
-import { saveSim } from "@/utils/simStore";
+import { saveSim, saveMakeupSettings } from "@/utils/simStore";
 import { STEP_CONFIG, Step } from "@/types/steps";
 
 const ORDER: Step[] = [
@@ -168,7 +168,7 @@ export function useEditorPage() {
     const [step, setStep] = useState<Step>("primer");
 
     const [brushRadius, setBrushRadius] = useState<number>(STEP_CONFIG.primer.defaultRadius);
-    const [mode, setMode] = useState<"paint" | "erase">("paint");
+    const [mode, setMode] = useState<"paint" | "erase" | "blur">("paint");
 
     const [colorByStep, setColorByStep] = useState<Record<Step, string>>(() => {
         const init: Record<Step, string> = {} as any;
@@ -245,12 +245,17 @@ export function useEditorPage() {
             const url = cv.toDataURL("image/jpeg", 0.92);
             // ここは "FINAL" のままで OK
             void saveSim(url, "FINAL");
+            // メイク設定も保存
+            void saveMakeupSettings({
+                colorByStep,
+                strengthByStep,
+            });
         } catch (e) {
             console.error("saveSim(FINAL) でエラーが発生しましたが、結果画面には遷移します:", e);
         } finally {
             router.push("/result");
         }
-    }, [getCurrentCanvas, router]);
+    }, [getCurrentCanvas, router, colorByStep, strengthByStep]);
 
     // ===== ステップ移動 =====
     const goNextStep = useCallback(() => {
@@ -305,6 +310,7 @@ export function useEditorPage() {
         masks,
         compositeCanvas,
         activeMask,
+        maskByStep,
         isFirst,
         isLast,
         currentColor,

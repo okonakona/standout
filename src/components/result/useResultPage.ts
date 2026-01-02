@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { listSim } from "@/utils/simStore";
+import { listSim, loadMakeupSettings, MakeupSettings } from "@/utils/simStore";
 
 export type SimItem = { id: string; createdAt: number; dataUrl: string; note?: string };
 
@@ -110,11 +110,24 @@ export function useResultPage() {
     // ★ 今回セッションのステップ別スナップショット（並び済み）
     const [latestSteps, setLatestSteps] = useState<SimItem[]>([]);
     const [selectedCategory, setSelectedCategory] = useState("ground");
+    const [makeupSettings, setMakeupSettings] = useState<MakeupSettings | null>(null);
+    const [finalImage, setFinalImage] = useState<string | null>(null);
 
     useEffect(() => {
         (async () => {
             const all = await listSim();
-            setLatestSteps(buildLatestSteps(all));
+            const steps = buildLatestSteps(all);
+            setLatestSteps(steps);
+
+            // FINAL画像を取得
+            const final = steps.find((item) => item.note === "FINAL");
+            if (final) {
+                setFinalImage(final.dataUrl);
+            }
+
+            // メイク設定を取得
+            const settings = await loadMakeupSettings();
+            setMakeupSettings(settings);
         })();
     }, []);
 
@@ -127,5 +140,7 @@ export function useResultPage() {
         categories,
         genres,
         getLabelForNote,
+        makeupSettings,
+        finalImage,
     };
 }
