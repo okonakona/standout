@@ -1,0 +1,21 @@
+header{
+    .content{
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: var(--mainColor);
+        width: 100%;
+        .imgBox{
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            .logo{
+                background: var(--background);
+                padding: 2px 72px;
+                border-radius: 50px;
+                margin: 13px 0px 8px;
+                opacity: 90%;
+            }
+        }
+    }
+}
