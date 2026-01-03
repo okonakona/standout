@@ -135,11 +135,7 @@ export default function EditorPage() {
                                 className={styles.beforeImageWrapper}
                                 style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
                             >
-                                <img
-                                    src={img.src}
-                                    alt="メイク前"
-                                    className={styles.compareImage}
-                                />
+                                <img src={img.src} alt="メイク前" className={styles.compareImage} />
                             </div>
 
                             {/* スライダー線 */}
