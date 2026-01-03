@@ -5,15 +5,23 @@ import { WebglMakeupCanvas } from "@/components/webgl/WebglMakeupCanvas";
 import styles from "@/styles/editor.module.css";
 import { useEditorPage } from "@/components/editor/useEditorPage";
 import NavigationLayout from "@/components/navigation/NavigationLayout";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { STEP_CONFIG } from "@/types/steps";
-import { ColorPointSvg, LipPointSvg, BrushSvg, ColorIcon } from "@/components/svg/Icons";
+import {
+    ColorPointSvg,
+    LipPointSvg,
+    BrushSvg,
+    ColorIcon,
+    BlurIcon,
+    ResetIcon,
+} from "@/components/svg/Icons";
 
 export default function EditorPage() {
     const [selectedTool, setSelectedTool] = useState<string | null>(null);
     const [selectedBrush, setSelectedBrush] = useState<number>(1); // ブラシタイプを管理
     const router = useRouter();
+    const currentStepRef = useRef<HTMLDivElement>(null);
 
     const {
         img,
@@ -44,6 +52,23 @@ export default function EditorPage() {
         goNextStep,
         handleFinish,
     } = useEditorPage();
+
+    // 現在のステップが変更されたときに自動スクロール
+    useEffect(() => {
+        if (currentStepRef.current) {
+            currentStepRef.current.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest",
+                inline: "center",
+            });
+        }
+    }, [step]);
+
+    // ステップが変更されたら描画モードをpaintに戻す
+    useEffect(() => {
+        setMode("paint");
+        setSelectedTool(null);
+    }, [step, setMode]);
 
     if (!img) return null;
 
@@ -93,7 +118,13 @@ export default function EditorPage() {
                 <div className={styles.navigationOverlay}>
                     <NavigationLayout
                         activeId={selectedTool}
-                        onItemClickAction={(id) => setSelectedTool(id)}
+                        onItemClickAction={(id) => {
+                            setSelectedTool(id);
+                            if (id === "blur") {
+                                setBrushRadius(15);
+                                setMode("blur");
+                            }
+                        }}
                         onBackClick={() => {
                             if (selectedTool) {
                                 // ツール選択時は選択を解除
@@ -126,6 +157,7 @@ export default function EditorPage() {
                         {/* 未選択時：メイクステップ表示 */}
                         {!selectedTool && (
                             <div className={styles.partsTool}>
+                                <h3 className={styles.navTitle}>現在のステップ</h3>
                                 <div className={styles.stepsList}>
                                     {order.map((s, index) => {
                                         const stepConfig = STEP_CONFIG[s];
@@ -136,6 +168,7 @@ export default function EditorPage() {
                                         return (
                                             <div
                                                 key={s}
+                                                ref={isCurrent ? currentStepRef : null}
                                                 className={`${styles.stepItem} ${
                                                     isCurrent ? styles.current : ""
                                                 } ${isPast ? styles.past : ""} ${
@@ -184,9 +217,68 @@ export default function EditorPage() {
                         {/* 選択時：ツール固有のUI */}
                         {selectedTool && (
                             <div className={styles.toolContent}>
+                                {selectedTool === "parts" && (
+                                    <div className={styles.partsTool}>
+                                        <h3 className={styles.navTitle}>重ね塗り</h3>
+                                        <div className={styles.stepsList}>
+                                            {order
+                                                .filter((s) => !!maskByStep[s])
+                                                .map((s, index) => {
+                                                    const stepConfig = STEP_CONFIG[s];
+                                                    const isCurrent = s === step;
+                                                    const color = colorByStep[s] || stepConfig.defaultColor;
+
+                                                    return (
+                                                        <div
+                                                            key={s}
+                                                            className={`${styles.stepItem} ${
+                                                                isCurrent ? styles.current : ""
+                                                            } ${styles.completed}`}
+                                                        >
+                                                            <div
+                                                                className={styles.stepImageFrame}
+                                                                style={{
+                                                                    backgroundColor: color,
+                                                                    opacity: 0.7,
+                                                                }}
+                                                            >
+                                                                {/* 塗りの色を背景色として表示 */}
+                                                            </div>
+                                                            <div className={styles.stepInfo}>
+                                                                <div className={styles.stepNumber}>
+                                                                    {order.indexOf(s) + 1}
+                                                                </div>
+                                                                <div className={styles.stepLabel}>
+                                                                    {stepConfig.label}
+                                                                </div>
+                                                                <div className={styles.stepStatus}>
+                                                                    <span
+                                                                        className={`${styles.statusBadge} ${styles.completed}`}
+                                                                    >
+                                                                        塗り済み
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })}
+                                            {order.filter((s) => !!maskByStep[s]).length === 0 && (
+                                                <div
+                                                    style={{
+                                                        padding: "20px",
+                                                        textAlign: "center",
+                                                        color: "#999",
+                                                    }}
+                                                >
+                                                    まだ塗りがありません
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
                                 {selectedTool === "color" && (
                                     <div className={styles.colorTool}>
-                                        {/* <h3>カラー選択</h3> */}
+                                        <h3 className={styles.navTitle}>好きな色を選んでみよう</h3>
                                         <div className={styles.colorPresets}>
                                             <div className={styles.customColorSection}>
                                                 <button
@@ -257,22 +349,18 @@ export default function EditorPage() {
                                 )}
                                 {selectedTool === "blur" && (
                                     <div className={styles.brushTool}>
-                                        <h3>ぼかし強度</h3>
-                                        <div className={styles.brushSizes}>
-                                            {[10, 20, 30, 40].map((size) => (
-                                                <button
-                                                    key={size}
-                                                    className={`${styles.brushSize} ${
-                                                        brushRadius === size ? styles.active : ""
-                                                    }`}
-                                                    onClick={() => {
-                                                        setBrushRadius(size);
-                                                        setMode("blur");
-                                                    }}
-                                                >
-                                                    {size}
-                                                </button>
-                                            ))}
+                                        <h3 className={styles.navTitle}>
+                                            色が強くなったところをぼかそう
+                                        </h3>
+                                        <div
+                                            className={`${styles.blurOption} ${
+                                                mode === "blur" ? styles.active : ""
+                                            }`}
+                                            onClick={() =>
+                                                setMode(mode === "blur" ? "paint" : "blur")
+                                            }
+                                        >
+                                            <BlurIcon className={styles.blurIconLarge} />
                                         </div>
                                     </div>
                                 )}
@@ -305,6 +393,9 @@ export default function EditorPage() {
 
                                         return (
                                             <div className={styles.brushTool}>
+                                                <h3 className={styles.navTitle}>
+                                                    塗る大きさを変えてみよう
+                                                </h3>
                                                 <div className={styles.brushOptions}>
                                                     {availableBrushTypes.map(
                                                         ({
@@ -315,7 +406,7 @@ export default function EditorPage() {
                                                             radius: number;
                                                         }) => (
                                                             <div
-                                                                key={type}
+                                                                key={radius}
                                                                 data-brush-type={type}
                                                                 className={`${styles.brushOption} ${
                                                                     selectedBrush === type
@@ -325,6 +416,7 @@ export default function EditorPage() {
                                                                 onClick={() => {
                                                                     setSelectedBrush(type);
                                                                     setBrushRadius(radius);
+                                                                    setMode("paint");
                                                                 }}
                                                             >
                                                                 <BrushSvg
@@ -340,16 +432,20 @@ export default function EditorPage() {
                                     })()}
 
                                 {(selectedTool === "eraser" || selectedTool === "eraser2") && (
-                                    <div className={styles.eraserTool}>
-                                        <h3>消しゴム</h3>
-                                        <button
-                                            className={`${styles.modeButton} ${
+                                    <div className={styles.brushTool}>
+                                        <h3 className={styles.navTitle}>
+                                            塗りの修正したいところを修正しよう
+                                        </h3>
+                                        <div
+                                            className={`${styles.blurOption} ${
                                                 mode === "erase" ? styles.active : ""
                                             }`}
-                                            onClick={() => setMode("erase")}
+                                            onClick={() =>
+                                                setMode(mode === "erase" ? "paint" : "erase")
+                                            }
                                         >
-                                            消しゴムモード
-                                        </button>
+                                            <ResetIcon className={styles.blurIconLarge} />
+                                        </div>
                                     </div>
                                 )}
                             </div>
