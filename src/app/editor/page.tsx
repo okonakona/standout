@@ -226,7 +226,8 @@ export default function EditorPage() {
                                                 .map((s, index) => {
                                                     const stepConfig = STEP_CONFIG[s];
                                                     const isCurrent = s === step;
-                                                    const color = colorByStep[s] || stepConfig.defaultColor;
+                                                    const color =
+                                                        colorByStep[s] || stepConfig.defaultColor;
 
                                                     return (
                                                         <div
