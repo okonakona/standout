@@ -13,21 +13,10 @@ export default function Home() {
                 <div className={styles.imgWrap}>
                     <Image src="/assets/sample.png" alt="サンプル" width={390} height={241} />
                 </div>
-                <h1>メンズメイク・トレーニング</h1>
-                <p>はじめにやりたいことを選んでください。</p>
-                <div>
-                    <Link
-                        href="/role"
-                        
-                    >
-                        ロールモデル選択（作成）
-                    </Link>
-                    <Link
-                        href="/simulate"
-                        
-                    >
-                        シミュレーション
-                    </Link>
+                <h1><Link href="/simulate">メイクシミュレーション</Link></h1>
+                <h2>スタイルガイド</h2>
+                <h2>イケメンメイクコラム</h2>
+                <div className={styles.modalCnt}>
                 </div>
             </main>
             <Footer />
