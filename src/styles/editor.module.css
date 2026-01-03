@@ -37,6 +37,9 @@
     width: 100%;
     max-width: 500px;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .afterIconWrapper {
@@ -61,17 +64,21 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    right: 0;
+    bottom: 0;
     z-index: 3;
     pointer-events: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    overflow: hidden;
 }
 
 .compareImage {
-    width: 100%;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
     height: auto;
     display: block;
 }
@@ -113,7 +120,7 @@
 /* ステップ表示エリア */
 .stepsContainer {
     padding: 16px;
-    background: #ffffff;
+    background: #fefefe;
     max-height: 150px;
     overflow-y: auto;
 }
@@ -153,7 +160,7 @@
     height: 80px;
     border: 2px solid #e0e0e0;
     border-radius: 12px;
-    background: #fff;
+    background: #fefefe;
     cursor: pointer;
     display: flex;
     flex-direction: column;
