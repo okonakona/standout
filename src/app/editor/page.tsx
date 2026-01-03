@@ -15,13 +15,17 @@ import {
     ColorIcon,
     BlurIcon,
     ResetIcon,
+    AfterIcon,
 } from "@/components/svg/Icons";
 
 export default function EditorPage() {
     const [selectedTool, setSelectedTool] = useState<string | null>(null);
     const [selectedBrush, setSelectedBrush] = useState<number>(1); // ブラシタイプを管理
+    const [isCompareMode, setIsCompareMode] = useState(false);
+    const [sliderPosition, setSliderPosition] = useState(50); // %
     const router = useRouter();
     const currentStepRef = useRef<HTMLDivElement>(null);
+    const compareContainerRef = useRef<HTMLDivElement>(null);
 
     const {
         img,
@@ -70,6 +74,39 @@ export default function EditorPage() {
         setSelectedTool(null);
     }, [step, setMode]);
 
+    // スライダーのドラッグ処理
+    const handleSliderMove = (clientX: number) => {
+        if (!compareContainerRef.current) return;
+        const rect = compareContainerRef.current.getBoundingClientRect();
+        const x = clientX - rect.left;
+        const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+        setSliderPosition(percentage);
+    };
+
+    useEffect(() => {
+        if (!isCompareMode) return;
+
+        const handleMouseMove = (e: MouseEvent) => {
+            if (e.buttons === 1) {
+                handleSliderMove(e.clientX);
+            }
+        };
+
+        const handleTouchMove = (e: TouchEvent) => {
+            if (e.touches.length > 0) {
+                handleSliderMove(e.touches[0].clientX);
+            }
+        };
+
+        document.addEventListener("mousemove", handleMouseMove);
+        document.addEventListener("touchmove", handleTouchMove);
+
+        return () => {
+            document.removeEventListener("mousemove", handleMouseMove);
+            document.removeEventListener("touchmove", handleTouchMove);
+        };
+    }, [isCompareMode]);
+
     if (!img) return null;
 
     return (
@@ -79,7 +116,52 @@ export default function EditorPage() {
                 {loading && <p className={styles.loadingText}>シミュレーション中</p>}
                 {/* {error && <p style={{ color: "crimson" }}>解析エラー: {error}</p>} */}
 
-                <div className={styles.canvasContainer}>
+                <div className={styles.canvasContainer} ref={compareContainerRef}>
+                    {/* 右上Afterアイコン */}
+                    <div
+                        className={`${styles.afterIconWrapper} ${
+                            isCompareMode ? styles.active : ""
+                        }`}
+                        onClick={() => setIsCompareMode(!isCompareMode)}
+                    >
+                        <AfterIcon />
+                    </div>
+
+                    {/* 比較モード時のスライダー */}
+                    {isCompareMode && (
+                        <>
+                            {/* メイク前画像 */}
+                            <div
+                                className={styles.beforeImageWrapper}
+                                style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
+                            >
+                                <img
+                                    src={img.src}
+                                    alt="メイク前"
+                                    className={styles.compareImage}
+                                />
+                            </div>
+
+                            {/* スライダー線 */}
+                            <div
+                                className={styles.sliderLine}
+                                style={{ left: `${sliderPosition}%` }}
+                                onMouseDown={(e) => {
+                                    e.preventDefault();
+                                    handleSliderMove(e.clientX);
+                                }}
+                                onTouchStart={(e) => {
+                                    e.preventDefault();
+                                    if (e.touches.length > 0) {
+                                        handleSliderMove(e.touches[0].clientX);
+                                    }
+                                }}
+                            >
+                                <div className={styles.sliderHandle}></div>
+                            </div>
+                        </>
+                    )}
+
                     {/* 下：2D 編集＆合成 */}
                     <PracticeCanvas
                         image={img}
