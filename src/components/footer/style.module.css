@@ -13,17 +13,6 @@ footer{
             display: flex;
             justify-content: center;
             margin: 8px 0px 13px;
-            li{
-                list-style: none;
-            }
-            a{
-                text-decoration: none;
-                font-size: 11px;
-            }
-            a:link,
-            a:visited{
-                color: var(--accentColor);
-            }
         }
         nav ul{
             width: 100%;
@@ -35,6 +24,7 @@ footer{
                     display: flex;
                     flex-direction: column;
                     text-align: center;
+                    font-size: 11px;
                     img{
                         margin: auto;
                     }
