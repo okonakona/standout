@@ -421,3 +421,21 @@ export const EraserIcon: React.FC<IconProps> = ({ className }) => (
         />
     </svg>
 );
+
+export const AfterIcon: React.FC<IconProps> = ({ className }) => (
+    <svg
+        width="30"
+        height="35"
+        viewBox="0 0 30 35"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={className}
+    >
+        <path
+            d="M12 0H4C1.79086 0 0 1.79086 0 4V31C0 33.2091 1.79086 35 4 35H12C14.2091 35 16 33.2091 16 31V4C16 1.79086 14.2091 0 12 0Z"
+            fill="#FEFEFE"
+            fillOpacity="0.8"
+        />
+        <rect x="0.5" y="0.5" width="29" height="34" rx="3.5" stroke="#454A53" />
+    </svg>
+);
