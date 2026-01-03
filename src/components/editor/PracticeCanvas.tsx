@@ -246,9 +246,10 @@ export default function PracticeCanvas({
              * ☑ ぼかし処理：濃い部分を薄くする
              * 塗った色は消さずに、はっきりし過ぎている部分の濃さを抑える。
              * destination-out で薄い消しゴム効果を適用し、マスクのα値を減少させる。
+             * 繰り返し使用することで徐々に薄くなっていく。
              */
             mctx.globalCompositeOperation = "destination-out";
-            mctx.globalAlpha = 0.05; // ← ☆☆ ぼかし強度（値が大きいほど薄くなる）
+            mctx.globalAlpha = 0.08; // ← ☆☆ ぼかし強度（値が大きいほど薄くなる、繰り返しで徐々に効果が現れる）
             mctx.drawImage(dab, 0, 0);
         } else {
             // 消しゴム

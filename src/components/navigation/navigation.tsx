@@ -6,11 +6,6 @@ import { LayerIcon, ColorIcon, BrushIcon, BlurIcon, ResetIcon } from "@/componen
 
 const tools: { id: string; label: string; Icon: React.FC<{ className?: string }> }[] = [
     {
-        id: "parts",
-        label: "レイヤー",
-        Icon: LayerIcon,
-    },
-    {
         id: "color",
         label: "カラー",
         Icon: ColorIcon,
@@ -26,9 +21,14 @@ const tools: { id: string; label: string; Icon: React.FC<{ className?: string }>
         Icon: BlurIcon,
     },
     {
-        id: "reset",
+        id: "eraser",
         label: "修正",
         Icon: ResetIcon,
+    },
+    {
+        id: "parts",
+        label: "重ね塗り",
+        Icon: LayerIcon,
     },
 ];
 
