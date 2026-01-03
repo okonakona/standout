@@ -130,12 +130,16 @@ export default function EditorPage() {
                     {/* 比較モード時のスライダー */}
                     {isCompareMode && (
                         <>
-                            {/* メイク前画像 */}
+                            {/* メイク前画像（シミュレーション前の元画像） */}
                             <div
                                 className={styles.beforeImageWrapper}
                                 style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
                             >
-                                <img src={img.src} alt="メイク前" className={styles.compareImage} />
+                                <img 
+                                    src={img.src} 
+                                    alt="メイク前（元画像）" 
+                                    className={styles.compareImage} 
+                                />
                             </div>
 
                             {/* スライダー線 */}
