@@ -47,8 +47,8 @@ export default function SimulatePage() {
                         </>
                     )} */}
                     <div className={styles.btnWrap}>
-                        <Link href="/upload" className={styles.button}>写真をアップロード</Link>
-                        <Link href="/camera" className={styles.button}>カメラで撮影</Link>
+                        <Link href="/upload" className={styles.button} data-icon="camera">写真をアップロード</Link>
+                        <Link href="/camera" className={styles.button} data-icon="gallery">カメラで撮影</Link>
                     </div>
                     <button className={styles.closeBtn}>キャンセル</button>
                 </div>
