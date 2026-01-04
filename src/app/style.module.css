@@ -1,5 +1,24 @@
-main{
-    .imgWrap{
-        margin-top: 100px;
+main {
+    .content{
+        width: 100%;
+        text-align: center;
+        .imgWrap{
+            margin-top: 100px;
+        }
+        .button{
+            margin: 20px auto;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            width: 325px;
+            background: var(--mainColor);
+            color: var(--background);
+            font-size: 20px;
+            border: none;
+            border-radius: 6px;
+        }
+        h2{
+            font-size: 17px;
+        }
     }
 }
