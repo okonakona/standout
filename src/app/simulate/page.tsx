@@ -1,4 +1,5 @@
 "use client";
+import styles from './style.module.css'
 import { useEffect, useState } from "react";
 import { loadRoleModels, setActiveRoleId, getActiveRoleId, RoleModel } from "@/utils/roleSession";
 import Link from "next/link";
@@ -20,32 +21,38 @@ export default function SimulatePage() {
 
     return (
         <main>
-            <h1>シミュレーション</h1>
-            {list.length === 0 ? (
-                <>
-                    <p>ロールモデルがまだありません。</p>
-                    <Link href="/role">作成する</Link>
-                </>
-            ) : (
-                <>
-                    <p>ロールモデルを選んで、写真の用意方法を選択してください。</p>
-                    <div>
-                        {list.map((r) => (
-                            <button
-                                key={r.id}
-                                onClick={() => onChoose(r.id)}
-                                aria-pressed={selectedId === r.id}
-                            >
-                                {r.name}（{r.presetId}）
-                            </button>
-                        ))}
+            <div className={styles.content}>
+                <div className={styles.contentWrap}>
+                    <h1>今すぐシミュレーションを始めましょう</h1>
+                    {/* 保留になったロールモデル部分のコードをお取り置きしています
+                    {list.length === 0 ? (
+                        <>
+                            <p>ロールモデルがまだありません。</p>
+                            <Link href="/role">作成する</Link>
+                        </>
+                    ) : (
+                        <>
+                            <p>ロールモデルを選んで、写真の用意方法を選択してください。</p>
+                            <div>
+                                {list.map((r) => (
+                                    <button
+                                        key={r.id}
+                                        onClick={() => onChoose(r.id)}
+                                        aria-pressed={selectedId === r.id}
+                                    >
+                                        {r.name}（{r.presetId}）
+                                    </button>
+                                ))}
+                            </div>
+                        </>
+                    )} */}
+                    <div className={styles.btnWrap}>
+                        <Link href="/upload" className={styles.button}>写真をアップロード</Link>
+                        <Link href="/camera" className={styles.button}>カメラで撮影</Link>
                     </div>
-                    <div>
-                        <Link href="/upload">写真をアップロード</Link>
-                        <Link href="/camera">カメラで撮影</Link>
-                    </div>
-                </>
-            )}
+                    <button className={styles.closeBtn}>キャンセル</button>
+                </div>
+            </div>
         </main>
     );
 }
