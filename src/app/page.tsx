@@ -33,6 +33,7 @@ export default function Home() {
                 </div>
                 <div className={styles.modalCnt}>
                 </div>
+                <SimulatePage />
             </main>
             <Footer />
         </>
