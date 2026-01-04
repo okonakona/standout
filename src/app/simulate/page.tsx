@@ -19,7 +19,7 @@ export default function SimulatePage() {
     };
 
     return (
-        <main style={{ padding: 24 }}>
+        <main>
             <h1>シミュレーション</h1>
             {list.length === 0 ? (
                 <>
@@ -29,7 +29,7 @@ export default function SimulatePage() {
             ) : (
                 <>
                     <p>ロールモデルを選んで、写真の用意方法を選択してください。</p>
-                    <div style={{ display: "flex", gap: 12, margin: "12px 0" }}>
+                    <div>
                         {list.map((r) => (
                             <button
                                 key={r.id}
@@ -40,7 +40,7 @@ export default function SimulatePage() {
                             </button>
                         ))}
                     </div>
-                    <div style={{ display: "flex", gap: 12 }}>
+                    <div>
                         <Link href="/upload">写真をアップロード</Link>
                         <Link href="/camera">カメラで撮影</Link>
                     </div>
