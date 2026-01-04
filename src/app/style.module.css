@@ -17,6 +17,9 @@ main {
             border: none;
             border-radius: 6px;
         }
+        .button::after{
+            content: "　>";
+        }
         h2{
             font-size: 17px;
         }
