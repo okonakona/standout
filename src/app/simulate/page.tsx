@@ -4,7 +4,11 @@ import { useEffect, useState } from "react";
 import { loadRoleModels, setActiveRoleId, getActiveRoleId, RoleModel } from "@/utils/roleSession";
 import Link from "next/link";
 
-export default function SimulatePage() {
+type Props = {
+    onClose: () => void;
+    };
+
+export default function SimulatePage({ onClose }: Props) {
     const [list, setList] = useState<RoleModel[]>([]);
     const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -50,7 +54,12 @@ export default function SimulatePage() {
                         <Link href="/upload" className={styles.button} data-icon="camera">写真をアップロード</Link>
                         <Link href="/camera" className={styles.button} data-icon="gallery">カメラで撮影</Link>
                     </div>
-                    <button className={styles.closeBtn}>キャンセル</button>
+                    <button 
+                    className={styles.closeBtn} 
+                    onClick={onClose}
+                    >
+                        キャンセル
+                    </button>
                 </div>
             </div>
         </main>

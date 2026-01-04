@@ -5,8 +5,10 @@ import Header from "@/components/header/page";
 import Image from "next/image";
 import Link from "next/link";
 import SimulatePage from './simulate/page';
+import { useState } from 'react';
 
 export default function Home() {
+    const [isOpen, setIsOpen] = useState(false);
     return (
         <>
             <Header />
@@ -15,7 +17,12 @@ export default function Home() {
                     <h1 className={styles.imgWrap}>
                         <Image src="/assets/sample.png" alt="サンプル" width={390} height={241} />
                     </h1>
-                    <button className={styles.button}>メイクシミュレーション</button>
+                    <button 
+                    className={styles.button} 
+                    onClick={() => setIsOpen(true)}
+                    >
+                        メイクシミュレーション
+                    </button>
                     <section>
                         <h2>スタイルガイド</h2>
                         <div className={styles.guidWrap}>
@@ -31,9 +38,9 @@ export default function Home() {
                         </div>
                     </section>
                 </div>
-                <div className={styles.modalCnt}>
-                </div>
-                <SimulatePage />
+                {isOpen && (
+                    <SimulatePage onClose={() => setIsOpen(false)} />
+                )}
             </main>
             <Footer />
         </>
