@@ -7,6 +7,19 @@ const GENRE_LABEL: Record<string, string> = {
     cool: "デザイン重視",
     simple: "シンプル",
 };
+const CATEGORY_IMAGE: Record<string, string> = {
+    ground: "/assets/ground.png",
+    foundation: "/assets/foundation.png",
+    concealer: "/assets/concealer.png",
+    powder: "/assets/powder.png",
+    highlight: "/assets/highlight.png",
+    cheek: "/assets/cheek.png",
+    shading: "/assets/shading.png",
+    eyebrow: "/assets/eyebrow.png",
+    eyeshadow: "/assets/eyeshadow.png",
+    lip: "/assets/lip.png",
+};
+
 
 export default function CosmeticsBlock({ title, items }: { title: string; items: any[] }) {
     return (
@@ -22,8 +35,9 @@ export default function CosmeticsBlock({ title, items }: { title: string; items:
                                 key={item.id ?? `${item.productName}-${idx}`}
                             >
                                 <img
-                                    src="/assets/eyeshadow.png"
-                                    alt="アイシャドウ"/>
+                                    src={CATEGORY_IMAGE[item.category] ?? "/assets/default.png"}
+                                    alt={title}
+                                />
                                 <h3>{item.productName}</h3>
                                 <p>{item.brand}</p>
                                 <p >{item.price}</p>
