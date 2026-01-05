@@ -42,7 +42,7 @@ main{
                     font-size: 13px;
                     font-weight: bold;
                     color: var(--accentColor);
-                    border-bottom: solid 3px var(--mainColor);
+                    border-bottom: solid 2px var(--mainColor);
                     text-align: center;
                     white-space: nowrap;
                     overflow: hidden;
@@ -79,7 +79,7 @@ main{
             }
             
             .active {
-                background: #CBE5EB;
+                background: var(--subColor);
             }
         }
     }

@@ -15,20 +15,25 @@ export default function CosmeticsBlock({ title, items }: { title: string; items:
             {items.length === 0 ? (
                 <p>まだありません</p>
             ) : (
-                <div>
-                    {items.map((item, idx) => (
-                        <figure
-                            key={item.id ?? `${item.productName}-${idx}`}
-                        >
-                            <h3>{item.productName}</h3>
-                            <p>{item.brand}</p>
-                            <p >{item.price}</p>
-                            <p>
-                                {GENRE_LABEL[item.genre]}
-                            </p>
-                            <img src={item.image} alt="" />
-                        </figure>
+                <div className={styles.cosmeticsWrap}>
+                    <div className={styles.cosmeticsRow}>
+                        {items.map((item, idx) => (
+                            <figure
+                                key={item.id ?? `${item.productName}-${idx}`}
+                            >
+                                <img
+                                    src="/assets/eyeshadow.png"
+                                    alt="アイシャドウ"/>
+                                <h3>{item.productName}</h3>
+                                <p>{item.brand}</p>
+                                <p >{item.price}</p>
+                                <p>
+                                    {GENRE_LABEL[item.genre]}
+                                </p>
+                                <img src={item.image} alt="" />
+                            </figure>
                     ))}
+                    </div>
                 </div>
             )}
         </div>
