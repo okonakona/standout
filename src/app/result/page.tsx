@@ -7,6 +7,7 @@ import cosmetics from "@/data/cosmetics.json";
 import { useResultPage } from "@/components/result/useResultPage";
 import MakeupSpecSheet from "@/components/result/MakeupSpecSheet";
 import { Step } from "@/types/steps";
+import Footer from '@/components/footer/page';
 
 export default function ResultPage() {
     const {
@@ -21,99 +22,99 @@ export default function ResultPage() {
     } = useResultPage();
     
     return (
-        <main>
-            <div className={styles.content}>
-                <h1>指示書</h1>
-                {/* ★ 各ステップごとの画像（今回分のみ & 並び順固定） */}
-                <div className={styles.s}>
-                    {latestSteps.length === 0 ? (
-                        <p>まだメイク結果が保存されていません。</p>
-                    ) : (
-                        <div className={styles.resultWrap}>
-                            {latestSteps.map((item) => {
-                                const note = item.note ?? "";
-                                const label = getLabelForNote(note);
-                                return (
-                                    <figure>
-                                        <figcaption>
-                                            {label}
-                                        </figcaption>
-                                        <img
-                                            src={item.dataUrl}
-                                            alt={label}/>
-                                    </figure>
-                                );
-                            })}
-                        </div>
-                    )}
-                    {/* メイク仕様書 */}
-                    {makeupSettings && finalImage && (
-                        <MakeupSpecSheet
-                            steps={Object.keys(makeupSettings.colorByStep).map((s) => {
-                                const stepImage = latestSteps.find((item) => item.note === s);
-                                return {
-                                    step: s as Step,
-                                    label: getLabelForNote(s),
-                                    color: makeupSettings.colorByStep[s as Step],
-                                    strength: makeupSettings.strengthByStep[s as Step],
-                                    imageUrl: stepImage?.dataUrl,
-                                };
-                            })}
-                            finalImageUrl={finalImage}
-                        />
-                    )}
-                </div>
-                <div className={styles.cosmeticsWrap}>
-                    {/* ジャンル選択 */}
-                    <div className={styles.selectScroll}>
-                        <div className={styles.selectInner}>
-                            <button
-                            className={`${styles.genreButton} ${
-                                selectedGenre === "ALL" ? styles.active : ""
-                            }`}
-                            onClick={() => setSelectedGenre("ALL")}
-                            >
-                            すべての推奨コスメ
-                            </button>
-
-                            {genres.map((g) => (
-                            <button
-                                key={g.key}
-                                className={`${styles.genreButton} ${
-                                selectedGenre === g.key ? styles.active : ""
-                                }`}
-                                onClick={() => setSelectedGenre(g.key)}
-                            >
-                                {g.label}
-                            </button>
-                            ))}
-                        </div>
-                    </div>
-                    {/* コスメ一覧 */}
-                    <section>
-                        {categories.map((c) => {
-                        const items = cosmetics.filter(
-                            (v) =>
-                            (selectedGenre === "ALL" || v.genre === selectedGenre) &&
-                            v.category === c.key
-                        );
-
-                        if (items.length === 0) return null;
-
-                        return (
-                            <CosmeticsBlock
-                            key={c.key}
-                            title={c.label}
-                            items={items}
+        <div>
+            <main>
+                <div className={styles.content}>
+                    <h1>指示書</h1>
+                    {/* ★ 各ステップごとの画像（今回分のみ & 並び順固定） */}
+                    <div className={styles.s}>
+                        {latestSteps.length === 0 ? (
+                            <p>まだメイク結果が保存されていません。</p>
+                        ) : (
+                            <div className={styles.resultWrap}>
+                                {latestSteps.map((item) => {
+                                    const note = item.note ?? "";
+                                    const label = getLabelForNote(note);
+                                    return (
+                                        <figure>
+                                            <figcaption>
+                                                {label}
+                                            </figcaption>
+                                            <img
+                                                src={item.dataUrl}
+                                                alt={label}/>
+                                        </figure>
+                                    );
+                                })}
+                            </div>
+                        )}
+                        {/* メイク仕様書 */}
+                        {makeupSettings && finalImage && (
+                            <MakeupSpecSheet
+                                steps={Object.keys(makeupSettings.colorByStep).map((s) => {
+                                    const stepImage = latestSteps.find((item) => item.note === s);
+                                    return {
+                                        step: s as Step,
+                                        label: getLabelForNote(s),
+                                        color: makeupSettings.colorByStep[s as Step],
+                                        strength: makeupSettings.strengthByStep[s as Step],
+                                        imageUrl: stepImage?.dataUrl,
+                                    };
+                                })}
+                                finalImageUrl={finalImage}
                             />
-                        );
-                        })}
-                    </section>
+                        )}
+                    </div>
+                    <div className={styles.cosmeticsWrap}>
+                        {/* ジャンル選択 */}
+                        <div className={styles.selectScroll}>
+                            <div className={styles.selectInner}>
+                                <button
+                                className={`${styles.genreButton} ${
+                                    selectedGenre === "ALL" ? styles.active : ""
+                                }`}
+                                onClick={() => setSelectedGenre("ALL")}
+                                >
+                                すべての推奨コスメ
+                                </button>
+                                {genres.map((g) => (
+                                <button
+                                    key={g.key}
+                                    className={`${styles.genreButton} ${
+                                    selectedGenre === g.key ? styles.active : ""
+                                    }`}
+                                    onClick={() => setSelectedGenre(g.key)}
+                                >
+                                    {g.label}
+                                </button>
+                                ))}
+                            </div>
+                        </div>
+                        {/* コスメ一覧 */}
+                        <section>
+                            {categories.map((c) => {
+                            const items = cosmetics.filter(
+                                (v) =>
+                                (selectedGenre === "ALL" || v.genre === selectedGenre) &&
+                                v.category === c.key
+                            );
+                            if (items.length === 0) return null;
+                            return (
+                                <CosmeticsBlock
+                                key={c.key}
+                                title={c.label}
+                                items={items}
+                                />
+                            );
+                            })}
+                        </section>
+                    </div>
+                    <div>
+                        <Link href="/editor">編集に戻る</Link>
+                    </div>
                 </div>
-                <div>
-                    <Link href="/editor">編集に戻る</Link>
-                </div>
-            </div>
-        </main>
+            </main>
+            <Footer />
+        </div>
     );
 }

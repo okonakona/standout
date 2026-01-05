@@ -9,6 +9,7 @@ main{
         text-align: center;
         overflow-y: scroll;
         overflow-x: hidden;
+        margin-bottom: 120px;
         h1{
             font-size: 20px;
             margin-top: 30px;
