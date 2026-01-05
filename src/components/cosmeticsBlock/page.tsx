@@ -1,4 +1,5 @@
 "use client";
+import styles from './style.module.css'
 
 const GENRE_LABEL: Record<string, string> = {
     brand: "ブランドもの",
@@ -9,7 +10,7 @@ const GENRE_LABEL: Record<string, string> = {
 
 export default function CosmeticsBlock({ title, items }: { title: string; items: any[] }) {
     return (
-        <div>
+        <div className={styles.content}>
             <h2>{title}</h2>
             {items.length === 0 ? (
                 <p>まだありません</p>

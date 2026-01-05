@@ -1,10 +1,23 @@
 main{
     .content{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: stretch;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        h1{
+            font-size: 20px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            color: var(--accentColor);
+        }
         .resultWrap{
             max-width: 400px;
             display: flex;
-            gap: 16px;
-            margin-bottom: 32px;
             overflow-x: scroll;
             padding-bottom: 8px;
             scrollbar-width: none;  /*Firefox*/
@@ -12,9 +25,10 @@ main{
             -webkit-overflow-scrolling: touch; /*スマホでのスムーズスクロール*/
             figure{
                 min-width: 100px;
-                width: 150px;
+                width: 240px;
                 flex-shrink: 0;
-                margin: 0;
+                margin: 0 10px;
+                margin-left: 20px;
                 display: flex;
                 flex-direction: column;
                 gap: 4px;
@@ -25,15 +39,50 @@ main{
                 
                 }
                 figcaption{
-                    font-size: 10px;
-                    color: #555;
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: var(--accentColor);
+                    border-bottom: solid 3px var(--mainColor);
                     text-align: center;
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
-                
                 }
+            }
+        }
+
+        .cosmeticsWrap{
+            width: 100%;
+            margin-top: 20px;
+            
+            .selectScroll {
+                margin: 0 20px;
+                overflow-x: scroll;
+                scrollbar-width: none;  /*Firefox*/
+                -ms-overflow-style: none; /* IE/Edge*/
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .selectInner {
+                display: flex;
+                gap: 8px;
+                width: 130px;
+            }
+            
+            .genreButton {
+                font-size: 13px;
+                border: none;
+                background: var(--grayColor);
+                border-radius: 8px;
+                padding: 6px 14px;
+                white-space: nowrap;
+            }
+            
+            .active {
+                background: #CBE5EB;
             }
         }
     }
 }
+
+
