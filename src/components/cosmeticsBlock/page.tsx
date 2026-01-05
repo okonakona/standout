@@ -9,27 +9,20 @@ const GENRE_LABEL: Record<string, string> = {
 
 export default function CosmeticsBlock({ title, items }: { title: string; items: any[] }) {
     return (
-        <div style={{ marginBottom: 32 }}>
+        <div>
             <h2>{title}</h2>
             {items.length === 0 ? (
                 <p>まだありません</p>
             ) : (
-                <div
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(auto-fill, minmax(240px,1fr))",
-                        gap: 12,
-                    }}
-                >
+                <div>
                     {items.map((item, idx) => (
                         <figure
                             key={item.id ?? `${item.productName}-${idx}`}
-                            style={{ border: "1px solid #ddd", padding: 8 }}
                         >
                             <h3>{item.productName}</h3>
-                            <p style={{ fontSize: 12, color: "#666" }}>{item.brand}</p>
-                            <p style={{ fontSize: 12 }}>{item.price}</p>
-                            <p style={{ fontSize: 11, color: "#888" }}>
+                            <p>{item.brand}</p>
+                            <p >{item.price}</p>
+                            <p>
                                 {GENRE_LABEL[item.genre]}
                             </p>
                             <img src={item.image} alt="" />

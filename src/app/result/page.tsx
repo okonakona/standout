@@ -2,7 +2,7 @@
 "use client";
 import styles from './style.module.css'
 import Link from "next/link";
-import CosmeticsBlock from "@/components/CosmeticsBlock";
+import CosmeticsBlock from "@/components/cosmeticsBlock/page";
 import cosmetics from "@/data/cosmetics.json";
 import { useResultPage } from "@/components/result/useResultPage";
 import MakeupSpecSheet from "@/components/result/MakeupSpecSheet";
