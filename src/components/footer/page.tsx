@@ -1,12 +1,12 @@
 import Link from 'next/link'
 import styles from './style.module.css'
 import Image from 'next/image'
-
-
+import CameraButton from '../cameraButton/page'
 
 export default function Footer () {
     return(
         <footer>
+                <CameraButton />
             <div className={styles.content}>
                 <nav>
                     <ul>
