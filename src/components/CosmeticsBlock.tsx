@@ -1,5 +1,12 @@
 "use client";
 
+const GENRE_LABEL: Record<string, string> = {
+    brand: "ブランドもの",
+    affordable: "コスパ最強",
+    cool: "デザイン重視",
+    simple: "シンプル",
+};
+
 export default function CosmeticsBlock({ title, items }: { title: string; items: any[] }) {
     return (
         <div style={{ marginBottom: 32 }}>
@@ -22,6 +29,9 @@ export default function CosmeticsBlock({ title, items }: { title: string; items:
                             <h3>{item.productName}</h3>
                             <p style={{ fontSize: 12, color: "#666" }}>{item.brand}</p>
                             <p style={{ fontSize: 12 }}>{item.price}</p>
+                            <p style={{ fontSize: 11, color: "#888" }}>
+                                {GENRE_LABEL[item.genre]}
+                            </p>
                             <img src={item.image} alt="" />
                         </figure>
                     ))}
