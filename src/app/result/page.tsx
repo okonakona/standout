@@ -22,72 +22,68 @@ export default function ResultPage() {
 
     return (
         <main>
-            <h1>今回のメイク結果</h1>
-            {/* ★ 各ステップごとの画像（今回分のみ & 並び順固定） */}
-            {latestSteps.length === 0 ? (
-                <p>まだメイク結果が保存されていません。</p>
-            ) : (
+            <div className={styles.content}>
+                <h1>今回のメイク結果</h1>
+                {/* ★ 各ステップごとの画像（今回分のみ & 並び順固定） */}
+                {latestSteps.length === 0 ? (
+                    <p>まだメイク結果が保存されていません。</p>
+                ) : (
+                    <div className={styles.resultWrap}>
+                        {latestSteps.map((item) => {
+                            const note = item.note ?? "";
+                            const label = getLabelForNote(note);
+                            return (
+                                <figure>
+                                    <img
+                                        src={item.dataUrl}
+                                        alt={label}/>
+                                    <figcaption>
+                                        {label}
+                                    </figcaption>
+                                </figure>
+                            );
+                        })}
+                    </div>
+                )}
+                {/* メイク仕様書 */}
+                {makeupSettings && finalImage && (
+                    <MakeupSpecSheet
+                        steps={Object.keys(makeupSettings.colorByStep).map((s) => {
+                            const stepImage = latestSteps.find((item) => item.note === s);
+                            return {
+                                step: s as Step,
+                                label: getLabelForNote(s),
+                                color: makeupSettings.colorByStep[s as Step],
+                                strength: makeupSettings.strengthByStep[s as Step],
+                                imageUrl: stepImage?.dataUrl,
+                            };
+                        })}
+                        finalImageUrl={finalImage}
+                    />
+                )}
+                {/* ===== ここから下は既存のコスメおすすめエリア ===== */}
+                <h2>おすすめコスメ</h2>
                 <div>
-                    {latestSteps.map((item) => {
-                        const note = item.note ?? "";
-                        const label = getLabelForNote(note);
-
-                        return (
-                            <figure>
-                                <img
-                                    src={item.dataUrl}
-                                    alt={label}/>
-                                <figcaption>
-                                    {label}
-                                </figcaption>
-                            </figure>
-                        );
-                    })}
+                    {categories.map((t) => (
+                        <button
+                            key={t.key}
+                            onClick={() => setSelectedCategory(t.key)}
+                        >
+                            {t.label}
+                        </button>
+                    ))}
                 </div>
-            )}
-
-            {/* メイク仕様書 */}
-            {makeupSettings && finalImage && (
-                <MakeupSpecSheet
-                    steps={Object.keys(makeupSettings.colorByStep).map((s) => {
-                        const stepImage = latestSteps.find((item) => item.note === s);
-                        return {
-                            step: s as Step,
-                            label: getLabelForNote(s),
-                            color: makeupSettings.colorByStep[s as Step],
-                            strength: makeupSettings.strengthByStep[s as Step],
-                            imageUrl: stepImage?.dataUrl,
-                        };
+                <section>
+                    {genres.map((g) => {
+                        const items = cosmetics.filter(
+                            (v) => v.category === selectedCategory && v.genre === g.key
+                        );
+                        return <CosmeticsBlock key={g.key} title={g.label} items={items} />;
                     })}
-                    finalImageUrl={finalImage}
-                />
-            )}
-
-            {/* ===== ここから下は既存のコスメおすすめエリア ===== */}
-            <h2>おすすめコスメ</h2>
-
-            <div>
-                {categories.map((t) => (
-                    <button
-                        key={t.key}
-                        onClick={() => setSelectedCategory(t.key)}
-                    >
-                        {t.label}
-                    </button>
-                ))}
-            </div>
-
-            <section>
-                {genres.map((g) => {
-                    const items = cosmetics.filter(
-                        (v) => v.category === selectedCategory && v.genre === g.key
-                    );
-                    return <CosmeticsBlock key={g.key} title={g.label} items={items} />;
-                })}
-            </section>
-
-            <div>
-                <Link href="/editor">編集に戻る</Link>
+                </section>
+                <div>
+                    <Link href="/editor">編集に戻る</Link>
+                </div>
             </div>
         </main>
     );
