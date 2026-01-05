@@ -11,15 +11,15 @@ import { Step } from "@/types/steps";
 export default function ResultPage() {
     const {
         latestSteps,
-        selectedCategory,
-        setSelectedCategory,
+        selectedGenre,
+        setSelectedGenre,
         categories,
         genres,
         getLabelForNote,
         makeupSettings,
         finalImage,
     } = useResultPage();
-
+    
     return (
         <main>
             <div className={styles.content}>
@@ -64,22 +64,37 @@ export default function ResultPage() {
                 {/* ===== ここから下は既存のコスメおすすめエリア ===== */}
                 <h2>おすすめコスメ</h2>
                 <div>
-                    {categories.map((t) => (
-                        <button
-                            key={t.key}
-                            onClick={() => setSelectedCategory(t.key)}
-                        >
-                            {t.label}
-                        </button>
-                    ))}
+                <button
+                    onClick={() => setSelectedGenre("ALL")}
+                >
+                    すべて
+                </button>
+                {genres.map((g) => (
+                    <button
+                        key={g.key}
+                        onClick={() => setSelectedGenre(g.key)}
+                    >
+                        {g.label}
+                    </button>
+                ))}
                 </div>
                 <section>
-                    {genres.map((g) => {
-                        const items = cosmetics.filter(
-                            (v) => v.category === selectedCategory && v.genre === g.key
-                        );
-                        return <CosmeticsBlock key={g.key} title={g.label} items={items} />;
-                    })}
+                {categories.map((c) => {
+                    const items = cosmetics.filter(
+                        (v) =>
+                        (selectedGenre === "ALL" || v.genre === selectedGenre) &&
+                        v.category === c.key
+                    );
+                    if (items.length === 0) return null;
+
+                    return (
+                        <CosmeticsBlock
+                        key={c.key}
+                        title={c.label}
+                        items={items}
+                        />
+                    );
+                })}
                 </section>
                 <div>
                     <Link href="/editor">編集に戻る</Link>
