@@ -1,7 +1,7 @@
 footer{
     .content{
-        position: absolute;
-        z-index: 100;
+        position: fixed;
+        z-index: 10000;
         bottom: 85px;
         right: 8px;
         .button{

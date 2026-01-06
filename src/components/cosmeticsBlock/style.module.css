@@ -1,0 +1,54 @@
+.content{ 
+    width: 100%;
+    margin-top: 20px;
+    h2{
+        font-size: 11px;
+        margin: 8px;
+        
+    }
+    .cosmeticsWrap{ 
+        overflow-x: scroll;
+        scrollbar-width: none;  /*Firefox*/
+        -ms-overflow-style: none; /* IE/Edge*/
+        -webkit-overflow-scrolling: touch;
+        .cosmeticsRow{
+            display: flex;
+            margin: 0 20px;
+            gap: 8px;
+            width: 300px;
+
+        }
+        figure{
+            position: relative;
+            min-width: 120px;
+            max-width: 120px;
+            
+            hr{
+                width: 140px;
+            }
+            h3{
+                font-size: 12px;
+                font-weight: bold;
+            }
+            p{
+                font-size: 11px;
+            }
+        }
+    }
+    figure::before {
+        content: "";
+        position: absolute;
+        top: 40px;        /* 画像との位置調整 */
+        left: -80px;
+        width: 480px;
+        height: 60px;   /* 画像サイズに合わせる */
+        background: var(--subColor);
+        border-bottom: solid 1px var(--accentColor);
+        z-index: -100;
+    } 
+    figure img {
+        position: relative;
+        z-index: 1;
+        width: 90px;
+    }
+}

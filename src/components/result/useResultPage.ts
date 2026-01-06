@@ -109,7 +109,7 @@ function buildLatestSteps(all: SimItem[]): SimItem[] {
 export function useResultPage() {
     // ★ 今回セッションのステップ別スナップショット（並び済み）
     const [latestSteps, setLatestSteps] = useState<SimItem[]>([]);
-    const [selectedCategory, setSelectedCategory] = useState("ground");
+    const [selectedGenre, setSelectedGenre] = useState<string>("ALL");
     const [makeupSettings, setMakeupSettings] = useState<MakeupSettings | null>(null);
     const [finalImage, setFinalImage] = useState<string | null>(null);
 
@@ -135,8 +135,8 @@ export function useResultPage() {
 
     return {
         latestSteps,
-        selectedCategory,
-        setSelectedCategory,
+        selectedGenre,
+        setSelectedGenre,
         categories,
         genres,
         getLabelForNote,
