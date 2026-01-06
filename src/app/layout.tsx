@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { SimulateModalProvider } from "@/contexts/SimulateModalContext";
 
 export const metadata: Metadata = {
     title: "アプリ名",
@@ -9,7 +10,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
     return (
         <html lang="ja">
-            <body>{children}</body>
+            <body>
+            <SimulateModalProvider>
+                {children}
+            </SimulateModalProvider>
+            </body>
         </html>
     );
 }

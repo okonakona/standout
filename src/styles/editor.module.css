@@ -37,12 +37,95 @@
     width: 100%;
     max-width: 500px;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.afterIconWrapper {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 5;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.afterIconWrapper:hover {
+    transform: scale(1.1);
+}
+
+.afterIconWrapper.active {
+    opacity: 0.8;
+}
+
+/* ビフォーアフター比較スライダー */
+.beforeImageWrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.compareImage {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    width: 500px;
+    height: auto;
+    max-width: 1 00%;
+    max-height: 100%;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.sliderLine {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: #fefefe;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+    z-index: 4;
+    cursor: ew-resize;
+    transform: translateX(-50%);
+}
+
+.sliderHandle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    background: #fefefe;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sliderHandle::before {
+    content: "◀▶";
+    font-size: 12px;
+    color: #454a53;
+    letter-spacing: -2px;
 }
 
 /* ステップ表示エリア */
 .stepsContainer {
     padding: 16px;
-    background: #ffffff;
+    background: #fefefe;
     max-height: 150px;
     overflow-y: auto;
 }
@@ -82,7 +165,7 @@
     height: 80px;
     border: 2px solid #e0e0e0;
     border-radius: 12px;
-    background: #fff;
+    background: #fefefe;
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -110,7 +193,7 @@
     height: 100%;
     max-height: 300px;
     padding: 0 12px;
-    overflow-y: auto;
+    overflow-y: hidden;
     background: var(--background);
 }
 
@@ -165,7 +248,7 @@
 .currentColorCode {
     font-size: 12px;
     color: #666;
-    background: #ffffff;
+    background: #fefefe;
     padding: 4px 8px;
     border-radius: 4px;
     border: 1px solid #e9ecef;
@@ -189,28 +272,19 @@
     font-weight: 600;
     color: #333;
     text-align: center;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #eee;
+    padding-top: 8px;
 }
 
 /* ブラシツール専用スタイル */
 .brushOptions {
+    position: relative;
     width: 100%;
     height: 100%;
-    gap: 20px;
-    padding: 0 16px 8px 16px;
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-end;
 }
 
 .brushOption {
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    padding: 4px;
 }
 
 .brushSvg {
@@ -220,32 +294,39 @@
 
 /* ブラシタイプごとのサイズ - データ属性ベース */
 .brushOption .brushSvg {
-    width: 60px;
-    height: 60px;
+    position: absolute;
+    top: 15%;
 }
 
 /* ブラシタイプ1（極小）*/
 .brushOption[data-brush-type="1"] .brushSvg {
-    width: 30px;
-    height: 45px;
+    top: 50%;
+    width: 100px;
+    height: 100px;
 }
 
 /* ブラシタイプ2（小）*/
 .brushOption[data-brush-type="2"] .brushSvg {
-    width: 50px;
-    height: 75px;
+    top: 30%;
+    left: 13%;
+    width: 160px;
+    height: 160px;
 }
 
 /* ブラシタイプ3（中）*/
 .brushOption[data-brush-type="3"] .brushSvg {
-    width: 60px;
-    height: 90px;
+    top: 20%;
+    left: 40%;
+    /* transform: translateX(-50%); */
+    width: 140px;
+    height: 160px;
 }
 
 /* ブラシタイプ4（大）*/
 .brushOption[data-brush-type="4"] .brushSvg {
-    width: 70px;
-    height: 105px;
+    right: 0%;
+    width: 155px;
+    height: 175px;
 }
 
 .brushSvg {
@@ -254,14 +335,52 @@
     transition: all 0.3s ease;
 }
 
-.brushOption:hover .brushSvg {
-    filter: brightness(0.8);
-    transform: scale(1.05);
+.brushOption.active .brushSvg {
+    fill: var(--subColor);
+    stroke: var(--blackColor);
 }
 
-.brushOption.active .brushSvg {
-    filter: brightness(0) saturate(0);
-    transform: scale(1.1);
+.brushOption.active .brushSvg :global(.brushFill) {
+    fill: var(--accentColor) !important;
+}
+
+.blurOption {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ぼかしアイコン専用の大きいスタイル */
+.blurIconLarge {
+    width: 60px !important;
+    height: 60px !important;
+    transform: scale(1.5);
+    transition: all 0.3s ease;
+}
+
+/* ぼかしオプション用のコンテナ */
+.blurOption {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.blurOption.active .blurIconLarge path {
+    stroke: var(--navColor);
+}
+
+.blurOption.active .blurIconLarge rect {
+    stroke: var(--navColor);
+}
+
+.blurOption:hover .blurIconLarge {
+    transform: scale(1.6);
 }
 
 .brushIcon {
@@ -304,7 +423,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 4px;
+    border-radius: 2px;
     padding-top: 8px;
     padding-right: 4px;
     background-color: var(--background);
@@ -380,10 +499,11 @@
 }
 
 .customColorLabel {
-    font-size: 12px;
-    color: #666;
-    text-align: center;
     margin: 0;
+    padding: 2px 0;
+    color: #666;
+    font-size: 12px;
+    text-align: center;
 }
 
 .customColorPicker {
@@ -436,13 +556,6 @@
 .customColorSection input[type="color"]:hover {
     border-color: var(--mainColor);
     transform: scale(1.05);
-}
-
-.customColorLabel {
-    font-size: 14px;
-    font-weight: 500;
-    color: #333;
-    margin-bottom: 4px;
 }
 
 .customColorHex {
@@ -567,4 +680,149 @@
     .sidePanel {
         grid-template-columns: 1fr 1fr;
     }
+}
+
+/* レイヤー表示（parts）のスタイル */
+.partsTool {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stepsList {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 14px 8px;
+    scroll-snap-type: x mandatory;
+}
+
+.stepsList::-webkit-scrollbar {
+    height: 6px;
+}
+
+.stepsList::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 3px;
+}
+
+.stepsList::-webkit-scrollbar-thumb {
+    background: #c0c0c0;
+    border-radius: 3px;
+}
+
+.stepItem {
+    display: flex;
+    flex-direction: column;
+    min-width: 140px;
+    max-width: 140px;
+    background: #f5f5f5;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    pointer-events: none;
+    user-select: none;
+}
+
+.stepItem.current {
+    background: #e3f2fd;
+    border-color: #2196f3;
+}
+
+.stepItem.past {
+    background: #fefefe;
+}
+
+.stepItem.completed {
+    background: #f1f8e9;
+}
+
+.stepImageFrame {
+    width: 100%;
+    height: 120px;
+    background: #e0e0e0;
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.stepImageFrame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.stepInfo {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.stepNumber {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fefefe;
+    border-radius: 50%;
+    font-weight: 600;
+    font-size: 12px;
+    color: #666;
+    flex-shrink: 0;
+}
+
+.stepItem.current .stepNumber {
+    background: #2196f3;
+    color: #fefefe;
+}
+
+.stepItem.completed .stepNumber {
+    background: #66bb6a;
+    color: #fefefe;
+}
+
+.stepLabel {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+}
+
+.stepStatus {
+    display: flex;
+    justify-content: center;
+}
+
+.statusBadge {
+    display: inline-block;
+    padding: 3px 8px;
+    font-size: 10px;
+    font-weight: 600;
+    border-radius: 4px;
+    background: #e0e0e0;
+    color: #666;
+}
+
+.statusBadge.completed {
+    background: #c8e6c9;
+    color: #2e7d32;
+}
+
+.statusBadge.upcoming {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+.stepItem.current .statusBadge {
+    background: #2196f3;
+    color: #fefefe;
 }

@@ -1,0 +1,16 @@
+footer{
+    .content{
+        position: fixed;
+        z-index: 10000;
+        bottom: 85px;
+        right: 8px;
+        .button{
+            border: none;
+            background: var(--mainColor);
+            width: 85px;
+            height: 85px;
+            border-radius: 100%;
+        }
+    }
+}
+

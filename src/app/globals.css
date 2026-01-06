@@ -3,11 +3,12 @@
     --blackColor: #121212;
     --buttonBackground: #fefefe;
     --buttonSize: clamp(70px, calc(100vw * (80 / 480)), 80px);
-    --mainColor: #103A71;
-    --subColor: #EEF5FF;
-    --accentColor: #454A53;
-    --pointColor: #0083A1;
-
+    --mainColor: #103a71;
+    --subColor: #eef5ff;
+    --accentColor: #454a53;
+    --pointColor: #0083a1;
+    --grayColor: #d9d9d9;
+    --navColor: #2f5b95;
 }
 
 html,
@@ -17,7 +18,6 @@ body {
     min-height: 100svh;
     display: flex;
     justify-content: center;
-    align-items: center;
     overflow-x: hidden;
 }
 
@@ -32,3 +32,15 @@ body {
     padding: 0;
     margin: 0;
 }
+
+li{
+    list-style: none;
+}
+a{
+    text-decoration: none;
+}
+a:link,
+a:visited{
+    color: var(--accentColor);
+}
+
