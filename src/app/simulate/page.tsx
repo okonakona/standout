@@ -51,8 +51,8 @@ export default function SimulatePage({ onClose }: Props) {
                         </>
                     )} */}
                     <div className={styles.btnWrap}>
-                        <Link href="/upload" className={styles.button} data-icon="camera">写真をアップロード</Link>
-                        <Link href="/camera" className={styles.button} data-icon="gallery">カメラで撮影</Link>
+                        <Link href="/upload" className={styles.button} data-icon="gallery">写真をアップロード</Link>
+                        <Link href="/camera" className={styles.button} data-icon="camera">カメラで撮影</Link>
                     </div>
                     <button 
                     className={styles.closeBtn} 

@@ -26,6 +26,7 @@ main {
                     position: relative;
                     margin:  auto;
                     padding: 15px;
+                    padding-left: 30px;
                     display: flex;
                     justify-content: center;
                     width: 310px;
