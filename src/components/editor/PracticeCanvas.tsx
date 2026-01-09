@@ -320,12 +320,6 @@ export default function PracticeCanvas({
                 onPointerMove={onPointerMove}
                 onPointerUp={onPointerUp}
                 onPointerLeave={onPointerUp}
-                style={{
-                    width: "100%",
-                    touchAction: "none",
-                    background: "#000",
-                    display: "block",
-                }}
             />
 
             {/* ガイド線（必要なら） */}
