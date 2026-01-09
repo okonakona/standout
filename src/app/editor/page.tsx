@@ -40,14 +40,14 @@ export default function EditorPage() {
         };
 
         // スクロールを無効化
-        document.body.style.overflow = 'hidden';
-        document.body.style.position = 'fixed';
-        document.body.style.width = '100%';
-        document.body.style.height = '100%';
-        document.body.style.overscrollBehavior = 'none';
-        document.body.style.touchAction = 'none';
-        document.documentElement.style.overflow = 'hidden';
-        document.documentElement.style.overscrollBehavior = 'none';
+        document.body.style.overflow = "hidden";
+        document.body.style.position = "fixed";
+        document.body.style.width = "100%";
+        document.body.style.height = "100%";
+        document.body.style.overscrollBehavior = "none";
+        document.body.style.touchAction = "none";
+        document.documentElement.style.overflow = "hidden";
+        document.documentElement.style.overscrollBehavior = "none";
 
         // クリーンアップ
         return () => {
@@ -57,8 +57,8 @@ export default function EditorPage() {
             document.body.style.height = originalStyle.height;
             document.body.style.overscrollBehavior = originalStyle.overscrollBehavior;
             document.body.style.touchAction = originalStyle.touchAction;
-            document.documentElement.style.overflow = '';
-            document.documentElement.style.overscrollBehavior = '';
+            document.documentElement.style.overflow = "";
+            document.documentElement.style.overscrollBehavior = "";
         };
     }, []);
 
