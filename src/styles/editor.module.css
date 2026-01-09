@@ -418,6 +418,12 @@
     border: none;
 }
 
+/* リップアイコン用のボタンスタイル */
+.lipColorButton {
+    width: 40px !important;
+    padding: 8px 4px !important;
+}
+
 .colorOption.selected,
 .colorOption.active {
     display: flex;
