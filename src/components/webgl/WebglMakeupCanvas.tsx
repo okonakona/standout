@@ -10,6 +10,7 @@ type Props = {
     tintColor: string; // #rrggbb
     strength: number; // 0..1
     effectId: number; // STEP_CONFIG の effectId
+    textureType?: number; // 0: マット, 1: クリーム, 2: パウダー
 };
 
 const vs = `
@@ -230,7 +231,14 @@ function hexToRgb(hex: string): [number, number, number] {
     return [r, g, b];
 }
 
-export function WebglMakeupCanvas({ base, mask, tintColor, strength, effectId }: Props) {
+export function WebglMakeupCanvas({
+    base,
+    mask,
+    tintColor,
+    strength,
+    effectId,
+    textureType = 0,
+}: Props) {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
     useEffect(() => {
