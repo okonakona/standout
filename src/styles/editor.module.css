@@ -1,10 +1,16 @@
 /* 新しい統合レイアウト用 */
 .fullScreenContainer {
     width: 100vw;
-    height: 100vh;
+    height: 100svh;
     display: flex;
     flex-direction: column;
     background: #f8f9fa;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overscroll-behavior: none;
+    touch-action: pan-x pan-y pinch-zoom;
 }
 
 .imageSection {
@@ -13,6 +19,8 @@
     align-items: center;
     justify-content: center;
     position: relative;
+    min-height: 0;
+    overflow: hidden;
 }
 
 .navigationOverlay {
@@ -21,7 +29,7 @@
     left: 0;
     right: 0;
     z-index: 10;
-    height: 300px;
+    height: 280px;
 }
 
 .loadingText {
@@ -35,17 +43,17 @@
 
 .canvasContainer {
     width: 100%;
-    max-width: 100%;
-    max-height: calc(100vh - 350px);
+    height: 100%;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 }
 
 .afterIconWrapper {
     position: absolute;
-    top: -160px;
+    top: 3cqh;
     right: 10px;
     z-index: 5;
     cursor: pointer;
@@ -77,8 +85,7 @@
 
 .compareImage {
     width: 100%;
-    height: auto;
-    max-height: calc(100vh - 350px);
+    height: 100%;
     display: block;
     object-fit: contain;
     position: absolute;
@@ -190,9 +197,8 @@
 .toolContent {
     width: 100%;
     height: 100%;
-    max-height: 300px;
+    /* max-height: 300px; */
     padding: 0 12px;
-    overflow-y: hidden;
     background: var(--background);
 }
 

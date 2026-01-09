@@ -8,10 +8,10 @@ export default function Camera() {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const streamRef = useRef<MediaStream | null>(null);
-    const width = 460;
+    const width = 383;
     const height = 680;
     const MAX_WIDTH = 1080;
-    const MAX_HEIGHT = 1440;
+    const MAX_HEIGHT = 1920;
     const router = useRouter();
 
     // カメラ起動
@@ -83,11 +83,53 @@ export default function Camera() {
         const canvas = canvasRef.current;
         if (!video || !canvas) return;
 
-        canvas.width = width;
-        canvas.height = height;
+        // ビデオの実際のサイズを取得
+        const videoWidth = video.videoWidth;
+        const videoHeight = video.videoHeight;
+
+        // 縦長の比率（9:16）でキャンバスサイズを決定
+        const targetRatio = 9 / 16;
+        let targetWidth: number;
+        let targetHeight: number;
+
+        // 縦長のキャンバスサイズを計算
+        if (videoHeight > videoWidth) {
+            // 既に縦長の場合
+            targetWidth = videoWidth;
+            targetHeight = videoHeight;
+        } else {
+            // 横長の場合、高さを基準に縦長の幅を計算
+            targetHeight = videoHeight;
+            targetWidth = Math.floor(videoHeight * targetRatio);
+        }
+
+        // 最大サイズを超えないようにスケーリング
+        if (targetWidth > MAX_WIDTH || targetHeight > MAX_HEIGHT) {
+            const scale = Math.min(MAX_WIDTH / targetWidth, MAX_HEIGHT / targetHeight);
+            targetWidth = Math.floor(targetWidth * scale);
+            targetHeight = Math.floor(targetHeight * scale);
+        }
+
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
-        ctx.drawImage(video, 0, 0, width, height);
+
+        // 映像の中央部分を切り取って描画
+        const sourceX = (videoWidth - targetWidth) / 2;
+        const sourceY = 0;
+
+        ctx.drawImage(
+            video,
+            sourceX,
+            sourceY,
+            targetWidth,
+            targetHeight, // 元映像の切り取り範囲
+            0,
+            0,
+            targetWidth,
+            targetHeight // キャンバスへの描画範囲
+        );
 
         // 圧縮率は必要に応じて調整（0.85 など）
         const dataUrl = canvas.toDataURL("image/jpeg", 0.92);

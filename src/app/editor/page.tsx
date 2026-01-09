@@ -27,6 +27,41 @@ export default function EditorPage() {
     const currentStepRef = useRef<HTMLDivElement>(null);
     const compareContainerRef = useRef<HTMLDivElement>(null);
 
+    // スクロールとプルトゥリフレッシュを無効化
+    useEffect(() => {
+        // bodyのスタイルを保存
+        const originalStyle = {
+            overflow: document.body.style.overflow,
+            position: document.body.style.position,
+            width: document.body.style.width,
+            height: document.body.style.height,
+            overscrollBehavior: document.body.style.overscrollBehavior,
+            touchAction: document.body.style.touchAction,
+        };
+
+        // スクロールを無効化
+        document.body.style.overflow = "hidden";
+        document.body.style.position = "fixed";
+        document.body.style.width = "100%";
+        document.body.style.height = "100%";
+        document.body.style.overscrollBehavior = "none";
+        document.body.style.touchAction = "none";
+        document.documentElement.style.overflow = "hidden";
+        document.documentElement.style.overscrollBehavior = "none";
+
+        // クリーンアップ
+        return () => {
+            document.body.style.overflow = originalStyle.overflow;
+            document.body.style.position = originalStyle.position;
+            document.body.style.width = originalStyle.width;
+            document.body.style.height = originalStyle.height;
+            document.body.style.overscrollBehavior = originalStyle.overscrollBehavior;
+            document.body.style.touchAction = originalStyle.touchAction;
+            document.documentElement.style.overflow = "";
+            document.documentElement.style.overscrollBehavior = "";
+        };
+    }, []);
+
     const {
         img,
         loading,
@@ -113,9 +148,6 @@ export default function EditorPage() {
         <div className={styles.fullScreenContainer}>
             {/* メイン画像エリア */}
             <section className={styles.imageSection}>
-                {loading && <p className={styles.loadingText}>シミュレーション中</p>}
-                {/* {error && <p style={{ color: "crimson" }}>解析エラー: {error}</p>} */}
-
                 <div className={styles.canvasContainer} ref={compareContainerRef}>
                     {/* 右上Afterアイコン */}
                     <div
