@@ -8,10 +8,10 @@ export default function Camera() {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const streamRef = useRef<MediaStream | null>(null);
-    const width = 460;
+    const width = 383;
     const height = 680;
     const MAX_WIDTH = 1080;
-    const MAX_HEIGHT = 1440;
+    const MAX_HEIGHT = 1920;
     const router = useRouter();
 
     // カメラ起動
