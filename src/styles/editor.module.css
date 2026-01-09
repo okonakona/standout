@@ -1,10 +1,11 @@
 /* 新しい統合レイアウト用 */
 .fullScreenContainer {
     width: 100vw;
-    height: 100vh;
+    height: 100svh;
     display: flex;
     flex-direction: column;
     background: #f8f9fa;
+    overflow: hidden;
 }
 
 .imageSection {
@@ -36,11 +37,12 @@
 .canvasContainer {
     width: 100%;
     max-width: 100%;
-    max-height: calc(100vh - 350px);
+    max-height: calc(100svh - 350px);
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 }
 
 .afterIconWrapper {
