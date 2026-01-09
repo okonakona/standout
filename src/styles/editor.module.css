@@ -14,6 +14,8 @@
     align-items: center;
     justify-content: center;
     position: relative;
+    min-height: 0;
+    overflow: hidden;
 }
 
 .navigationOverlay {
@@ -36,8 +38,7 @@
 
 .canvasContainer {
     width: 100%;
-    max-width: 100%;
-    max-height: calc(100svh - 350px);
+    height: 100%;
     position: relative;
     display: flex;
     align-items: center;
@@ -79,8 +80,7 @@
 
 .compareImage {
     width: 100%;
-    height: auto;
-    max-height: calc(100vh - 350px);
+    height: 100%;
     display: block;
     object-fit: contain;
     position: absolute;

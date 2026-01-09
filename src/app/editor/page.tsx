@@ -113,9 +113,6 @@ export default function EditorPage() {
         <div className={styles.fullScreenContainer}>
             {/* メイン画像エリア */}
             <section className={styles.imageSection}>
-                {loading && <p className={styles.loadingText}>シミュレーション中</p>}
-                {/* {error && <p style={{ color: "crimson" }}>解析エラー: {error}</p>} */}
-
                 <div className={styles.canvasContainer} ref={compareContainerRef}>
                     {/* 右上Afterアイコン */}
                     <div
