@@ -1,11 +1,11 @@
 "use client";
-import styles from './style.module.css'
+import styles from "./style.module.css";
 import Footer from "@/components/footer/page";
 import Header from "@/components/header/page";
 import Image from "next/image";
 import Link from "next/link";
-import SimulatePage from './simulate/page';
-import { useState } from 'react';
+import SimulateContent from "@/components/SimulateContent";
+import { useState } from "react";
 
 export default function Home() {
     const [isOpen, setIsOpen] = useState(false);
@@ -17,10 +17,7 @@ export default function Home() {
                     <h1 className={styles.imgWrap}>
                         <Image src="/assets/sample.png" alt="サンプル" width={390} height={241} />
                     </h1>
-                    <button 
-                    className={styles.button} 
-                    onClick={() => setIsOpen(true)}
-                    >
+                    <button className={styles.button} onClick={() => setIsOpen(true)}>
                         メイクシミュレーション
                     </button>
                     <section>
@@ -34,13 +31,10 @@ export default function Home() {
                     </section>
                     <section>
                         <h2>イケメンメイクコラム</h2>
-                        <div className={styles.articleWrap}>
-                        </div>
+                        <div className={styles.articleWrap}></div>
                     </section>
                 </div>
-                {isOpen && (
-                    <SimulatePage onClose={() => setIsOpen(false)} />
-                )}
+                {isOpen && <SimulateContent onClose={() => setIsOpen(false)} />}
             </main>
             <Footer />
         </>

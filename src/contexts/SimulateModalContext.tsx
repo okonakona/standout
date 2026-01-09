@@ -1,16 +1,15 @@
-    "use client";
-    import { createContext, useContext, useState } from "react";
-    import SimulatePage from '../app/simulate/page';
+"use client";
+import { createContext, useContext, useState } from "react";
+import SimulateContent from "@/components/SimulateContent";
 
+type ContextType = {
+    open: () => void;
+    close: () => void;
+};
 
-    type ContextType = {
-        open: () => void;
-        close: () => void;
-    };
+const SimulateModalContext = createContext<ContextType | null>(null);
 
-    const SimulateModalContext = createContext<ContextType | null>(null);
-
-    export function SimulateModalProvider({ children }: { children: React.ReactNode }) {
+export function SimulateModalProvider({ children }: { children: React.ReactNode }) {
     const [isOpen, setIsOpen] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
 
@@ -26,24 +25,21 @@
 
     return (
         <SimulateModalContext.Provider value={{ open, close }}>
-        {children}
+            {children}
 
-        {isOpen && (
-            <div
-            className={`modalCnt ${isVisible ? "show" : "hide"}`}
-            onClick={close}
-            >
-            <div onClick={(e) => e.stopPropagation()}>
-                <SimulatePage onClose={() => setIsOpen(false)} />
-            </div>
-            </div>
-        )}
+            {isOpen && (
+                <div className={`modalCnt ${isVisible ? "show" : "hide"}`} onClick={close}>
+                    <div onClick={(e) => e.stopPropagation()}>
+                        <SimulateContent onClose={() => setIsOpen(false)} />
+                    </div>
+                </div>
+            )}
         </SimulateModalContext.Provider>
     );
-    }
+}
 
-    export const useSimulateModal = () => {
-        const ctx = useContext(SimulateModalContext);
-        if (!ctx) throw new Error("useSimulateModal must be used inside Provider");
-        return ctx;
-    };
+export const useSimulateModal = () => {
+    const ctx = useContext(SimulateModalContext);
+    if (!ctx) throw new Error("useSimulateModal must be used inside Provider");
+    return ctx;
+};

@@ -11,7 +11,11 @@ export type MakeupGlContext = {
     bufferInfo: any;
     baseTexture: WebGLTexture;
     maskTexture: WebGLTexture;
-    render: (params: { tintColor: [number, number, number, number]; strength: number }) => void;
+    render: (params: {
+        tintColor: [number, number, number, number];
+        strength: number;
+        textureType?: number; // 0: マット, 1: クリーム, 2: パウダー
+    }) => void;
     updateMaskFromCanvas: (canvas: HTMLCanvasElement) => void;
 };
 
@@ -106,8 +110,12 @@ export async function initMakeupGl(
     };
 
     // 8) 描画関数
-    const render = (params: { tintColor: [number, number, number, number]; strength: number }) => {
-        const { tintColor, strength } = params;
+    const render = (params: {
+        tintColor: [number, number, number, number];
+        strength: number;
+        textureType?: number;
+    }) => {
+        const { tintColor, strength, textureType = 0 } = params;
 
         // Canvas のサイズを CSS に合わせてリサイズ
         twgl.resizeCanvasToDisplaySize(gl.canvas as HTMLCanvasElement);
@@ -124,6 +132,7 @@ export async function initMakeupGl(
             uMaskTexture: maskTexture,
             uTintColor: tintColor,
             uStrength: strength,
+            uTextureType: textureType,
         };
 
         twgl.setUniforms(programInfo, uniforms);
