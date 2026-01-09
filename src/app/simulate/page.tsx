@@ -1,14 +1,10 @@
 "use client";
-import styles from './style.module.css'
+import styles from "./style.module.css";
 import { useEffect, useState } from "react";
 import { loadRoleModels, setActiveRoleId, getActiveRoleId, RoleModel } from "@/utils/roleSession";
 import Link from "next/link";
 
-type Props = {
-    onClose: () => void;
-    };
-
-export default function SimulatePage({ onClose }: Props) {
+export default function SimulatePage({ onClose }: { onClose?: () => void } = {}) {
     const [list, setList] = useState<RoleModel[]>([]);
     const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -51,15 +47,18 @@ export default function SimulatePage({ onClose }: Props) {
                         </>
                     )} */}
                     <div className={styles.btnWrap}>
-                        <Link href="/upload" className={styles.button} data-icon="gallery">写真をアップロード</Link>
-                        <Link href="/camera" className={styles.button} data-icon="camera">カメラで撮影</Link>
+                        <Link href="/upload" className={styles.button} data-icon="gallery">
+                            写真をアップロード
+                        </Link>
+                        <Link href="/camera" className={styles.button} data-icon="camera">
+                            カメラで撮影
+                        </Link>
                     </div>
-                    <button 
-                    className={styles.closeBtn} 
-                    onClick={onClose}
-                    >
-                        キャンセル
-                    </button>
+                    {onClose && (
+                        <button className={styles.closeBtn} onClick={onClose}>
+                            キャンセル
+                        </button>
+                    )}
                 </div>
             </div>
         </main>
