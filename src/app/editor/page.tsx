@@ -192,6 +192,7 @@ export default function EditorPage() {
                             tintColor={currentColor}
                             strength={currentStrength}
                             effectId={cfg.effectId}
+                            textureType={cfg.textureType}
                         />
                     )}
                 </div>
