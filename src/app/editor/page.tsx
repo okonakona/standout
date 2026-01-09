@@ -399,6 +399,8 @@ export default function EditorPage() {
                                                         currentColor === preset.hex
                                                             ? styles.active
                                                             : ""
+                                                    } ${
+                                                        step === "lips" ? styles.lipColorButton : ""
                                                     }`}
                                                     onClick={() =>
                                                         setColorByStep((prev) => ({
