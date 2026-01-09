@@ -192,6 +192,7 @@ export default function EditorPage() {
                             tintColor={currentColor}
                             strength={currentStrength}
                             effectId={cfg.effectId}
+                            textureType={cfg.textureType}
                         />
                     )}
                 </div>
@@ -399,6 +400,8 @@ export default function EditorPage() {
                                                         currentColor === preset.hex
                                                             ? styles.active
                                                             : ""
+                                                    } ${
+                                                        step === "lips" ? styles.lipColorButton : ""
                                                     }`}
                                                     onClick={() =>
                                                         setColorByStep((prev) => ({

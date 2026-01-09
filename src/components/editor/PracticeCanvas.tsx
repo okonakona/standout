@@ -249,7 +249,7 @@ export default function PracticeCanvas({
              * 繰り返し使用することで徐々に薄くなっていく。
              */
             mctx.globalCompositeOperation = "destination-out";
-            mctx.globalAlpha = 0.08; // ← ☆☆ ぼかし強度（値が大きいほど薄くなる、繰り返しで徐々に効果が現れる）
+            mctx.globalAlpha = 0.02; // ← ☆☆ ぼかし強度（値が大きいほど薄くなる、繰り返しで徐々に効果が現れる）
             mctx.drawImage(dab, 0, 0);
         } else {
             // 消しゴム

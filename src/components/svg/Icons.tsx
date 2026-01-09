@@ -56,14 +56,19 @@ export function LipPointSvg({
     width = 23,
     height = 50,
 }: LipPointSvgProps) {
+    // リップアイコンは常に固定幅を使用
+    const fixedWidth = 23;
+    const fixedHeight = 50;
+
     return (
         <svg
-            width={width}
-            height={height}
+            width={fixedWidth}
+            height={fixedHeight}
             viewBox="0 0 23 50"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             className={className}
+            style={style}
         >
             <path
                 d="M21.9203 29.7485V20.6802H20.1935C20.1935 20.6802 20.1935 7.07746 20.1935 4.70218C20.1935 2.32746 18.0344 1.4635 16.5225 2.32746C11.6602 5.10626 6.80638 11.1796 6.80638 12.6909V20.6802H5.07956V29.7485H4V47.5602C4 48.575 4.82259 49.3963 5.83615 49.3963H21.1639C22.1786 49.3963 23 48.5749 23 47.5602V29.7485H21.9203ZM7.45475 47.2371H6.15903V31.9076H7.45484L7.45475 47.2371ZM20.4097 29.7485H6.59134V22.1914H20.4096V25.9699L20.4097 29.7485Z"
