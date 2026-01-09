@@ -1,6 +1,6 @@
     "use client";
     import { createContext, useContext, useState } from "react";
-    import SimulatePage from '../app/simulate/page';
+    import SimulateContent from '@/components/SimulateContent';
 
 
     type ContextType = {
@@ -34,7 +34,7 @@
             onClick={close}
             >
             <div onClick={(e) => e.stopPropagation()}>
-                <SimulatePage onClose={() => setIsOpen(false)} />
+                <SimulateContent onClose={() => setIsOpen(false)} />
             </div>
             </div>
         )}
