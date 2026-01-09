@@ -84,8 +84,13 @@ export default function Camera() {
         if (!video || !canvas) return;
 
         // ビデオの実際のサイズを取得（デバイスのカメラ解像度）
-        const videoWidth = video.videoWidth;
-        const videoHeight = video.videoHeight;
+        let videoWidth = video.videoWidth;
+        let videoHeight = video.videoHeight;
+
+        // 横長の場合は縦長に変換（幅と高さを入れ替える）
+        if (videoWidth > videoHeight) {
+            [videoWidth, videoHeight] = [videoHeight, videoWidth];
+        }
 
         // 最大サイズを超えないようにスケーリング
         let targetWidth = videoWidth;
@@ -101,7 +106,15 @@ export default function Camera() {
         canvas.height = targetHeight;
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
-        ctx.drawImage(video, 0, 0, targetWidth, targetHeight);
+
+        // 元の映像が横長の場合、90度回転させて描画
+        if (video.videoWidth > video.videoHeight) {
+            ctx.translate(targetWidth / 2, targetHeight / 2);
+            ctx.rotate(Math.PI / 2);
+            ctx.drawImage(video, -targetHeight / 2, -targetWidth / 2, targetHeight, targetWidth);
+        } else {
+            ctx.drawImage(video, 0, 0, targetWidth, targetHeight);
+        }
 
         // 圧縮率は必要に応じて調整（0.85 など）
         const dataUrl = canvas.toDataURL("image/jpeg", 0.92);
