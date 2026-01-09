@@ -6,6 +6,9 @@
     flex-direction: column;
     background: #f8f9fa;
     overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
 }
 
 .imageSection {

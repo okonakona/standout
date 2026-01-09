@@ -33,14 +33,13 @@ body {
     margin: 0;
 }
 
-li{
+li {
     list-style: none;
 }
-a{
+a {
     text-decoration: none;
 }
 a:link,
-a:visited{
+a:visited {
     color: var(--accentColor);
 }
-
