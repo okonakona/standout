@@ -83,11 +83,25 @@ export default function Camera() {
         const canvas = canvasRef.current;
         if (!video || !canvas) return;
 
-        canvas.width = width;
-        canvas.height = height;
+        // ビデオの実際のサイズを取得（デバイスのカメラ解像度）
+        const videoWidth = video.videoWidth;
+        const videoHeight = video.videoHeight;
+
+        // 最大サイズを超えないようにスケーリング
+        let targetWidth = videoWidth;
+        let targetHeight = videoHeight;
+
+        if (targetWidth > MAX_WIDTH || targetHeight > MAX_HEIGHT) {
+            const scale = Math.min(MAX_WIDTH / targetWidth, MAX_HEIGHT / targetHeight);
+            targetWidth = Math.floor(targetWidth * scale);
+            targetHeight = Math.floor(targetHeight * scale);
+        }
+
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
-        ctx.drawImage(video, 0, 0, width, height);
+        ctx.drawImage(video, 0, 0, targetWidth, targetHeight);
 
         // 圧縮率は必要に応じて調整（0.85 など）
         const dataUrl = canvas.toDataURL("image/jpeg", 0.92);
