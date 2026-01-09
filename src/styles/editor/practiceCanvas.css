@@ -5,7 +5,6 @@
 }
 
 .practiceCanvas-2d {
-    width: 100%;
     height: auto;
     max-height: calc(100vh - 350px);
     background: var(--blackColor);
