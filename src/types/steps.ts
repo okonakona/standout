@@ -83,6 +83,7 @@ export type StepConfig = {
     defaultRadius: number; // デフォルトのブラシ半径(px)
     allowedRadii?: number[]; // 選択肢があるステップだけ指定
     effectId: number; // WebGL 質感用の ID
+    textureType?: number; // 0: マット, 1: クリーム, 2: パウダー
     presets: MakeupPreset[]; // このステップで使える 12色プリセット
     defaultColorP3?: [number, number, number]; // 内部用 P3 (0..1)
 };
@@ -99,6 +100,7 @@ export const STEP_CONFIG: Record<Step, StepConfig> = {
         // 下地は太さ固定（ゲージ固定）→ 大・中サイズのみ
         allowedRadii: [10, 7],
         effectId: 0, // Soft veil
+        textureType: 1, // クリーム
         presets: MAKEUP_PRESETS.primer,
     },
     foundation: {
@@ -111,6 +113,7 @@ export const STEP_CONFIG: Record<Step, StepConfig> = {
         // 10,7,4,1 あたりを大中小極細として用意
         allowedRadii: [10, 7, 4, 1],
         effectId: 1, // Liquid foundation
+        textureType: 1, // クリーム
         presets: MAKEUP_PRESETS.foundation,
     },
     concealer: {
@@ -135,6 +138,7 @@ export const STEP_CONFIG: Record<Step, StepConfig> = {
         // パウダーは広範囲塗布なので大・中のみ
         allowedRadii: [10, 7],
         effectId: 3, // Powder / grain
+        textureType: 2, // パウダー
         presets: MAKEUP_PRESETS.powder,
     },
     highlight: {
@@ -172,6 +176,7 @@ export const STEP_CONFIG: Record<Step, StepConfig> = {
         // 大ブラシだけ追加（細かくやりたいときは 10px）
         allowedRadii: [30, 10],
         effectId: 5, // Contour / shadow
+        textureType: 2, // パウダー
         presets: MAKEUP_PRESETS.contour,
     },
     brows: {
@@ -184,6 +189,7 @@ export const STEP_CONFIG: Record<Step, StepConfig> = {
         // アイブロウは細かい描写なので小・極小のみ
         allowedRadii: [4, 1],
         effectId: 6, // Brows / hair-like
+        textureType: 2, // パウダー
         presets: MAKEUP_PRESETS.brows,
     },
     shadow: {
@@ -196,6 +202,7 @@ export const STEP_CONFIG: Record<Step, StepConfig> = {
         defaultRadius: 7,
         allowedRadii: [10, 7, 4, 1],
         effectId: 7, // Eyeshadow
+        textureType: 2, // パウダー
         presets: MAKEUP_PRESETS.shadow,
     },
     lips: {
@@ -208,6 +215,7 @@ export const STEP_CONFIG: Record<Step, StepConfig> = {
         // リップは中・小サイズのみ（唇の範囲に応じて）
         allowedRadii: [7, 4],
         effectId: 8, // Lip gloss / shine
+        textureType: 1, // クリーム
         presets: MAKEUP_PRESETS.lips,
     },
 };
