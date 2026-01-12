@@ -118,9 +118,9 @@ vec3 adaptiveSkinBlend(vec3 skinRgb, vec3 makeupRgb, float maskAlpha) {
     vec3 adaptedHsl = vec3(makeupHsl.x, saturationBlend, lightnessAdapt);
     vec3 adaptedRgb = hsl2rgb(adaptedHsl);
     
-    // エッジのソフトニング
-    float edgeSoftness = smoothstep(0.0, 0.15, maskAlpha) * smoothstep(1.0, 0.85, maskAlpha);
-    float blendFactor = maskAlpha * (0.7 + edgeSoftness * 0.3);
+    // エッジのソフトニング（適度に滑らか）
+    float edgeSoftness = smoothstep(0.0, 0.3, maskAlpha) * smoothstep(1.0, 0.7, maskAlpha);
+    float blendFactor = maskAlpha * (0.6 + edgeSoftness * 0.4);
     
     return mix(skinRgb, adaptedRgb, blendFactor);
 }
@@ -178,7 +178,29 @@ vec3 applyMakeup(vec3 baseRgb, vec3 tintRgb, float maskAlpha, float strength, fl
 
 void main() {
   vec4 base = texture(uBaseTexture, vUv);
-  float mask = texture(uMaskTexture, vUv).a;
+  
+  // マスクを周辺ピクセルと平均化してスムーズに（3x3ブラー）
+  vec2 texelSize = vec2(1.0) / vec2(textureSize(uMaskTexture, 0));
+  float mask = 0.0;
+  float totalWeight = 0.0;
+  
+  // 3x3ガウシアンブラー
+  for (float y = -1.0; y <= 1.0; y += 1.0) {
+    for (float x = -1.0; x <= 1.0; x += 1.0) {
+      vec2 offset = vec2(x, y) * texelSize;
+      float dist = length(vec2(x, y));
+      float weight = exp(-dist * dist / 1.5);
+      mask += texture(uMaskTexture, vUv + offset).a * weight;
+      totalWeight += weight;
+    }
+  }
+  mask /= totalWeight;
+
+  // マスクがない部分は完全透明にする（レイヤー重ね合わせのため）
+  if (mask < 0.001) {
+    outColor = vec4(0.0, 0.0, 0.0, 0.0);
+    return;
+  }
 
   vec3 resultRgb = applyMakeup(base.rgb, uTintColor.rgb, mask, uStrength, uTextureType);
 
