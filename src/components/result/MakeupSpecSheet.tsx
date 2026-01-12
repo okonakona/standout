@@ -67,11 +67,15 @@ export default function MakeupSpecSheet({ steps, finalImageUrl, userName, date, 
                                 <div class="step-details">
                                     <div class="step-detail-row">
                                         <strong>カラー:</strong>
-                                        <span class="color-swatch" style="background-color: ${stepData.color}"></span>
+                                        <span class="color-swatch" style="background-color: ${
+                                            stepData.color
+                                        }"></span>
                                         <span style="margin-left: 8px">${stepData.color}</span>
                                     </div>
                                     <div class="step-detail-row">
-                                        <strong>濃度:</strong> ${Math.round(stepData.strength * 100)}%
+                                        <strong>濃度:</strong> ${Math.round(
+                                            stepData.strength * 100
+                                        )}%
                                     </div>
                                     <div class="step-detail-row">
                                         <strong>ブレンド:</strong> ${config.blend}
@@ -302,8 +306,12 @@ export default function MakeupSpecSheet({ steps, finalImageUrl, userName, date, 
                                 <div class="spec-header">
                                     <h1 class="spec-title">メイク仕様書</h1>
                                     <div class="spec-info">
-                                        <div>${userName ? `<span>お名前: ${userName}</span>` : ""}</div>
-                                        <div>作成日: ${date || new Date().toLocaleDateString("ja-JP")}</div>
+                                        <div>${
+                                            userName ? `<span>お名前: ${userName}</span>` : ""
+                                        }</div>
+                                        <div>作成日: ${
+                                            date || new Date().toLocaleDateString("ja-JP")
+                                        }</div>
                                     </div>
                                 </div>
                                 ${

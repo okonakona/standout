@@ -48,7 +48,9 @@ export default function ResultPage() {
                         {makeupSettings && finalImage && (
                             <MakeupSpecSheet
                                 steps={Object.keys(makeupSettings.colorByStep).map((s) => {
-                                    const stepImage = latestSteps.find((item: any) => item.note === s);
+                                    const stepImage = latestSteps.find(
+                                        (item: any) => item.note === s
+                                    );
                                     return {
                                         step: s as Step,
                                         label: getLabelForNote(s),
