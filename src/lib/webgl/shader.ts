@@ -8,7 +8,7 @@ out vec2 vUv;
 
 void main() {
   gl_Position = position;
-  vUv = texcoord;
+  vUv = vec2(texcoord.x, 1.0 - texcoord.y);
 }
 `;
 
@@ -182,6 +182,7 @@ void main() {
 
   vec3 resultRgb = applyMakeup(base.rgb, uTintColor.rgb, mask, uStrength, uTextureType);
 
-  outColor = vec4(resultRgb, base.a);
+  // メイクを適用した部分は不透明にする
+  outColor = vec4(resultRgb, 1.0);
 }
 `;

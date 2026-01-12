@@ -23,6 +23,7 @@ export default function EditorPage() {
     const [selectedBrush, setSelectedBrush] = useState<number>(1); // ブラシタイプを管理
     const [isCompareMode, setIsCompareMode] = useState(false);
     const [sliderPosition, setSliderPosition] = useState(50); // %
+    const [drawVersion, setDrawVersion] = useState(0); // 描画バージョン管理
     const router = useRouter();
     const currentStepRef = useRef<HTMLDivElement>(null);
     const compareContainerRef = useRef<HTMLDivElement>(null);
@@ -194,7 +195,22 @@ export default function EditorPage() {
                         </>
                     )}
 
-                    {/* 下：2D 編集＆合成 */}
+                    {/* 下：元画像 */}
+                    <img
+                        src={img.src}
+                        alt="元画像"
+                        style={{
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "contain",
+                            pointerEvents: "none",
+                        }}
+                    />
+
+                    {/* 中：2D 編集＆合成（描画レイヤー） */}
                     <PracticeCanvas
                         image={img}
                         activeStep={step}
@@ -208,25 +224,37 @@ export default function EditorPage() {
                         guidePathD={guide.d}
                         guideBandPx={guide.bandPx}
                         onCompositeChange={setCompositeCanvas}
-                        onStepMaskChange={(s, mask) =>
+                        onStepMaskChange={(s, mask) => {
                             setMaskByStep((prev) => ({
                                 ...prev,
                                 [s]: mask,
-                            }))
-                        }
+                            }));
+                            setDrawVersion((v) => v + 1);
+                        }}
                     />
 
-                    {/* 上：WebGL 質感オーバーレイ */}
-                    {compositeCanvas && activeMask && (
-                        <WebglMakeupCanvas
-                            base={compositeCanvas}
-                            mask={activeMask}
-                            tintColor={currentColor}
-                            strength={currentStrength}
-                            effectId={cfg.effectId}
-                            textureType={cfg.textureType}
-                        />
-                    )}
+                    {/* 上：WebGL 質感オーバーレイ（全ステップ分） */}
+                    {order.map((s) => {
+                        const stepMask = maskByStep[s];
+                        if (!stepMask) return null;
+
+                        const stepCfg = STEP_CONFIG[s];
+                        const stepColor = colorByStep[s];
+                        const stepStrength = strengthByStep[s];
+
+                        return (
+                            <WebglMakeupCanvas
+                                key={s}
+                                base={img}
+                                mask={stepMask}
+                                tintColor={stepColor}
+                                strength={stepStrength}
+                                effectId={stepCfg.effectId}
+                                textureType={stepCfg.textureType}
+                                drawVersion={drawVersion}
+                            />
+                        );
+                    })}
                 </div>
 
                 {/* ナビゲーションオーバーレイ */}

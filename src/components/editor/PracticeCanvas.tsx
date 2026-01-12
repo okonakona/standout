@@ -117,15 +117,10 @@ export default function PracticeCanvas({
         const w = out.width;
         const h = out.height;
 
-        // 0) クリア
+        // 0) クリア（元画像は描画しない、完全透明レイヤー）
         octx.clearRect(0, 0, w, h);
 
-        // 1) 元画像
-        octx.globalCompositeOperation = "source-over";
-        octx.globalAlpha = 1;
-        octx.drawImage(baseCv, 0, 0);
-
-        // 2) ステップ順にレイヤーを重ねる
+        // 1) ステップ順にレイヤーを重ねる（元画像描画を削除）
         for (const step of order) {
             const mask = paintMasksRef.current[step];
             if (!mask) continue;
