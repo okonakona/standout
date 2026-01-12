@@ -41,55 +41,304 @@ function getMethodText(step: Step, config: any): string {
 }
 
 export default function MakeupSpecSheet({ steps, finalImageUrl, userName, date, message }: Props) {
-    const printRef = useRef<HTMLDivElement>(null);
     const [editableMessage, setEditableMessage] = React.useState(
         message || "このメイクで理想の自分を表現しましょう！"
     );
     const [isExpanded, setIsExpanded] = React.useState(false);
 
     const handlePrint = () => {
-        if (printRef.current) {
-            const printWindow = window.open("", "", "width=800,height=600");
-            if (printWindow) {
-                printWindow.document.write(`
+        const printWindow = window.open("", "", "width=800,height=600");
+        if (printWindow) {
+            // 印刷用のHTML全体を構築
+            const stepsHTML = steps
+                .map((stepData, index) => {
+                    const config = STEP_CONFIG[stepData.step];
+                    const methodText = getMethodText(stepData.step, config);
+                    return `
+                        <div class="step-item">
+                            <div class="step-number">${index + 1}</div>
+                            ${
+                                stepData.imageUrl
+                                    ? `<div class="step-image"><img src="${stepData.imageUrl}" alt="${stepData.label}" /></div>`
+                                    : ""
+                            }
+                            <div class="step-content">
+                                <div class="step-title">${stepData.label}</div>
+                                <div class="step-details">
+                                    <div class="step-detail-row">
+                                        <strong>カラー:</strong>
+                                        <span class="color-swatch" style="background-color: ${stepData.color}"></span>
+                                        <span style="margin-left: 8px">${stepData.color}</span>
+                                    </div>
+                                    <div class="step-detail-row">
+                                        <strong>濃度:</strong> ${Math.round(stepData.strength * 100)}%
+                                    </div>
+                                    <div class="step-detail-row">
+                                        <strong>ブレンド:</strong> ${config.blend}
+                                    </div>
+                                    <div class="step-detail-row">
+                                        <strong>質感:</strong> ${config.brush}
+                                    </div>
+                                    <div class="method-text">
+                                        <strong>方法:</strong>
+                                        <p>${methodText}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                })
+                .join("");
+
+            printWindow.document.write(`
                     <html>
                         <head>
                             <title>メイク仕様書</title>
                             <style>
-                                body { font-family: sans-serif; padding: 20px; }
-                                .spec-container { max-width: 800px; margin: 0 auto; }
-                                .spec-header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 20px; }
-                                .spec-title { font-size: 28px; font-weight: bold; margin-bottom: 10px; }
-                                .spec-info { display: flex; justify-content: space-between; margin-top: 15px; font-size: 14px; color: #666; }
-                                .final-image { text-align: center; margin: 30px 0; }
-                                .final-image img { max-width: 400px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-                                .steps-section { margin-top: 30px; }
-                                .section-title { font-size: 20px; font-weight: bold; margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
-                                .step-item { display: flex; gap: 20px; margin-bottom: 20px; padding: 15px; border: 1px solid #e0e0e0; border-radius: 8px; page-break-inside: avoid; }
-                                .step-number { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: #2196f3; color: white; border-radius: 50%; font-weight: bold; flex-shrink: 0; }
-                                .step-content { flex: 1; }
-                                .step-title { font-size: 16px; font-weight: bold; margin-bottom: 8px; }
-                                .step-details { font-size: 14px; color: #666; }
-                                .step-detail-row { margin: 5px 0; }
-                                .color-swatch { display: inline-block; width: 20px; height: 20px; border-radius: 4px; border: 1px solid #ccc; vertical-align: middle; margin-left: 8px; }
+                                body { 
+                                    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif; 
+                                    padding: 20px; 
+                                    margin: 0;
+                                    background: white;
+                                    color: #333;
+                                }
+                                .spec-container { 
+                                    max-width: 800px; 
+                                    margin: 0 auto;
+                                    background: white;
+                                }
+                                .logo-section {
+                                    text-align: center;
+                                    padding: 30px 0 20px;
+                                    border-bottom: 3px solid #2196f3;
+                                    margin-bottom: 30px;
+                                }
+                                .logo-section img {
+                                    max-width: 200px;
+                                    height: auto;
+                                }
+                                .spec-header { 
+                                    text-align: center; 
+                                    margin-bottom: 30px; 
+                                    padding-bottom: 20px;
+                                }
+                                .spec-title { 
+                                    font-size: 32px; 
+                                    font-weight: bold; 
+                                    margin: 20px 0;
+                                    color: #333;
+                                    letter-spacing: 2px;
+                                }
+                                .spec-info { 
+                                    display: flex; 
+                                    justify-content: space-between; 
+                                    margin-top: 15px; 
+                                    font-size: 14px; 
+                                    color: #666;
+                                    padding: 0 20px;
+                                }
+                                .final-image { 
+                                    text-align: center; 
+                                    margin: 40px 0;
+                                    padding: 20px;
+                                    background: #fafafa;
+                                    border-radius: 12px;
+                                }
+                                .final-image h2 {
+                                    font-size: 20px;
+                                    margin-bottom: 20px;
+                                    color: #333;
+                                }
+                                .final-image img { 
+                                    max-width: 400px; 
+                                    border-radius: 12px; 
+                                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                                }
+                                .message-section {
+                                    margin: 30px 0;
+                                    padding: 20px;
+                                    background: #f5f5f5;
+                                    border-radius: 8px;
+                                    border-left: 4px solid #2196f3;
+                                }
+                                .message-section h2 {
+                                    font-size: 18px;
+                                    margin-bottom: 12px;
+                                    color: #333;
+                                }
+                                .message-content {
+                                    font-size: 14px;
+                                    line-height: 1.6;
+                                    color: #555;
+                                    white-space: pre-wrap;
+                                }
+                                .steps-section { 
+                                    margin-top: 30px;
+                                }
+                                .section-title { 
+                                    font-size: 22px; 
+                                    font-weight: bold; 
+                                    margin-bottom: 20px; 
+                                    border-bottom: 2px solid #e0e0e0; 
+                                    padding-bottom: 12px;
+                                    color: #333;
+                                }
+                                .step-item { 
+                                    display: flex; 
+                                    gap: 20px; 
+                                    margin-bottom: 24px; 
+                                    padding: 20px; 
+                                    border: 1px solid #e0e0e0; 
+                                    border-radius: 12px; 
+                                    background: #fafafa;
+                                    page-break-inside: avoid;
+                                    transition: box-shadow 0.2s ease;
+                                }
+                                .step-number { 
+                                    width: 48px; 
+                                    height: 48px; 
+                                    display: flex; 
+                                    align-items: center; 
+                                    justify-content: center; 
+                                    background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+                                    color: white; 
+                                    border-radius: 50%; 
+                                    font-weight: bold; 
+                                    font-size: 20px;
+                                    flex-shrink: 0;
+                                    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+                                }
+                                .step-image {
+                                    width: 200px;
+                                    height: 200px;
+                                    flex-shrink: 0;
+                                    border-radius: 8px;
+                                    overflow: hidden;
+                                    border: 2px solid #e0e0e0;
+                                }
+                                .step-image img {
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                }
+                                .step-content { 
+                                    flex: 1;
+                                }
+                                .step-title { 
+                                    font-size: 18px; 
+                                    font-weight: bold; 
+                                    margin-bottom: 12px;
+                                    color: #333;
+                                }
+                                .step-details { 
+                                    font-size: 14px; 
+                                    color: #666;
+                                }
+                                .step-detail-row { 
+                                    margin: 8px 0;
+                                    display: flex;
+                                    align-items: center;
+                                }
+                                .step-detail-row strong {
+                                    min-width: 80px;
+                                    color: #333;
+                                }
+                                .color-swatch { 
+                                    display: inline-block; 
+                                    width: 24px; 
+                                    height: 24px; 
+                                    border-radius: 4px; 
+                                    border: 1px solid #ccc; 
+                                    vertical-align: middle; 
+                                    margin: 0 8px;
+                                }
+                                .method-text {
+                                    margin-top: 12px;
+                                    padding-top: 12px;
+                                    border-top: 1px dashed #ddd;
+                                }
+                                .method-text p {
+                                    margin: 8px 0 0 0;
+                                    font-size: 13px;
+                                    line-height: 1.6;
+                                    color: #555;
+                                }
+                                .notes {
+                                    margin-top: 40px;
+                                    padding: 20px;
+                                    background: #f5f5f5;
+                                    border-radius: 8px;
+                                    font-size: 14px;
+                                    line-height: 1.6;
+                                    color: #666;
+                                }
+                                .notes h2 {
+                                    font-size: 18px;
+                                    margin-bottom: 12px;
+                                    color: #333;
+                                }
+                                .notes p {
+                                    margin: 8px 0;
+                                }
                                 @media print {
-                                    body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
-                                    .no-print { display: none; }
+                                    body { 
+                                        print-color-adjust: exact; 
+                                        -webkit-print-color-adjust: exact; 
+                                    }
+                                    .no-print { 
+                                        display: none; 
+                                    }
+                                    .step-item {
+                                        page-break-inside: avoid;
+                                    }
                                 }
                             </style>
                         </head>
                         <body>
-                            ${printRef.current.innerHTML}
+                            <div class="spec-container">
+                                <div class="logo-section">
+                                    <img src="/assets/logo.svg" alt="Logo" />
+                                </div>
+                                <div class="spec-header">
+                                    <h1 class="spec-title">メイク仕様書</h1>
+                                    <div class="spec-info">
+                                        <div>${userName ? `<span>お名前: ${userName}</span>` : ""}</div>
+                                        <div>作成日: ${date || new Date().toLocaleDateString("ja-JP")}</div>
+                                    </div>
+                                </div>
+                                ${
+                                    finalImageUrl
+                                        ? `
+                                    <div class="final-image">
+                                        <h2>完成イメージ</h2>
+                                        <img src="${finalImageUrl}" alt="完成メイク" />
+                                    </div>
+                                `
+                                        : ""
+                                }
+                                <div class="message-section">
+                                    <h2>一言メッセージ</h2>
+                                    <div class="message-content">${editableMessage}</div>
+                                </div>
+                                <div class="steps-section">
+                                    <h2 class="section-title">メイク手順</h2>
+                                    ${stepsHTML}
+                                </div>
+                                <div class="notes">
+                                    <h2>備考</h2>
+                                    <p>この仕様書は、メイクシミュレーションの結果を記録したものです。</p>
+                                    <p>実際のメイクアップの際は、肌の状態や照明環境により色味が異なる場合があります。</p>
+                                </div>
+                            </div>
                         </body>
                     </html>
                 `);
-                printWindow.document.close();
-                printWindow.focus();
-                setTimeout(() => {
-                    printWindow.print();
-                    printWindow.close();
-                }, 250);
-            }
+            printWindow.document.close();
+            printWindow.focus();
+            setTimeout(() => {
+                printWindow.print();
+                printWindow.close();
+            }, 250);
         }
     };
 
@@ -108,7 +357,7 @@ export default function MakeupSpecSheet({ steps, finalImageUrl, userName, date, 
                 </button>
             </div>
 
-            <div ref={printRef} className={styles.specSheet}>
+            <div className={styles.specSheet}>
                 <div className={styles.header}>
                     <h1 className={styles.title}>メイク仕様書</h1>
                     <div className={styles.info}>
