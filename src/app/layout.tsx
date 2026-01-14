@@ -3,8 +3,8 @@ import "./globals.css";
 import { SimulateModalProvider } from "@/contexts/SimulateModalContext";
 
 export const metadata: Metadata = {
-    title: "アプリ名",
-    description: "あとで変更",
+    title: "MensUp",
+    description: "自分の顔で手軽にメイクを試せる、男子のためのメイクシミュレーションアプリ。理想のスタイルをこのアプリで体験してみましょう。",
     viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover",
 };
 
