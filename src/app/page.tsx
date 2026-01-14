@@ -15,7 +15,7 @@ export default function Home() {
             <main>
                 <div className={styles.content}>
                     <h1 className={styles.imgWrap}>
-                        <Image src="/assets/sample.png" alt="サンプル" width={390} height={241} />
+                        <Image src="/assets/homeHead.jpg" alt="サンプル" width={390} height={219} />
                     </h1>
                     <button 
                     className={styles.button} 
