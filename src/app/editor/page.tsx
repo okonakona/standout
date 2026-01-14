@@ -334,7 +334,7 @@ export default function EditorPage() {
                             <div className={styles.toolContent}>
                                 {selectedTool === "parts" && (
                                     <div className={styles.partsTool}>
-                                        <h3 className={styles.navTitle}>重ね塗り</h3>
+                                        <h3 className={styles.navTitle}>完了済み</h3>
                                         <div className={styles.stepsList}>
                                             {order
                                                 .filter((s) => !!maskByStep[s])

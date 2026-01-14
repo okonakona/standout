@@ -27,7 +27,7 @@ const tools: { id: string; label: string; Icon: React.FC<{ className?: string }>
     },
     {
         id: "parts",
-        label: "重ね塗り",
+        label: "完了済み",
         Icon: LayerIcon,
     },
 ];
