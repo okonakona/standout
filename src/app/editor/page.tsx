@@ -146,6 +146,53 @@ export default function EditorPage() {
 
     return (
         <div className={styles.fullScreenContainer}>
+            {/* 現在のステップ表示（ヘッダー領域） */}
+            <div className={styles.currentStepHeader}>
+                {/* <h3 className={styles.navTitle}>現在のステップ</h3> */}
+                <div className={styles.stepsList}>
+                    {order.map((s, index) => {
+                        const stepConfig = STEP_CONFIG[s];
+                        const isCurrent = s === step;
+                        const isPast = order.indexOf(s) < order.indexOf(step);
+                        const hasMask = !!maskByStep[s];
+
+                        return (
+                            <div
+                                key={s}
+                                ref={isCurrent ? currentStepRef : null}
+                                className={`${styles.stepItem} ${isCurrent ? styles.current : ""} ${
+                                    isPast ? styles.past : ""
+                                } ${hasMask ? styles.completed : ""}`}
+                            >
+                                <div className={styles.stepImageFrame}>{/* 画像表示エリア */}</div>
+                                <div className={styles.stepInfo}>
+                                    <div className={styles.stepNumber}>{index + 1}</div>
+                                    <div className={styles.stepLabel}>{stepConfig.label}</div>
+                                    <div className={styles.stepStatus}>
+                                        {isCurrent && (
+                                            <span className={styles.statusBadge}>編集中</span>
+                                        )}
+                                        {!isCurrent && isPast && hasMask && (
+                                            <span
+                                                className={`${styles.statusBadge} ${styles.completed}`}
+                                            >
+                                                完了
+                                            </span>
+                                        )}
+                                        {!isCurrent && !isPast && (
+                                            <span
+                                                className={`${styles.statusBadge} ${styles.upcoming}`}
+                                            >
+                                                未開始
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
             {/* メイン画像エリア */}
             <section className={styles.imageSection}>
                 <div className={styles.canvasContainer} ref={compareContainerRef}>
@@ -269,305 +316,223 @@ export default function EditorPage() {
                             }
                         }}
                     >
-                        {/* 未選択時：メイクステップ表示 */}
-                        {!selectedTool && (
-                            <div className={styles.partsTool}>
-                                <h3 className={styles.navTitle}>現在のステップ</h3>
-                                <div className={styles.stepsList}>
-                                    {order.map((s, index) => {
-                                        const stepConfig = STEP_CONFIG[s];
-                                        const isCurrent = s === step;
-                                        const isPast = order.indexOf(s) < order.indexOf(step);
-                                        const hasMask = !!maskByStep[s];
+                        <div className={styles.toolContent}>
+                            {selectedTool === "parts" && (
+                                <div className={styles.partsTool}>
+                                    <h3 className={styles.navTitle}>完了済み</h3>
+                                    <div className={styles.stepsList}>
+                                        {order
+                                            .filter((s) => !!maskByStep[s])
+                                            .map((s) => {
+                                                const stepConfig = STEP_CONFIG[s];
+                                                const isCurrent = s === step;
+                                                const color =
+                                                    colorByStep[s] || stepConfig.defaultColor;
 
-                                        return (
-                                            <div
-                                                key={s}
-                                                ref={isCurrent ? currentStepRef : null}
-                                                className={`${styles.stepItem} ${
-                                                    isCurrent ? styles.current : ""
-                                                } ${isPast ? styles.past : ""} ${
-                                                    hasMask ? styles.completed : ""
-                                                }`}
-                                            >
-                                                <div className={styles.stepImageFrame}>
-                                                    {/* 画像表示エリア */}
-                                                </div>
-                                                <div className={styles.stepInfo}>
-                                                    <div className={styles.stepNumber}>
-                                                        {index + 1}
-                                                    </div>
-                                                    <div className={styles.stepLabel}>
-                                                        {stepConfig.label}
-                                                    </div>
-                                                    <div className={styles.stepStatus}>
-                                                        {isCurrent && (
-                                                            <span className={styles.statusBadge}>
-                                                                編集中
-                                                            </span>
-                                                        )}
-                                                        {!isCurrent && isPast && hasMask && (
-                                                            <span
-                                                                className={`${styles.statusBadge} ${styles.completed}`}
-                                                            >
-                                                                完了
-                                                            </span>
-                                                        )}
-                                                        {!isCurrent && !isPast && (
-                                                            <span
-                                                                className={`${styles.statusBadge} ${styles.upcoming}`}
-                                                            >
-                                                                未開始
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* 選択時：ツール固有のUI */}
-                        {selectedTool && (
-                            <div className={styles.toolContent}>
-                                {selectedTool === "parts" && (
-                                    <div className={styles.partsTool}>
-                                        <h3 className={styles.navTitle}>完了済み</h3>
-                                        <div className={styles.stepsList}>
-                                            {order
-                                                .filter((s) => !!maskByStep[s])
-                                                .map((s, index) => {
-                                                    const stepConfig = STEP_CONFIG[s];
-                                                    const isCurrent = s === step;
-                                                    const color =
-                                                        colorByStep[s] || stepConfig.defaultColor;
-
-                                                    return (
+                                                return (
+                                                    <div
+                                                        key={s}
+                                                        className={`${styles.stepItem} ${
+                                                            isCurrent ? styles.current : ""
+                                                        } ${styles.completed}`}
+                                                    >
                                                         <div
-                                                            key={s}
-                                                            className={`${styles.stepItem} ${
-                                                                isCurrent ? styles.current : ""
-                                                            } ${styles.completed}`}
+                                                            className={styles.stepImageFrame}
+                                                            style={{
+                                                                backgroundColor: color,
+                                                                opacity: 0.7,
+                                                            }}
                                                         >
-                                                            <div
-                                                                className={styles.stepImageFrame}
-                                                                style={{
-                                                                    backgroundColor: color,
-                                                                    opacity: 0.7,
-                                                                }}
-                                                            >
-                                                                {/* 塗りの色を背景色として表示 */}
+                                                            {/* 塗りの色を背景色として表示 */}
+                                                        </div>
+                                                        <div className={styles.stepInfo}>
+                                                            <div className={styles.stepNumber}>
+                                                                {order.indexOf(s) + 1}
                                                             </div>
-                                                            <div className={styles.stepInfo}>
-                                                                <div className={styles.stepNumber}>
-                                                                    {order.indexOf(s) + 1}
-                                                                </div>
-                                                                <div className={styles.stepLabel}>
-                                                                    {stepConfig.label}
-                                                                </div>
-                                                                <div className={styles.stepStatus}>
-                                                                    <span
-                                                                        className={`${styles.statusBadge} ${styles.completed}`}
-                                                                    >
-                                                                        塗り済み
-                                                                    </span>
-                                                                </div>
+                                                            <div className={styles.stepLabel}>
+                                                                {stepConfig.label}
+                                                            </div>
+                                                            <div className={styles.stepStatus}>
+                                                                <span
+                                                                    className={`${styles.statusBadge} ${styles.completed}`}
+                                                                >
+                                                                    塗り済み
+                                                                </span>
                                                             </div>
                                                         </div>
-                                                    );
-                                                })}
-                                            {order.filter((s) => !!maskByStep[s]).length === 0 && (
-                                                <div
-                                                    style={{
-                                                        padding: "20px",
-                                                        textAlign: "center",
-                                                        color: "#999",
-                                                    }}
-                                                >
-                                                    まだ塗りがありません
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                )}
-                                {selectedTool === "color" && (
-                                    <div className={styles.colorTool}>
-                                        <h3 className={styles.navTitle}>好きな色を選んでみよう</h3>
-                                        <div className={styles.colorPresets}>
-                                            <div className={styles.customColorSection}>
-                                                <button
-                                                    className={styles.customColorButton}
-                                                    onClick={() =>
-                                                        document
-                                                            .getElementById("colorInput")
-                                                            ?.click()
-                                                    }
-                                                >
-                                                    <div className={styles.customColorIcon}>
-                                                        <ColorIcon />
-                                                        <span className={styles.customColorLabel}>
-                                                            カスタム
-                                                        </span>
                                                     </div>
-                                                    <input
-                                                        id="colorInput"
-                                                        type="color"
-                                                        value={currentColor}
-                                                        onChange={(e) =>
-                                                            setColorByStep((prev) => ({
-                                                                ...prev,
-                                                                [step]: e.target.value,
-                                                            }))
-                                                        }
-                                                        style={{ display: "none" }}
-                                                    />
-                                                </button>
+                                                );
+                                            })}
+                                        {order.filter((s) => !!maskByStep[s]).length === 0 && (
+                                            <div
+                                                style={{
+                                                    padding: "20px",
+                                                    textAlign: "center",
+                                                    color: "#999",
+                                                }}
+                                            >
+                                                まだ塗りがありません
                                             </div>
-                                            {cfg.presets.map((preset) => (
-                                                <button
-                                                    key={preset.id}
-                                                    className={`${styles.colorOption} ${
-                                                        currentColor === preset.hex
-                                                            ? styles.active
-                                                            : ""
-                                                    } ${
-                                                        step === "lips" ? styles.lipColorButton : ""
-                                                    }`}
-                                                    onClick={() =>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
+                            {selectedTool === "blur" && (
+                                <div className={styles.brushTool}>
+                                    <h3 className={styles.navTitle}>
+                                        色が強くなったところをぼかそう
+                                    </h3>
+                                    <div
+                                        className={`${styles.blurOption} ${
+                                            mode === "blur" ? styles.active : ""
+                                        }`}
+                                        onClick={() => setMode(mode === "blur" ? "paint" : "blur")}
+                                    >
+                                        <BlurIcon className={styles.blurIconLarge} />
+                                    </div>
+                                </div>
+                            )}
+                            {selectedTool === "brush" &&
+                                (() => {
+                                    const stepConfig = STEP_CONFIG[step];
+                                    const allowedRadii = stepConfig.allowedRadii || [
+                                        stepConfig.defaultRadius,
+                                    ];
+                                    const getBrushTypeFromRadius = (radius: number): number => {
+                                        if (radius <= 1) return 1;
+                                        if (radius <= 4) return 2;
+                                        if (radius <= 7) return 3;
+                                        return 4;
+                                    };
+                                    const availableBrushTypes = allowedRadii.map(
+                                        (radius: number) => ({
+                                            type: getBrushTypeFromRadius(radius),
+                                            radius: radius,
+                                        }),
+                                    );
+                                    availableBrushTypes.sort((a, b) => a.type - b.type);
+
+                                    return (
+                                        <div className={`${styles.brushTool} ${styles.scrollWrap}`}>
+                                            <h3 className={styles.navTitle}>
+                                                塗る大きさを変えてみよう
+                                            </h3>
+                                            <div className={styles.brushOptions}>
+                                                {availableBrushTypes.map(
+                                                    ({
+                                                        type,
+                                                        radius,
+                                                    }: {
+                                                        type: number;
+                                                        radius: number;
+                                                    }) => (
+                                                        <div
+                                                            key={radius}
+                                                            data-brush-type={type}
+                                                            className={`${styles.brushOption} ${
+                                                                selectedBrush === type
+                                                                    ? styles.active
+                                                                    : ""
+                                                            }`}
+                                                            onClick={() => {
+                                                                setSelectedBrush(type);
+                                                                setBrushRadius(radius);
+                                                                setMode("paint");
+                                                            }}
+                                                        >
+                                                            <BrushSvg
+                                                                type={type}
+                                                                className={styles.brushSvg}
+                                                            />
+                                                        </div>
+                                                    ),
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                })()}
+
+                            {(selectedTool === "eraser" || selectedTool === "eraser2") && (
+                                <div className={styles.brushTool}>
+                                    <h3 className={styles.navTitle}>
+                                        塗りの修正したいところを修正しよう
+                                    </h3>
+                                    <div
+                                        className={`${styles.blurOption} ${
+                                            mode === "erase" ? styles.active : ""
+                                        }`}
+                                        onClick={() =>
+                                            setMode(mode === "erase" ? "paint" : "erase")
+                                        }
+                                    >
+                                        <ResetIcon className={styles.blurIconLarge} />
+                                    </div>
+                                </div>
+                            )}
+
+                            {!selectedTool || selectedTool === "color" ? (
+                                <div className={styles.colorTool}>
+                                    <h3 className={styles.navTitle}>好きな色を選んでみよう</h3>
+                                    <div className={styles.colorPresets}>
+                                        <div className={styles.customColorSection}>
+                                            <button className={styles.customColorButton}>
+                                                <div className={styles.customColorIcon}>
+                                                    <ColorIcon />
+                                                    <span className={styles.customColorLabel}>
+                                                        カスタム
+                                                    </span>
+                                                </div>
+                                                <input
+                                                    id="colorInput"
+                                                    type="color"
+                                                    value={currentColor}
+                                                    onChange={(e) =>
                                                         setColorByStep((prev) => ({
                                                             ...prev,
-                                                            [step]: preset.hex,
+                                                            [step]: e.target.value,
                                                         }))
                                                     }
-                                                    title={preset.label}
-                                                >
-                                                    {step === "lips" ? (
-                                                        <LipPointSvg
-                                                            fillColor={preset.hex}
-                                                            strokeColor="#454A53"
-                                                            width={24}
-                                                            height={36}
-                                                            className={`${styles.presetSvg} ${styles.svgIcon}`}
-                                                        />
-                                                    ) : (
-                                                        <ColorPointSvg
-                                                            fillColor={preset.hex}
-                                                            strokeColor="#454A53"
-                                                            width={40}
-                                                            height={48}
-                                                            className={`${styles.presetSvg} ${styles.svgIcon}`}
-                                                        />
-                                                    )}
-                                                </button>
-                                            ))}
+                                                    className={styles.customColorInput}
+                                                />
+                                            </button>
                                         </div>
+                                        {cfg.presets.map((preset) => (
+                                            <button
+                                                key={preset.id}
+                                                className={`${styles.colorOption} ${
+                                                    currentColor === preset.hex ? styles.active : ""
+                                                } ${step === "lips" ? styles.lipColorButton : ""}`}
+                                                onClick={() =>
+                                                    setColorByStep((prev) => ({
+                                                        ...prev,
+                                                        [step]: preset.hex,
+                                                    }))
+                                                }
+                                                title={preset.label}
+                                            >
+                                                {step === "lips" ? (
+                                                    <LipPointSvg
+                                                        fillColor={preset.hex}
+                                                        strokeColor="#454A53"
+                                                        width={24}
+                                                        height={36}
+                                                        className={`${styles.presetSvg} ${styles.svgIcon}`}
+                                                    />
+                                                ) : (
+                                                    <ColorPointSvg
+                                                        fillColor={preset.hex}
+                                                        strokeColor="#454A53"
+                                                        width={40}
+                                                        height={48}
+                                                        className={`${styles.presetSvg} ${styles.svgIcon}`}
+                                                    />
+                                                )}
+                                            </button>
+                                        ))}
                                     </div>
-                                )}
-                                {selectedTool === "blur" && (
-                                    <div className={styles.brushTool}>
-                                        <h3 className={styles.navTitle}>
-                                            色が強くなったところをぼかそう
-                                        </h3>
-                                        <div
-                                            className={`${styles.blurOption} ${
-                                                mode === "blur" ? styles.active : ""
-                                            }`}
-                                            onClick={() =>
-                                                setMode(mode === "blur" ? "paint" : "blur")
-                                            }
-                                        >
-                                            <BlurIcon className={styles.blurIconLarge} />
-                                        </div>
-                                    </div>
-                                )}
-                                {selectedTool === "brush" &&
-                                    (() => {
-                                        // 現在のステップで利用可能なブラシサイズを取得
-                                        const stepConfig = STEP_CONFIG[step];
-                                        const allowedRadii = stepConfig.allowedRadii || [
-                                            stepConfig.defaultRadius,
-                                        ];
-
-                                        // ブラシサイズに対応するブラシタイプを決定
-                                        // [1, 4, 7, 10] → [極小, 小, 中, 大]
-                                        const getBrushTypeFromRadius = (radius: number): number => {
-                                            if (radius <= 1) return 1; // 極小
-                                            if (radius <= 4) return 2; // 小
-                                            if (radius <= 7) return 3; // 中
-                                            return 4; // 大
-                                        };
-
-                                        // 利用可能なブラシタイプを計算
-                                        const availableBrushTypes = allowedRadii.map(
-                                            (radius: number) => ({
-                                                type: getBrushTypeFromRadius(radius),
-                                                radius: radius,
-                                            })
-                                        );
-                                        // ブラシタイプ順でソート（1、2、3、4の順番を保証）
-                                        availableBrushTypes.sort((a, b) => a.type - b.type);
-
-                                        return (
-                                            <div className={styles.brushTool}>
-                                                <h3 className={styles.navTitle}>
-                                                    塗る大きさを変えてみよう
-                                                </h3>
-                                                <div className={styles.brushOptions}>
-                                                    {availableBrushTypes.map(
-                                                        ({
-                                                            type,
-                                                            radius,
-                                                        }: {
-                                                            type: number;
-                                                            radius: number;
-                                                        }) => (
-                                                            <div
-                                                                key={radius}
-                                                                data-brush-type={type}
-                                                                className={`${styles.brushOption} ${
-                                                                    selectedBrush === type
-                                                                        ? styles.active
-                                                                        : ""
-                                                                }`}
-                                                                onClick={() => {
-                                                                    setSelectedBrush(type);
-                                                                    setBrushRadius(radius);
-                                                                    setMode("paint");
-                                                                }}
-                                                            >
-                                                                <BrushSvg
-                                                                    type={type}
-                                                                    className={styles.brushSvg}
-                                                                />
-                                                            </div>
-                                                        )
-                                                    )}
-                                                </div>
-                                            </div>
-                                        );
-                                    })()}
-
-                                {(selectedTool === "eraser" || selectedTool === "eraser2") && (
-                                    <div className={styles.brushTool}>
-                                        <h3 className={styles.navTitle}>
-                                            塗りの修正したいところを修正しよう
-                                        </h3>
-                                        <div
-                                            className={`${styles.blurOption} ${
-                                                mode === "erase" ? styles.active : ""
-                                            }`}
-                                            onClick={() =>
-                                                setMode(mode === "erase" ? "paint" : "erase")
-                                            }
-                                        >
-                                            <ResetIcon className={styles.blurIconLarge} />
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        )}
+                                </div>
+                            ) : null}
+                        </div>
                     </NavigationLayout>
                 </div>
             </section>

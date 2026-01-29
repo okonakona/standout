@@ -46,11 +46,11 @@
     color: var(--pointColor);
 }
 
-.okButton.active,
+/* .okButton.active,
 .backButton.active {
     background: var(--mainColor);
     color: var(--background);
-}
+} */
 
 .backButton.active svg path {
     fill: var(--background);

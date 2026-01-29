@@ -6,13 +6,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    border: solid 2px transparent;
     background: transparent;
     position: relative;
     transition: all 0.2s ease-in-out;
-}
-
-.svg:hover,
-.svg:focus,
-.svg:active {
-    transform: scale(1.2);
 }
