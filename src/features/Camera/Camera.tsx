@@ -1,76 +1,64 @@
 "use client";
 import React, { useEffect, useRef } from "react";
+import Webcam from "react-webcam";
 import { useRouter } from "next/navigation";
 import { saveEditorImage } from "@/utils/imageSession";
 import styles from "@/styles/camera.module.css";
 
 export default function Camera() {
-    const videoRef = useRef<HTMLVideoElement | null>(null);
+    const webcamRef = useRef<Webcam | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const streamRef = useRef<MediaStream | null>(null);
-    const width = 383;
-    const height = 680;
-    const MAX_WIDTH = 1080;
-    const MAX_HEIGHT = 1920;
+    const MAX_WIDTH = 2160;
+    const MAX_HEIGHT = 3840;
     const router = useRouter();
 
     // カメラ起動
     useEffect(() => {
         let videoEventCleanup: (() => void) | null = null;
+        let rafId: number | null = null;
 
-        (async () => {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    video: {
-                        facingMode: "user", // インカメ
-                        width: { ideal: width, max: MAX_WIDTH },
-                        height: { ideal: height, max: MAX_HEIGHT },
-                    },
-                    audio: false,
-                });
-                streamRef.current = stream;
-
-                if (videoRef.current) {
-                    videoRef.current.srcObject = stream;
-                    await videoRef.current.play();
-                    const video = videoRef.current;
-                    video.srcObject = stream;
-
-                    // Video要素のイベントハンドラを追加
-                    const handleLoadedMetadata = () => {
-                        video.play().catch((playError) => {
-                            if (playError instanceof Error) {
-                                if (playError.name === "AbortError") {
-                                    console.log(
-                                        "Video play was interrupted - this is normal during component updates"
-                                    );
-                                } else {
-                                    console.error("Video play failed:", playError);
-                                }
-                            }
-                        });
-                    };
-
-                    const handleError = (event: Event) => {
-                        console.error("Video error:", event);
-                    };
-
-                    video.addEventListener("loadedmetadata", handleLoadedMetadata);
-                    video.addEventListener("error", handleError);
-
-                    // イベントリスナーのクリーンアップ関数を設定
-                    videoEventCleanup = () => {
-                        video.removeEventListener("loadedmetadata", handleLoadedMetadata);
-                        video.removeEventListener("error", handleError);
-                    };
-                }
-            } catch (err) {
-                console.error("カメラの取得に失敗しました:", err);
+        const attachVideoEvents = () => {
+            const video = webcamRef.current?.video;
+            if (!video) {
+                rafId = requestAnimationFrame(attachVideoEvents);
+                return;
             }
-        })();
+
+            // Video要素のイベントハンドラを追加
+            const handleLoadedMetadata = () => {
+                video.play().catch((playError) => {
+                    if (playError instanceof Error) {
+                        if (playError.name === "AbortError") {
+                            console.log(
+                                "Video play was interrupted - this is normal during component updates"
+                            );
+                        } else {
+                            console.error("Video play failed:", playError);
+                        }
+                    }
+                });
+            };
+
+            const handleError = (event: Event) => {
+                console.error("Video error:", event);
+            };
+
+            video.addEventListener("loadedmetadata", handleLoadedMetadata);
+            video.addEventListener("error", handleError);
+
+            // イベントリスナーのクリーンアップ関数を設定
+            videoEventCleanup = () => {
+                video.removeEventListener("loadedmetadata", handleLoadedMetadata);
+                video.removeEventListener("error", handleError);
+            };
+        };
+
+        attachVideoEvents();
 
         // 後始末（ページ離脱で停止）
         return () => {
+            if (rafId !== null) cancelAnimationFrame(rafId);
             videoEventCleanup?.();
             streamRef.current?.getTracks().forEach((t) => t.stop());
             streamRef.current = null;
@@ -79,7 +67,7 @@ export default function Camera() {
 
     // 撮影 → DataURL → 保存 → /editor
     const captureAndGo = async () => {
-        const video = videoRef.current;
+        const video = webcamRef.current?.video ?? null;
         const canvas = canvasRef.current;
         if (!video || !canvas) return;
 
@@ -114,11 +102,17 @@ export default function Camera() {
         canvas.height = targetHeight;
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
 
         // 映像の中央部分を切り取って描画
         const sourceX = (videoWidth - targetWidth) / 2;
         const sourceY = 0;
 
+        // 内カメラ反転の補正（保存画像は反転しない）
+        ctx.save();
+        ctx.translate(targetWidth, 0);
+        ctx.scale(-1, 1);
         ctx.drawImage(
             video,
             sourceX,
@@ -130,6 +124,7 @@ export default function Camera() {
             targetWidth,
             targetHeight // キャンバスへの描画範囲
         );
+        ctx.restore();
 
         // 圧縮率は必要に応じて調整（0.85 など）
         const dataUrl = canvas.toDataURL("image/jpeg", 0.92);
@@ -139,7 +134,25 @@ export default function Camera() {
 
     return (
         <div className={styles.cameraWrap}>
-            <video ref={videoRef} autoPlay playsInline className={styles.video} />
+            <Webcam
+                ref={webcamRef}
+                audio={false}
+                mirrored={false}
+                className={styles.video}
+                videoConstraints={{
+                    facingMode: "user",
+                    aspectRatio: 9 / 16,
+                    width: { ideal: 720, max: MAX_WIDTH },
+                    height: { ideal: 1280, max: MAX_HEIGHT },
+                }}
+                onUserMedia={(stream) => {
+                    streamRef.current = stream;
+                }}
+                onUserMediaError={(err) => {
+                    console.error("カメラの取得に失敗しました:", err);
+                }}
+                playsInline
+            />
             <div className={styles.controls}>
                 <button onClick={captureAndGo} className={styles.cameraButton}></button>
             </div>

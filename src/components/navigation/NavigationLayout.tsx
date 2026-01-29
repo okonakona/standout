@@ -30,13 +30,13 @@ export default function NavigationLayout({
                         className={`${styles.backButton} ${isSelected ? styles.active : ""}`}
                         onClick={onBackClick}
                     >
-                        <PrevIcon />
+                        戻る
                     </button>
                     <button
                         className={`${styles.okButton} ${isSelected ? styles.active : ""}`}
                         onClick={onOkClick}
                     >
-                        ok
+                        {isSelected ? "決定" : "次へ"}
                     </button>
                 </header>
             )}

@@ -15,6 +15,7 @@
     background: var(--blackColor);
     aspect-ratio: 9/16;
     object-fit: cover;
+    transform: scaleX(-1);
 }
 
 .controls {
