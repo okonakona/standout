@@ -15,4 +15,5 @@
     top: 0;
     left: 0;
     object-fit: contain;
+    background-color: var(--mainColor);
 }
