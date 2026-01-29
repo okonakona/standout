@@ -65,7 +65,7 @@ export default function PracticeCanvas({
             displayRef.current.width = w;
             displayRef.current.height = h;
             displayRef.current.style.width = "100%";
-            displayRef.current.style.height = "auto";
+            displayRef.current.style.height = "100%";
         }
 
         // 元画像キャンバス

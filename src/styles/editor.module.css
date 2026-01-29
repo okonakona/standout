@@ -13,6 +13,16 @@
     touch-action: pan-x pan-y pinch-zoom;
 }
 
+.currentStepHeader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 16px 16px 0;
+    background: #fefefe;
+    z-index: 15;
+}
+
 .imageSection {
     flex: 1;
     display: flex;
@@ -53,8 +63,8 @@
 
 .afterIconWrapper {
     position: absolute;
-    top: 3cqh;
-    right: 10px;
+    bottom: 32cqh;
+    left: 10px;
     z-index: 5;
     cursor: pointer;
     transition: transform 0.2s ease;
@@ -202,6 +212,10 @@
     background: var(--background);
 }
 
+.scrollWrap {
+    overflow-y: hidden;
+}
+
 .colorTool,
 .brushTool,
 .eraserTool,
@@ -300,35 +314,38 @@
 /* ブラシタイプごとのサイズ - データ属性ベース */
 .brushOption .brushSvg {
     position: absolute;
-    top: 15%;
+    bottom: 0%;
 }
 
 /* ブラシタイプ1（極小）*/
 .brushOption[data-brush-type="1"] .brushSvg {
-    top: 50%;
+    top: 40%;
     width: 100px;
     height: 100px;
+    z-index: 4;
 }
 
 /* ブラシタイプ2（小）*/
 .brushOption[data-brush-type="2"] .brushSvg {
-    top: 30%;
+    top: 10%;
     left: 13%;
     width: 160px;
     height: 160px;
+    z-index: 3;
 }
 
 /* ブラシタイプ3（中）*/
 .brushOption[data-brush-type="3"] .brushSvg {
-    top: 20%;
+    top: -10%;
     left: 40%;
-    /* transform: translateX(-50%); */
     width: 140px;
     height: 160px;
+    z-index: 2;
 }
 
 /* ブラシタイプ4（大）*/
 .brushOption[data-brush-type="4"] .brushSvg {
+    top: -20%;
     right: 0%;
     width: 155px;
     height: 175px;
@@ -338,6 +355,27 @@
     object-fit: contain;
     filter: none;
     transition: all 0.3s ease;
+}
+
+/* active */
+/* ブラシタイプ1（極小）*/
+.brushOption[data-brush-type="1"].active .brushSvg {
+    top: 10%;
+}
+
+/* ブラシタイプ2（小）*/
+.brushOption[data-brush-type="2"].active .brushSvg {
+    top: -15%;
+}
+
+/* ブラシタイプ3（中）*/
+.brushOption[data-brush-type="3"].active .brushSvg {
+    top: -30%;
+}
+
+/* ブラシタイプ4（大）*/
+.brushOption[data-brush-type="4"].active .brushSvg {
+    top: -40%;
 }
 
 .brushOption.active .brushSvg {
@@ -410,12 +448,12 @@
 }
 
 .colorPresets {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 12px;
-    flex-wrap: wrap;
     padding: 8px 0;
+    justify-items: center;
+    align-items: start;
 }
 
 .colorOption {
@@ -475,8 +513,10 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    padding: 16px 0;
-    border-top: 1px solid #eee;
+    padding: 0;
+    border-top: none;
+    position: relative;
+    z-index: 1;
 }
 
 .customColorButton {
@@ -490,6 +530,8 @@
     background: none;
     border-radius: 8px;
     transition: all 0.2s ease;
+    padding: 0;
+    position: relative;
 }
 
 .customColorButton:hover {
@@ -553,6 +595,16 @@
     overflow: hidden;
     transition: all 0.2s ease;
     flex-shrink: 0;
+}
+
+.customColorInput {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
 }
 
 .customColorSection input[type="color"]::-webkit-color-swatch-wrapper {
