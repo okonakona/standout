@@ -15,6 +15,24 @@ export default function Camera() {
 
     // カメラ起動
     useEffect(() => {
+        const originalStyle = {
+            overflow: document.body.style.overflow,
+            position: document.body.style.position,
+            width: document.body.style.width,
+            height: document.body.style.height,
+            overscrollBehavior: document.body.style.overscrollBehavior,
+            touchAction: document.body.style.touchAction,
+        };
+
+        document.body.style.overflow = "hidden";
+        document.body.style.position = "fixed";
+        document.body.style.width = "100%";
+        document.body.style.height = "100%";
+        document.body.style.overscrollBehavior = "none";
+        document.body.style.touchAction = "none";
+        document.documentElement.style.overflow = "hidden";
+        document.documentElement.style.overscrollBehavior = "none";
+
         let videoEventCleanup: (() => void) | null = null;
         let rafId: number | null = null;
 
@@ -62,6 +80,14 @@ export default function Camera() {
             videoEventCleanup?.();
             streamRef.current?.getTracks().forEach((t) => t.stop());
             streamRef.current = null;
+            document.body.style.overflow = originalStyle.overflow;
+            document.body.style.position = originalStyle.position;
+            document.body.style.width = originalStyle.width;
+            document.body.style.height = originalStyle.height;
+            document.body.style.overscrollBehavior = originalStyle.overscrollBehavior;
+            document.body.style.touchAction = originalStyle.touchAction;
+            document.documentElement.style.overflow = "";
+            document.documentElement.style.overscrollBehavior = "";
         };
     }, []);
 
@@ -104,6 +130,8 @@ export default function Camera() {
         if (!ctx) return;
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = "high";
+        ctx.fillStyle = "#103a71";
+        ctx.fillRect(0, 0, targetWidth, targetHeight);
 
         // 距離感優先: 9:16キャンバス内に収まるよう全体を縮小配置（余白あり）
         const baseScale = Math.min(targetWidth / videoWidth, targetHeight / videoHeight);
