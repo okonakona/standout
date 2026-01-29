@@ -31,7 +31,7 @@ export default function Camera() {
                     if (playError instanceof Error) {
                         if (playError.name === "AbortError") {
                             console.log(
-                                "Video play was interrupted - this is normal during component updates"
+                                "Video play was interrupted - this is normal during component updates",
                             );
                         } else {
                             console.error("Video play failed:", playError);
@@ -105,25 +105,19 @@ export default function Camera() {
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = "high";
 
-        // 映像の中央部分を切り取って描画
-        const sourceX = (videoWidth - targetWidth) / 2;
-        const sourceY = 0;
+        // 距離感優先: 9:16キャンバス内に収まるよう全体を縮小配置（余白あり）
+        const baseScale = Math.min(targetWidth / videoWidth, targetHeight / videoHeight);
+        const scale = Math.min(baseScale * 1.5, 1);
+        const drawWidth = Math.floor(videoWidth * scale);
+        const drawHeight = Math.floor(videoHeight * scale);
+        const drawX = Math.floor((targetWidth - drawWidth) / 2);
+        const drawY = Math.floor((targetHeight - drawHeight) / 2);
 
         // 内カメラ反転の補正（保存画像は反転しない）
         ctx.save();
         ctx.translate(targetWidth, 0);
         ctx.scale(-1, 1);
-        ctx.drawImage(
-            video,
-            sourceX,
-            sourceY,
-            targetWidth,
-            targetHeight, // 元映像の切り取り範囲
-            0,
-            0,
-            targetWidth,
-            targetHeight // キャンバスへの描画範囲
-        );
+        ctx.drawImage(video, 0, 0, videoWidth, videoHeight, drawX, drawY, drawWidth, drawHeight);
         ctx.restore();
 
         // 圧縮率は必要に応じて調整（0.85 など）
