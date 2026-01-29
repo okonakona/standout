@@ -22,10 +22,11 @@
     align-items: center;
     justify-content: center;
     color: var(--accentColor);
-    font-size: 22px;
+    font-size: 13px;
     border: none;
     background: var(--background);
     cursor: pointer;
+    font-weight: bold;
     padding-top: 5px;
 }
 
@@ -48,9 +49,6 @@
 .okButton.active,
 .backButton.active {
     background: var(--mainColor);
-}
-
-.okButton.active {
     color: var(--background);
 }
 
