@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { listSim, loadMakeupSettings, MakeupSettings } from "@/utils/simStore";
+import { listSessions, loadMakeupSettings, MakeupSettings, SimSession } from "@/utils/simStore";
 
 export type SimItem = { id: string; createdAt: number; dataUrl: string; note?: string };
 
@@ -115,19 +115,34 @@ export function useResultPage() {
 
     useEffect(() => {
         (async () => {
-            const all = await listSim();
-            const steps = buildLatestSteps(all);
-            setLatestSteps(steps);
+            // 新しいセッション形式から取得
+            const sessions = await listSessions();
+            if (sessions.length > 0) {
+                // 最新のセッションを取得
+                const latestSession = sessions[0];
 
-            // FINAL画像を取得
-            const final = steps.find((item) => item.note === "FINAL");
-            if (final) {
-                setFinalImage(final.dataUrl);
+                // セッションのstepsをSimItem形式に変換
+                const steps = latestSession.steps.map((step) => ({
+                    id: `${latestSession.id}_${step.note}`,
+                    createdAt: step.createdAt,
+                    dataUrl: step.dataUrl,
+                    note: step.note,
+                }));
+
+                setLatestSteps(steps);
+                setFinalImage(latestSession.finalImage);
+
+                // セッション内の設定を優先、なければ設定ストアから取得
+                if (latestSession.settings) {
+                    setMakeupSettings(latestSession.settings);
+                } else {
+                    const settings = await loadMakeupSettings();
+                    setMakeupSettings(settings);
+                }
+            } else {
+                // セッションがない場合は空
+                setLatestSteps([]);
             }
-
-            // メイク設定を取得
-            const settings = await loadMakeupSettings();
-            setMakeupSettings(settings);
         })();
     }, []);
 
