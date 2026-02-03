@@ -1,0 +1,22 @@
+/* src/components/history/HistoryButton.module.css */
+.historyButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 325px;
+    margin: 20px auto;
+    padding: 15px;
+    background: var(--subColor);
+    color: var(--mainColor);
+    font-size: 18px;
+    font-weight: bold;
+    border: 2px solid var(--mainColor);
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.historyButton:hover {
+    background: var(--mainColor);
+    color: var(--background);
+}
