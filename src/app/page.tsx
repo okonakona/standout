@@ -5,6 +5,7 @@ import Header from "@/components/header/page";
 import Image from "next/image";
 import Link from "next/link";
 import SimulateContent from "@/components/SimulateContent";
+import HistoryButton from "@/components/history/HistoryButton";
 import { useState } from "react";
 
 export default function Home() {
@@ -20,6 +21,9 @@ export default function Home() {
                     <button className={styles.button} onClick={() => setIsOpen(true)}>
                         メイクシミュレーション
                     </button>
+
+                    <HistoryButton />
+
                     <section>
                         <h2>スタイルガイド</h2>
                         <div className={styles.guidWrap}>
