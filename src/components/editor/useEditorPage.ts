@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { loadEditorImage } from "@/utils/imageSession";
 import { useMasks } from "@/hooks/useMasks";
-import { saveSim, saveMakeupSettings } from "@/utils/simStore";
+import { saveSession, saveMakeupSettings } from "@/utils/simStore";
 import { STEP_CONFIG, Step } from "@/types/steps";
 
 const ORDER: Step[] = [
@@ -25,7 +25,7 @@ type FaceRect = { x: number; y: number; w: number; h: number };
 /** faceClipMask(白=顔, 透明=顔外) から顔の矩形を推定 */
 function computeFaceRect(
     faceClipMask: HTMLCanvasElement | null,
-    img: HTMLImageElement | null
+    img: HTMLImageElement | null,
 ): FaceRect | null {
     if (!faceClipMask || !img) return null;
 
@@ -76,7 +76,7 @@ function computeFaceRect(
 function getGuideForStep(
     step: Step,
     img: HTMLImageElement | null,
-    faceRect: FaceRect | null
+    faceRect: FaceRect | null,
 ): {
     d: string;
     bandPx: number;
@@ -181,6 +181,9 @@ export function useEditorPage() {
         return init;
     });
 
+    // ★ セッション内の各ステップのスナップショットを保持
+    const sessionSteps = useRef<Array<{ note: string; dataUrl: string; createdAt: number }>>([]);
+
     // 2D 合成結果
     const [compositeCanvas, setCompositeCanvas] = useState<HTMLCanvasElement | null>(null);
     // ステップごとのマスク
@@ -220,19 +223,24 @@ export function useEditorPage() {
                 console.warn("スナップショット用キャンバスが見つかりません");
                 return;
             }
+
             try {
                 const url = cv.toDataURL("image/jpeg", 0.92);
-                // ★ ここを label ではなく ID（step）で保存する
-                void saveSim(url, targetStep);
+                // セッション配列に追加
+                sessionSteps.current.push({
+                    note: targetStep,
+                    dataUrl: url,
+                    createdAt: Date.now(),
+                });
             } catch (e) {
-                console.error("saveSim(step) でエラー:", e);
+                console.error("スナップショット保存でエラー:", e);
             }
         },
-        [getCurrentCanvas]
+        [getCurrentCanvas],
     );
 
     // ===== 最終結果を保存して /result へ =====
-    const saveAndGoResult = useCallback(() => {
+    const saveAndGoResult = useCallback(async () => {
         const cv = getCurrentCanvas();
 
         if (!cv) {
@@ -242,16 +250,37 @@ export function useEditorPage() {
         }
 
         try {
-            const url = cv.toDataURL("image/jpeg", 0.92);
-            // ここは "FINAL" のままで OK
-            void saveSim(url, "FINAL");
-            // メイク設定も保存
-            void saveMakeupSettings({
+            const finalUrl = cv.toDataURL("image/jpeg", 0.92);
+
+            // ★ FINAL画像もセッションに追加
+            sessionSteps.current.push({
+                note: "FINAL",
+                dataUrl: finalUrl,
+                createdAt: Date.now(),
+            });
+
+            console.log("保存するセッションのステップ数:", sessionSteps.current.length);
+
+            // ★ セッション全体を保存
+            await saveSession({
+                finalImage: finalUrl,
+                steps: sessionSteps.current,
+                settings: {
+                    colorByStep,
+                    strengthByStep,
+                },
+            });
+
+            // ★ 保存後にセッション配列をクリア（次回のシミュレーション用）
+            sessionSteps.current = [];
+
+            // メイク設定も保存（後方互換性のため）
+            await saveMakeupSettings({
                 colorByStep,
                 strengthByStep,
             });
         } catch (e) {
-            console.error("saveSim(FINAL) でエラーが発生しましたが、結果画面には遷移します:", e);
+            console.error("セッション保存でエラーが発生しましたが、結果画面には遷移します:", e);
         } finally {
             router.push("/result");
         }
