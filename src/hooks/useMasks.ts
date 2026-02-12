@@ -26,6 +26,7 @@ export type MasksOut = {
     faceClipMask: HTMLCanvasElement | null; // 顔外NG（白=顔、透明=外）
     lipAllowMask: HTMLCanvasElement | null; // リップ時のみOK（白=唇、透明=それ以外）
     regions: FaceRegions | null; // ★ 各パーツの位置
+    isFallbackMode: boolean; // 顔認識失敗時のフォールバックモード
 };
 
 const MODEL_URL = "/models/face_parsing_256.onnx";
@@ -83,9 +84,18 @@ function featherBinary(src: HTMLCanvasElement, blurPx: number) {
 }
 
 // ONNX 推論：画像→クラスIDマップ（元画像サイズ）
+// タイムアウト付きで推論を実行
 async function runParsing(image: HTMLImageElement): Promise<Uint8ClampedArray> {
+    console.log("[faceParsing] Starting face parsing...");
+
     // セッション作成（共通ヘルパーでログ抑制とプロバイダフォールバックを行う）
-    const session = await createSession(MODEL_URL);
+    let session: ort.InferenceSession;
+    try {
+        session = await createSession(MODEL_URL);
+    } catch (e) {
+        console.error("[faceParsing] Failed to create session:", e);
+        throw new Error("Face parsing model failed to load");
+    }
 
     // 入力名（モデル側の input 名）
     const inputName = session.inputNames[0] ?? "input";
@@ -116,8 +126,21 @@ async function runParsing(image: HTMLImageElement): Promise<Uint8ClampedArray> {
     // [1,3,512,512] で Tensor を作成
     const input = new ort.Tensor("float32", chw, [inN, inC, inH, inW]);
 
-    // 推論
-    const outMap = await session.run({ [inputName]: input });
+    // 推論（タイムアウト付き）
+    console.log("[faceParsing] Running inference with input shape:", input.dims);
+    let outMap: any;
+    try {
+        // 30秒のタイムアウトを設定
+        const inferencePromise = session.run({ [inputName]: input });
+        const timeoutPromise = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error("Inference timeout")), 30000),
+        );
+        outMap = await Promise.race([inferencePromise, timeoutPromise]);
+        console.log("[faceParsing] Inference completed successfully");
+    } catch (e) {
+        console.error("[faceParsing] Inference failed:", e);
+        throw new Error(`Face parsing inference failed: ${(e as Error).message}`);
+    }
 
     // 出力キーはモデルにより異なるので、最初の要素を使う
     const outKey = Object.keys(outMap)[0];
@@ -230,7 +253,7 @@ function maskFromClasses(
     cls: Uint8ClampedArray,
     w: number,
     h: number,
-    allowIds: number[]
+    allowIds: number[],
 ): HTMLCanvasElement {
     const cv = makeCanvas(w, h);
     const ctx = cv.getContext("2d")!;
@@ -253,7 +276,7 @@ function boxFromClasses(
     cls: Uint8ClampedArray,
     w: number,
     h: number,
-    allowIds: number[]
+    allowIds: number[],
 ): FaceBox | null {
     let minX = w,
         minY = h;
@@ -332,7 +355,7 @@ export function useMasks(img: HTMLImageElement | null) {
                     await new Promise<void>((resolve, reject) => {
                         const tid = setTimeout(
                             () => reject(new Error("Image loading timeout")),
-                            10000
+                            10000,
                         );
                         img.onload = () => {
                             clearTimeout(tid);
@@ -345,10 +368,30 @@ export function useMasks(img: HTMLImageElement | null) {
                     });
                 }
 
-                // 1) セグメンテーション
-                const clsMap = await runParsing(img);
+                // 1) セグメンテーション（エラーハンドリング強化）
+                console.log(
+                    "[useMasks] Starting face parsing for image:",
+                    img.src.substring(0, 50),
+                );
+                let clsMap: Uint8ClampedArray;
                 const w = img.naturalWidth || img.width;
                 const h = img.naturalHeight || img.height;
+
+                if (!w || !h || w === 0 || h === 0) {
+                    throw new Error(`Invalid image dimensions: ${w}x${h}`);
+                }
+
+                try {
+                    clsMap = await runParsing(img);
+                    console.log("[useMasks] ✅ Face parsing successful");
+                } catch (parseError) {
+                    console.error("[useMasks] ⚠️ Face parsing failed, using fallback:", parseError);
+                    // フォールバック: 全ピクセルを肌(1)として扱う
+                    clsMap = new Uint8ClampedArray(w * h);
+                    for (let i = 0; i < clsMap.length; i++) {
+                        clsMap[i] = CLS.skin; // 全体を肌として扱う
+                    }
+                }
 
                 // 2) マスク生成 ------------------------------
 
@@ -406,6 +449,7 @@ export function useMasks(img: HTMLImageElement | null) {
                         faceClipMask,
                         lipAllowMask,
                         regions,
+                        isFallbackMode: false,
                     });
                 }
             } catch (e: any) {
@@ -425,9 +469,15 @@ export function useMasks(img: HTMLImageElement | null) {
                             faceClipMask: faceCanvas,
                             lipAllowMask: null,
                             regions: null,
+                            isFallbackMode: true,
                         });
                     } catch {
-                        setMasks({ faceClipMask: null, lipAllowMask: null, regions: null });
+                        setMasks({
+                            faceClipMask: null,
+                            lipAllowMask: null,
+                            regions: null,
+                            isFallbackMode: true,
+                        });
                     }
                 }
             } finally {
