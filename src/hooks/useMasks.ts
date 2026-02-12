@@ -87,7 +87,7 @@ function featherBinary(src: HTMLCanvasElement, blurPx: number) {
 // タイムアウト付きで推論を実行
 async function runParsing(image: HTMLImageElement): Promise<Uint8ClampedArray> {
     console.log("[faceParsing] Starting face parsing...");
-    
+
     // セッション作成（共通ヘルパーでログ抑制とプロバイダフォールバックを行う）
     let session: ort.InferenceSession;
     try {
@@ -132,8 +132,8 @@ async function runParsing(image: HTMLImageElement): Promise<Uint8ClampedArray> {
     try {
         // 30秒のタイムアウトを設定
         const inferencePromise = session.run({ [inputName]: input });
-        const timeoutPromise = new Promise((_, reject) => 
-            setTimeout(() => reject(new Error("Inference timeout")), 30000)
+        const timeoutPromise = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error("Inference timeout")), 30000),
         );
         outMap = await Promise.race([inferencePromise, timeoutPromise]);
         console.log("[faceParsing] Inference completed successfully");
@@ -253,7 +253,7 @@ function maskFromClasses(
     cls: Uint8ClampedArray,
     w: number,
     h: number,
-    allowIds: number[]
+    allowIds: number[],
 ): HTMLCanvasElement {
     const cv = makeCanvas(w, h);
     const ctx = cv.getContext("2d")!;
@@ -276,7 +276,7 @@ function boxFromClasses(
     cls: Uint8ClampedArray,
     w: number,
     h: number,
-    allowIds: number[]
+    allowIds: number[],
 ): FaceBox | null {
     let minX = w,
         minY = h;
@@ -355,7 +355,7 @@ export function useMasks(img: HTMLImageElement | null) {
                     await new Promise<void>((resolve, reject) => {
                         const tid = setTimeout(
                             () => reject(new Error("Image loading timeout")),
-                            10000
+                            10000,
                         );
                         img.onload = () => {
                             clearTimeout(tid);
@@ -369,15 +369,18 @@ export function useMasks(img: HTMLImageElement | null) {
                 }
 
                 // 1) セグメンテーション（エラーハンドリング強化）
-                console.log("[useMasks] Starting face parsing for image:", img.src.substring(0, 50));
+                console.log(
+                    "[useMasks] Starting face parsing for image:",
+                    img.src.substring(0, 50),
+                );
                 let clsMap: Uint8ClampedArray;
                 const w = img.naturalWidth || img.width;
                 const h = img.naturalHeight || img.height;
-                
+
                 if (!w || !h || w === 0 || h === 0) {
                     throw new Error(`Invalid image dimensions: ${w}x${h}`);
                 }
-                
+
                 try {
                     clsMap = await runParsing(img);
                     console.log("[useMasks] ✅ Face parsing successful");
@@ -469,7 +472,12 @@ export function useMasks(img: HTMLImageElement | null) {
                             isFallbackMode: true,
                         });
                     } catch {
-                        setMasks({ faceClipMask: null, lipAllowMask: null, regions: null, isFallbackMode: true });
+                        setMasks({
+                            faceClipMask: null,
+                            lipAllowMask: null,
+                            regions: null,
+                            isFallbackMode: true,
+                        });
                     }
                 }
             } finally {
