@@ -18,6 +18,7 @@ type Props = {
     guidePathD?: string;
     guideBandPx?: number;
     partMask?: HTMLCanvasElement | null; // 今は使わない（将来用）
+    isFallbackMode?: boolean; // 顔認識失敗フラグ
     /** 合成済み 2D 画像を親に渡す（WebGL のベース用） */
     onCompositeChange?: (canvas: HTMLCanvasElement) => void;
     /** ステップごとの「塗ったマスク」を親に渡す（WebGL の maskTex 用） */
@@ -44,6 +45,7 @@ export default function PracticeCanvas({
     lipAllowMask = null,
     guidePathD,
     guideBandPx,
+    isFallbackMode = false,
     onCompositeChange,
     onStepMaskChange,
 }: Props) {
@@ -312,7 +314,7 @@ export default function PracticeCanvas({
     }
 
     return (
-        <div className="canvasWrap">
+        <div className="canvasWrap" style={{ position: "relative" }}>
             <canvas
                 ref={displayRef}
                 className="practiceCanvas-2d"
