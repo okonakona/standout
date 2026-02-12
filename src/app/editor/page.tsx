@@ -254,6 +254,7 @@ export default function EditorPage() {
                         lipAllowMask={masks?.lipAllowMask ?? null}
                         guidePathD={guide.d}
                         guideBandPx={guide.bandPx}
+                        isFallbackMode={masks?.isFallbackMode ?? false}
                         onCompositeChange={setCompositeCanvas}
                         onStepMaskChange={(s, mask) =>
                             setMaskByStep((prev) => ({
@@ -275,6 +276,25 @@ export default function EditorPage() {
                         />
                     )}
                 </div>
+
+                {/* 顔認識失敗時の控えめな警告インジケーター */}
+                {masks?.isFallbackMode && (
+                    <div
+                        style={{
+                            position: "absolute",
+                            bottom: "80px",
+                            right: "16px",
+                            width: "8px",
+                            height: "8px",
+                            borderRadius: "50%",
+                            backgroundColor: "#ff9800",
+                            opacity: 0.6,
+                            pointerEvents: "none",
+                            zIndex: 100,
+                        }}
+                        title="顔認識フォールバックモード"
+                    />
+                )}
 
                 {/* ナビゲーションオーバーレイ */}
                 <div className={styles.navigationOverlay}>

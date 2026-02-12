@@ -49,29 +49,47 @@ export async function initOrt() {
     inited = true;
 }
 
+// セッションキャッシュでメモリリークを防ぐ
+const sessionCache = new Map<string, ort.InferenceSession>();
+
 export async function createSession(modelUrl: string) {
     await initOrt();
+    
+    // キャッシュされたセッションを再利用
+    if (sessionCache.has(modelUrl)) {
+        console.log("[onnxRuntime] Using cached session for:", modelUrl);
+        return sessionCache.get(modelUrl)!;
+    }
+    
     const providers = ["webgpu", "webgl", "wasm"] as const;
+    let lastError: any = null;
+    
     for (const ep of providers) {
         try {
+            console.log(`[onnxRuntime] Trying provider: ${ep}`);
             // @ts-ignore
             const session = await ort.InferenceSession.create(modelUrl, {
                 executionProviders: [ep],
                 logSeverityLevel: 3, // 0=verbose, 1=info, 2=warning, 3=error, 4=fatal
             });
-            // ★ 初回だけ入出力名をログ出し（コンソールで確認して控える）
             console.log(
-                "[faceParsing] provider:",
-                ep,
+                `[onnxRuntime] ✅ Successfully loaded with ${ep}`,
                 "inputs:",
                 session.inputNames,
                 "outputs:",
                 session.outputNames
             );
+            
+            // キャッシュに保存
+            sessionCache.set(modelUrl, session);
             return session;
         } catch (e) {
+            lastError = e;
+            console.warn(`[onnxRuntime] Failed with ${ep}:`, e);
             // 次の EP にフォールバック
         }
     }
-    throw new Error("Failed to create ONNX session");
+    
+    console.error("[onnxRuntime] ❌ All providers failed. Last error:", lastError);
+    throw new Error(`Failed to create ONNX session: ${lastError?.message || 'Unknown error'}`);
 }
