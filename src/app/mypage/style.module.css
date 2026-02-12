@@ -1,0 +1,21 @@
+/* src/app/mypage/style.module.css */
+.main {
+    width: 100%;
+    min-height: 100vh;
+    padding-bottom: 120px;
+}
+
+.content {
+    width: 100%;
+    max-width: 100vw;
+    margin: 0 auto;
+}
+
+.pageTitle {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--text-black);
+    text-align: center;
+    margin-top: 120px;
+    padding: 0 20px;
+}

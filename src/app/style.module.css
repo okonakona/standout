@@ -1,11 +1,11 @@
 main {
-    .content{
+    .content {
         width: 100%;
         text-align: center;
-        .imgWrap{
+        .imgWrap {
             margin-top: 100px;
         }
-        .button{
+        .button {
             margin: 20px auto;
             padding: 15px;
             display: flex;
@@ -17,10 +17,10 @@ main {
             border: none;
             border-radius: 6px;
         }
-        .button::after{
+        .button::after {
             content: "　>";
         }
-        h2{
+        h2 {
             font-size: 17px;
         }
     }
